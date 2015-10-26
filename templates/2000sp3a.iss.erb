@@ -1,0 +1,79 @@
+[InstallShield Silent]
+Version=v5.00.000
+File=Response File
+[File Transfer]
+OverwriteReadOnly=NoToAll
+[DlgOrder]
+Dlg0=DlgW2kReboot-0
+Count=16
+Dlg1=SdWelcome-0
+Dlg2=DlgMachine-0
+Dlg3=DlgInstallMode-0
+Dlg4=SdLicense-0
+Dlg5=DlgInstanceName-0
+Dlg6=DlgMaintainInstall-0
+Dlg7=DlgUpgrade-0
+Dlg8=ServerConnect-0
+Dlg9=SdBlankPwdWarningDlg-0
+Dlg10=SdSP3WrngDlg-0
+Dlg11=SdErrorReportingDlg-0
+Dlg12=DlgCollation-0
+Dlg13=DlgServerNetwork-0
+Dlg14=SdStartCopy-0
+Dlg15=SdFinishReboot-0
+[DlgW2kReboot-0]
+Result=189
+[SdWelcome-0]
+Result=1
+[DlgMachine-0]
+Type=1
+Result=1
+[DlgInstallMode-0]
+Type=2
+Result=1
+[SdLicense-0]
+Result=1
+[DlgInstanceName-0]
+InstanceName=<%= @instanceName %>
+Result=0
+[DlgMaintainInstall-0]
+Type=12
+Result=1
+[DlgUpgrade-0]
+Result=1
+[ServerConnect-0]
+NTAuthentication=1
+SQLAuthentication=0
+Result=1
+[SdBlankPwdWarningDlg-0]
+AllowBlank=0
+EnterPwd=' '
+ConfirmPwd=' '
+Result=0
+[SdSP3WrngDlg-0]
+EnableCrossDBChaining=0
+UpgradeMSSearch=1
+MSXTSXUpgraded=0
+Result=1
+[SdErrorReportingDlg-0]
+EnableErrorReporting=0
+Result=0
+[DlgCollation-0]
+collation_name=SQL_Latin1_General_CP1_CI_AS
+Result=1
+[DlgServerNetwork-0]
+NetworkLibs=255
+TCPPort=0
+TCPPrxy=Default
+NMPPipeName=\\.\pipe\MSSQL$<%= @instanceName %>\sql\query
+Result=1
+[SdStartCopy-0]
+Result=1
+[Application]
+Name=Microsoft SQL Server
+Version=8.00.000
+Company=Microsoft
+Lang=0009
+[SdFinishReboot-0]
+Result=1
+BootOption=0

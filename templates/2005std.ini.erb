@@ -1,0 +1,46 @@
+[Options]
+;--------------------------------------------------------------------
+;--------------------------------------------------------------------
+; PIDKEY specifies the Product Identification Key.
+; Usage: PIDKEY=ABCDE12345FGHIJ67890KLMNO  (This is not an actual key value.)
+
+; NOTE: PIDKEY is not required for SQL Server Express Edition.
+; NOTE: Do not include "-" in the PIDKEY.
+
+;PIDKEY=
+
+ADDLOCAL=All
+REMOVE=
+INSTANCENAME=<%= @instanceName %>
+
+;--------------------------------------------------------------------
+; The services for SQL Server and Analysis Server are set auto start. To use the *ACCOUNT settings
+; make sure to specify the DOMAIN, e.g. SQLACCOUNT=DOMAINNAME\ACCOUNT
+; NOTE:  When installing SQL_Engine 3 accounts are REQUIRED: SQLACCOUNT, AGTACCOUNT and SQLBROWSERACCOUNT.
+
+; SQLACCOUNT Examples:
+; SQLACCOUNT=<domain\user>
+; SQLACCOUNT="NT AUTHORITY\SYSTEM"
+; SQLACCOUNT="NT AUTHORITY\NETWORK SERVICE"
+; SQLACCOUNT="NT AUTHORITY\LOCAL SERVICE"
+
+
+SQLBROWSERACCOUNT="NT AUTHORITY\LOCAL SERVICE"
+SQLACCOUNT="NT AUTHORITY\SYSTEM"
+AGTACCOUNT="NT AUTHORITY\SYSTEM"
+ASACCOUNT="NT AUTHORITY\SYSTEM"
+RSACCOUNT="NT AUTHORITY\SYSTEM"
+
+;--------------------------------------------------------------------
+; To use the *AUTOSTART features, specify 1 to start automatically or 0 to start manually.
+; NOTE: If you decide to start SQL Agent automatically, then SQL is also started automatically.
+; If *AUTOSTART is not specified on the command line, startup is set to manual.
+SQLBROWSERAUTOSTART=1
+SQLAUTOSTART=1
+AGTAUTOSTART=1
+ASAUTOSTART=1
+RSAUTOSTART=1
+;--------------------------------------------------------------------
+
+SECURITYMODE=SQL
+SAPWD=<%= @saPassword %>

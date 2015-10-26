@@ -1,0 +1,35 @@
+{
+  "name": "redgate-sqlserver",
+  "version": "0.0.1",
+  "author": "redgate",
+  "summary": "A SQL Server module for Puppet",
+  "license": "Apache-2.0",
+  "source": "https://github.com/red-gate/puppet-sqlserver",
+  "project_page": "https://github.com/red-gate/puppet-sqlserver",
+  "issues_url": "https://github.com/red-gate/puppet-sqlserver/issues",
+  "dependencies": [
+    { "name": "nanliu/archive", "version_requirement": "= 0.3.0" }
+  ],
+  "description": "A SQL Server module for Puppet",
+  "tags": [
+    "microsoft",
+    "windows",
+    "SQL Server"
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Windows",
+      "operatingsystemrelease": [
+        "Server 2003",
+        "Server 2003 R2",
+        "Server 2008",
+        "Server 2008 R2",
+        "Server 2012",
+        "Server 2012 R2",
+        "7",
+        "8",
+        "10"
+      ]
+    }
+  ]
+}
