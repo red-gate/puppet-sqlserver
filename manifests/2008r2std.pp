@@ -16,6 +16,7 @@ class sqlserver::2008r2std(
     source          => $setupexe,
     install_options => [
       '/Q',
+      '/IACCEPTSQLSERVERLICENSETERMS',
       '/ACTION=install',
       '/FEATURES=SQL,IS,Tools',
       "/INSTANCENAME=${instanceName}",
