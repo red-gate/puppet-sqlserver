@@ -25,7 +25,7 @@ class sqlserver::2016(
   include archive
 
   $isofilename = inline_template('<%= File.basename(@source) %>')
-  $isofilename_notextension = inline_template('<%= File.basename(@source) %>', '.*')
+  $isofilename_notextension = inline_template('<%= File.basename(@source, ".*") %>')
 
   ensure_resource('file', $tempFolder, { ensure => directory })
 
