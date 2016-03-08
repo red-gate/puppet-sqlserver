@@ -14,39 +14,13 @@ class sqlserver::2016ctp3_3(
   $instanceName = 'SQL2016',
   $saPassword) {
 
-  include archive
-
-  ensure_resource('file', $tempFolder, { ensure => directory })
-
-  file { "${tempFolder}/SQLServer2016CTP3.3-x64-ENU":
-    ensure  => directory,
-    require => File[$tempFolder],
+  class { 'sqlserver::2016':
+    source           => "${source}/SQLServer2016CTP3.3-x64-ENU.iso",
+    programEntryName => 'Microsoft SQL Server 2016 CTP3.3 (64-bit)',
+    tempFolder       => $tempFolder,
+    instanceName     => $instanceName,
+    version          => '2016CTP3.3',
+    saPassword       => $saPassword,
   }
-  ->
-  archive { "${tempFolder}/SQLServer2016CTP3.3-x64-ENU.iso":
-    source       => $source,
-    extract      => true,
-    extract_path => "${tempFolder}/SQLServer2016CTP3.3-x64-ENU",
-    creates      => "${tempFolder}/SQLServer2016CTP3.3-x64-ENU/setup.exe",
-    cleanup      => true,
-  }
-  ->
-  package {'Microsoft SQL Server 2016 CTP3.3 (64-bit)':
-    ensure          => installed,
-    source          => "${tempFolder}/SQLServer2016CTP3.3-x64-ENU/setup.exe",
-    install_options => [
-      '/Q',
-      '/IACCEPTSQLSERVERLICENSETERMS',
-      '/ACTION=install',
-      '/FEATURES=SQL,IS,Tools',
-      "/INSTANCENAME=${instanceName}",
-      '/SQLSYSADMINACCOUNTS=BUILTIN\Administrators',
-      '/SQLSVCACCOUNT=NT AUTHORITY\SYSTEM',
-      '/SECURITYMODE=SQL',
-      "/SAPWD=\"${saPassword}\"",
-      '/FILESTREAMLEVEL=2',
-      "/FILESTREAMSHARENAME=${instanceName}"],
-  }
-  ->
-  windows_env { 'SQLSERVER_VERSION=2016CTP3.3': }
+  
 }
