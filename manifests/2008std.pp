@@ -11,6 +11,8 @@ class sqlserver::2008std(
   $instanceName = 'SQL2008',
   $saPassword) {
 
+  require ::sqlserver::reboot
+
   package {'Microsoft SQL Server 2008 (64-bit)':
     ensure          => installed,
     source          => $setupexe,
@@ -26,6 +28,7 @@ class sqlserver::2008std(
       "/SAPWD=\"${saPassword}\"",
       '/FILESTREAMLEVEL=2',
       "/FILESTREAMSHARENAME=${instanceName}"],
+    require         => Reboot['reboot before installing SQL Server (if pending)'],
   }
   ->
   windows_env { 'SQLSERVER_VERSION=2008STD': }

@@ -24,6 +24,7 @@ class sqlserver::2012express(
       '/SQLSVCACCOUNT=NT AUTHORITY\SYSTEM',
       '/SECURITYMODE=SQL',
       "/SAPWD=\"${saPassword}\""],
+    require         => Reboot['reboot before installing SQL Server (if pending)'],
   }
   ->
   windows_env { 'SQLSERVER_VERSION=2012EXPRESS': }

@@ -10,6 +10,8 @@ class sqlserver::2012std(
   $instanceName = 'SQL2012',
   $saPassword) {
 
+  require ::sqlserver::reboot
+
   package {'Microsoft SQL Server 2012 (64-bit)':
     ensure          => installed,
     source          => $setupexe,
@@ -25,6 +27,7 @@ class sqlserver::2012std(
       "/SAPWD=\"${saPassword}\"",
       '/FILESTREAMLEVEL=2',
       "/FILESTREAMSHARENAME=${instanceName}"],
+    require         => Reboot['reboot before installing SQL Server (if pending)'],
   }
   ->
   windows_env { 'SQLSERVER_VERSION=2012STD': }

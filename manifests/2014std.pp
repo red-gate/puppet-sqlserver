@@ -10,6 +10,8 @@ class sqlserver::2014std(
   $instanceName = 'SQL2014',
   $saPassword) {
 
+  require ::sqlserver::reboot
+
   package {'Microsoft SQL Server 2014 (64-bit)':
     ensure          => installed,
     source          => $setupexe,
@@ -25,6 +27,7 @@ class sqlserver::2014std(
       "/SAPWD=\"${saPassword}\"",
       '/FILESTREAMLEVEL=2',
       "/FILESTREAMSHARENAME=${instanceName}"],
+    require         => Reboot['reboot before installing SQL Server (if pending)'],
   }
   ->
   windows_env { 'SQLSERVER_VERSION=2014STD': }
