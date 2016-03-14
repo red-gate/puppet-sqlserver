@@ -13,7 +13,7 @@ define sqlserver::options::base($server, $option_name, $option_value, $username 
     $configuration_value_column = 'value_in_use'
   }
 
-  ensure_resource('sqlserver::sqlcmd',
+  ensure_resource('sqlserver::sqlcmd::sqlquery',
     "${server} - Set show advanced options to 1",
     {
       'server'   => $server,
@@ -23,13 +23,13 @@ define sqlserver::options::base($server, $option_name, $option_value, $username 
       'unless'   => "IF NOT EXISTS(SELECT * FROM ${configuration_table} WHERE ${configuration_name_column} = 'show advanced options' and ${configuration_value_column} = 1) raiserror ('Wrong value is in use',1,1)",
     })
 
-  sqlserver::sqlcmd { "${server} - Set ${option_name} to ${option_value}":
+  sqlserver::sqlcmd::sqlquery { "${server} - Set ${option_name} to ${option_value}":
     server   => $server,
     username => $username,
     password => $password,
     query    => "exec sp_configure '${option_name}', ${option_value}; reconfigure WITH override",
     unless   => "IF NOT EXISTS(SELECT * FROM ${configuration_table} WHERE ${configuration_name_column} = '${option_name}' and ${configuration_value_column} = ${option_value}) raiserror ('Wrong value is in use',1,1)",
-    require  => Sqlserver::Sqlcmd["${server} - Set show advanced options to 1"],
+    require  => Sqlserver::Sqlcmd::Sqlquery["${server} - Set show advanced options to 1"],
   }
 
 }

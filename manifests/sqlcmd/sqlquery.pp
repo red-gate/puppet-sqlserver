@@ -1,5 +1,7 @@
 # Execute a SQL query using sqlcmd.exe
-define sqlserver::sqlcmd($server, $query, $unless = undef, $username = undef, $password = undef) {
+define sqlserver::sqlcmd::sqlquery($server, $query, $unless = undef, $username = undef, $password = undef) {
+
+  require sqlserver::sqlcmd::install
 
   # The folders where to find sqlcmd.exe
   $paths = [
