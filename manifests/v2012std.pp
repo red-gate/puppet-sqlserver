@@ -1,31 +1,34 @@
-# Install SQL Server 2012 EXPRESS.
+# Install SQL Server 2012 STD
 #
-# $setupexe: path to SQL Server en_sql_server_2012_express_edition_with_tools_x86.exe
+# $setupexe: path to SQL Server setup.exe
 #
 # $instanceName: The name of the SQL Server instance.
 #
 # $saPassword: The password for the sa account.
-#
-class sqlserver::2012express(
+class sqlserver::v2012std(
   $setupexe,
-  $instanceName = 'SQLEXPRESS',
+  $instanceName = 'SQL2012',
   $saPassword) {
 
-  package {'Microsoft SQL Server 2012':
+  require ::sqlserver::reboot
+
+  package {'Microsoft SQL Server 2012 (64-bit)':
     ensure          => installed,
     source          => $setupexe,
     install_options => [
       '/Q',
       '/IACCEPTSQLSERVERLICENSETERMS',
       '/ACTION=install',
-      "/INSTANCENAME=${instanceName}",
       '/FEATURES=SQL,IS,Tools',
+      "/INSTANCENAME=${instanceName}",
       '/SQLSYSADMINACCOUNTS=BUILTIN\Administrators',
       '/SQLSVCACCOUNT=NT AUTHORITY\SYSTEM',
       '/SECURITYMODE=SQL',
-      "/SAPWD=\"${saPassword}\""],
+      "/SAPWD=\"${saPassword}\"",
+      '/FILESTREAMLEVEL=2',
+      "/FILESTREAMSHARENAME=${instanceName}"],
     require         => Reboot['reboot before installing SQL Server (if pending)'],
   }
   ->
-  windows_env { 'SQLSERVER_VERSION=2012EXPRESS': }
+  windows_env { 'SQLSERVER_VERSION=2012STD': }
 }

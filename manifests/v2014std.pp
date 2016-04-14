@@ -1,16 +1,18 @@
-# Install SQL Server 2016 CTP 2.4
+# Install SQL Server 2014 STD
 #
 # $setupexe: path to SQL Server setup.exe
 #
 # $instanceName: The name of the SQL Server instance.
 #
 # $saPassword: The password for the sa account.
-class sqlserver::2016ctp2_4(
+class sqlserver::v2014std(
   $setupexe,
-  $instanceName = 'SQL2016',
+  $instanceName = 'SQL2014',
   $saPassword) {
 
-  package {'Microsoft SQL Server 2016 CTP2.4 (64-bit)':
+  require ::sqlserver::reboot
+
+  package {'Microsoft SQL Server 2014 (64-bit)':
     ensure          => installed,
     source          => $setupexe,
     install_options => [
@@ -25,7 +27,8 @@ class sqlserver::2016ctp2_4(
       "/SAPWD=\"${saPassword}\"",
       '/FILESTREAMLEVEL=2',
       "/FILESTREAMSHARENAME=${instanceName}"],
+    require         => Reboot['reboot before installing SQL Server (if pending)'],
   }
   ->
-  windows_env { 'SQLSERVER_VERSION=2016CTP2.4': }
+  windows_env { 'SQLSERVER_VERSION=2014STD': }
 }

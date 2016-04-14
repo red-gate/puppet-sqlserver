@@ -11,7 +11,7 @@
 # $saEncryptedPassword: The password for the sa account that will be injected in the InstallShield silent install answer file AS IS.
 #                       How to generate that encrypted value is left as an exercise for the reader
 #
-class sqlserver::2000dev(
+class sqlserver::v2000dev(
   $source,
   $tempFolder = 'c:/temp',
   $instanceName = 'SQL2000',

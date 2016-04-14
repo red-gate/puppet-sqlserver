@@ -8,7 +8,7 @@
 # $instanceName: The name of the SQL Server instance.
 #
 # $saPassword: The password for the sa account.
-class sqlserver::2016ctp3_3(
+class sqlserver::v2016ctp3_3(
   $source,
   $tempFolder = 'c:/temp',
   $instanceName = 'SQL2016',
@@ -22,5 +22,5 @@ class sqlserver::2016ctp3_3(
     version          => '2016CTP3.3',
     saPassword       => $saPassword,
   }
-  
+
 }
