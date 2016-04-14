@@ -1,28 +1,29 @@
-# Install SQL Server 2014 STD
+# Install SQL Server 2008 STD x64
 #
 # $setupexe: path to SQL Server setup.exe
 #
-# $instanceName: The name of the SQL Server instance.
+# $instanceName: The name of the SQL Server instance to install.
 #
 # $saPassword: The password for the sa account.
-class sqlserver::2014std(
+#
+class sqlserver::v2008std(
   $setupexe,
-  $instanceName = 'SQL2014',
+  $instanceName = 'SQL2008',
   $saPassword) {
 
   require ::sqlserver::reboot
 
-  package {'Microsoft SQL Server 2014 (64-bit)':
+  package {'Microsoft SQL Server 2008 (64-bit)':
     ensure          => installed,
     source          => $setupexe,
     install_options => [
       '/Q',
-      '/IACCEPTSQLSERVERLICENSETERMS',
       '/ACTION=install',
       '/FEATURES=SQL,IS,Tools',
       "/INSTANCENAME=${instanceName}",
       '/SQLSYSADMINACCOUNTS=BUILTIN\Administrators',
       '/SQLSVCACCOUNT=NT AUTHORITY\SYSTEM',
+      '/AGTSVCACCOUNT=NT AUTHORITY\SYSTEM',
       '/SECURITYMODE=SQL',
       "/SAPWD=\"${saPassword}\"",
       '/FILESTREAMLEVEL=2',
@@ -30,5 +31,5 @@ class sqlserver::2014std(
     require         => Reboot['reboot before installing SQL Server (if pending)'],
   }
   ->
-  windows_env { 'SQLSERVER_VERSION=2014STD': }
+  windows_env { 'SQLSERVER_VERSION=2008STD': }
 }

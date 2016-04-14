@@ -1,4 +1,4 @@
-# Install SQL Server 2008 STD x64
+# Install SQL Server 2008 R2 STD x64
 #
 # $setupexe: path to SQL Server setup.exe
 #
@@ -6,18 +6,17 @@
 #
 # $saPassword: The password for the sa account.
 #
-class sqlserver::2008std(
+class sqlserver::v2008r2std(
   $setupexe,
-  $instanceName = 'SQL2008',
+  $instanceName = 'SQL2008R2',
   $saPassword) {
 
-  require ::sqlserver::reboot
-
-  package {'Microsoft SQL Server 2008 (64-bit)':
+  package {'Microsoft SQL Server 2008 R2 (64-bit)':
     ensure          => installed,
     source          => $setupexe,
     install_options => [
       '/Q',
+      '/IACCEPTSQLSERVERLICENSETERMS',
       '/ACTION=install',
       '/FEATURES=SQL,IS,Tools',
       "/INSTANCENAME=${instanceName}",
@@ -28,8 +27,7 @@ class sqlserver::2008std(
       "/SAPWD=\"${saPassword}\"",
       '/FILESTREAMLEVEL=2',
       "/FILESTREAMSHARENAME=${instanceName}"],
-    require         => Reboot['reboot before installing SQL Server (if pending)'],
   }
   ->
-  windows_env { 'SQLSERVER_VERSION=2008STD': }
+  windows_env { 'SQLSERVER_VERSION=2008R2STD': }
 }

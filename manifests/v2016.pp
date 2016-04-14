@@ -14,7 +14,7 @@
 #   (used to keep track of what version is installed)
 #
 # $saPassword: The password for the sa account.
-class sqlserver::2016(
+class sqlserver::v2016(
   $source,
   $programEntryName = 'Microsoft SQL Server 2016 RC0 (64-bit)',
   $tempFolder = 'c:/temp',

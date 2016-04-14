@@ -1,7 +1,8 @@
-# Install SQL Server 2005 Developer
+# Install SQL Server 2005 STD
 #
 # $source: path to a folder / UNC share / http containing:
-#   en_sql_2005_dev_all_dvd.iso
+#   en_sql_2005_std_x64_dvd.iso
+#   en_sql_2005_std_x86_dvd.iso
 #   en_sql_server_2005_service_pack_4_x64.exe
 #   en_sql_server_2005_service_pack_4_x86.exe
 #
@@ -11,7 +12,7 @@
 #
 # $saPassword: The password for the sa account.
 #
-class sqlserver::2005dev(
+class sqlserver::v2005std(
     $source,
     $tempFolder = 'c:/temp',
     $instanceName = 'SQL2005',
@@ -39,21 +40,21 @@ class sqlserver::2005dev(
     require            => File[$tempFolder],
   }
   ->
-  file { "${tempFolder}/en_sql_2005_dev_all_dvd":
+  file { "${tempFolder}/en_sql_2005_std_${::architecture}_dvd":
     ensure => 'directory',
   }
   ->
-  archive { "${tempFolder}/en_sql_2005_dev_all_dvd.iso":
-    source       => "${source}/en_sql_2005_dev_all_dvd.iso",
+  archive { "${tempFolder}/en_sql_2005_std_${::architecture}_dvd.iso":
+    source       => "${source}/en_sql_2005_std_${::architecture}_dvd.iso",
     extract      => true,
-    extract_path => "${tempFolder}/en_sql_2005_dev_all_dvd",
-    creates      => "${tempFolder}/en_sql_2005_dev_all_dvd/SQL Server ${::architecture}/Servers/setup.exe",
+    extract_path => "${tempFolder}/en_sql_2005_std_${::architecture}_dvd",
+    creates      => "${tempFolder}/en_sql_2005_std_${::architecture}_dvd/Servers/setup.exe",
     cleanup      => true,
   }
   ->
   package { $sqlProgramName :
     ensure          => installed,
-    source          => "${tempFolder}/en_sql_2005_dev_all_dvd/SQL Server ${::architecture}/Servers/setup.exe",
+    source          => "${tempFolder}/en_sql_2005_std_${::architecture}_dvd/Servers/setup.exe",
     install_options => ['/qn','/settings',"${tempFolder}\\${instanceName}.ini"],
   }
   ->
@@ -71,7 +72,7 @@ class sqlserver::2005dev(
     notify    => Reboot["SQL Server 2005 (${instanceName}) Reboot"],
   }
   ->
-  windows_env { 'SQLSERVER_VERSION=2005Dev': }
+  windows_env { 'SQLSERVER_VERSION=2005STD': }
   ->
   # Start all the services!
   service { "MSSQL$${instanceName}":
