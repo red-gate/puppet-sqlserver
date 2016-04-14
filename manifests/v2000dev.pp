@@ -17,6 +17,10 @@ class sqlserver::v2000dev(
   $instanceName = 'SQL2000',
   $saEncryptedPassword) {
 
+  if( $::architecture != 'x86' ) {
+    fail("SQL Server 2000 cannot be installed on ${::architecture} architecture")
+  }
+
   include archive
 
   if (!defined(File[$tempFolder]))
@@ -24,10 +28,6 @@ class sqlserver::v2000dev(
     file { $tempFolder:
       ensure   => directory,
     }
-  }
-
-  if( $::architecture == 'x64' ) {
-    #TODO: Show an exception. Seriously, who is using SQL 2000 x64 ?
   }
 
   file { "${tempFolder}/sql2000":
