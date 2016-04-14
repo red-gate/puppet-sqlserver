@@ -14,7 +14,7 @@ class sqlserver::v2016ctp3_3(
   $instanceName = 'SQL2016',
   $saPassword) {
 
-  class { 'sqlserver::2016':
+  class { 'sqlserver::v2016':
     source           => "${source}/SQLServer2016CTP3.3-x64-ENU.iso",
     programEntryName => 'Microsoft SQL Server 2016 CTP3.3 (64-bit)',
     tempFolder       => $tempFolder,
