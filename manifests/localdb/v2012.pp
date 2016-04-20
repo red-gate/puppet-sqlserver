@@ -6,5 +6,10 @@ class sqlserver::localdb::v2012($tempFolder = 'c:/temp') {
     version    => 2012,
     tempFolder => $tempFolder
   }
-
+  ->
+  # make sure that the v11.0 auto instance is created and is valid.
+  sqlserver::localdb::instance { 'Create v11.0':
+    localdb_sql_version   => '110',
+    localdb_instance_name => 'v11.0',
+  }
 }
