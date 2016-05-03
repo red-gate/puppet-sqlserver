@@ -15,7 +15,8 @@ class sqlserver::v2005dev(
     $source,
     $tempFolder = 'c:/temp',
     $instanceName = 'SQL2005',
-    $saPassword) {
+    $saPassword,
+    $dataFolder = undef) {
 
   include archive
 
@@ -30,6 +31,12 @@ class sqlserver::v2005dev(
     $sqlProgramName = 'Microsoft SQL Server 2005 (64-bit)'
   } else {
     $sqlProgramName = 'Microsoft SQL Server 2005'
+  }
+
+  if ($dataFolder != undef) {
+    $sqlDataFolderOption = "/INSTALLSQLDATADIR=\"${dataFolder}\""
+  } else {
+    $sqlDataFolderOption = ""
   }
 
   file {"${tempFolder}/${instanceName}.ini":
@@ -62,7 +69,7 @@ class sqlserver::v2005dev(
   }
   ->
   exec { "${instanceName} SP4":
-    command   => "${tempFolder}/en_sql_server_2005_service_pack_4_${::architecture}.exe /quiet /instancename=${instanceName} /sapwd=${saPassword}",
+    command   => "${tempFolder}/en_sql_server_2005_service_pack_4_${::architecture}.exe /quiet /instancename=${instanceName} /sapwd=${saPassword} ${sqlDataFolderOption}",
     logoutput => true,
     returns   => ['0', '3010'],
     timeout   => 1800,
