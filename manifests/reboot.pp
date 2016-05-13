@@ -4,4 +4,8 @@ class sqlserver::reboot {
   reboot { 'reboot before installing SQL Server (if pending)':
     when => pending,
   }
+
+  reboot { 'reboot after installing SQL Server':
+    when => refreshed,
+  }
 }

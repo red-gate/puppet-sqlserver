@@ -59,7 +59,9 @@ class sqlserver::v2016(
       '/FILESTREAMLEVEL=2',
       "/FILESTREAMSHARENAME=${instanceName}"],
     require         => Reboot['reboot before installing SQL Server (if pending)'],
+    notify          => Reboot['reboot after installing SQL Server'],
   }
   ->
   windows_env { "SQLSERVER_VERSION=${version}": }
+
 }
