@@ -17,9 +17,9 @@
 class sqlserver::v2016(
   $source,
   $programEntryName = 'Microsoft SQL Server 2016 RC0 (64-bit)',
-  $tempFolder = 'c:/temp',
-  $instanceName = 'SQL2016',
-  $version     = '2016RC0',
+  $tempFolder       = 'c:/temp',
+  $instanceName     = 'SQL2016',
+  $version          = '2016RC0',
   $reboot_timeout   = 0,
   $saPassword) {
 
