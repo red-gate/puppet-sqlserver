@@ -7,6 +7,7 @@ class sqlserver::ssms::v2016(
   ) {
 
   require archive
+  require ::sqlserver::reboot
 
   ensure_resource('file', $tempFolder, { ensure => directory })
 
@@ -18,6 +19,7 @@ class sqlserver::ssms::v2016(
   package { $programName:
     ensure          => installed,
     source          => "${tempFolder}/${filename}",
-    install_options => ['/install', '/quiet', '/norestart']
+    install_options => ['/install', '/quiet', '/norestart'],
+    require         => Reboot['reboot before installing SQL Server (if pending)'],
   }
 }
