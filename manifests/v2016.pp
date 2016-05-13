@@ -23,7 +23,7 @@ class sqlserver::v2016(
   $saPassword) {
 
   include archive
-  require ::sqlserver::reboot
+  include ::sqlserver::reboot
 
   $isofilename = inline_template('<%= File.basename(@source) %>')
   $isofilename_notextension = inline_template('<%= File.basename(@source, ".*") %>')
@@ -59,8 +59,9 @@ class sqlserver::v2016(
       '/FILESTREAMLEVEL=2',
       "/FILESTREAMSHARENAME=${instanceName}"],
     require         => Reboot['reboot before installing SQL Server (if pending)'],
-    notify          => Reboot['reboot after installing SQL Server'],
   }
+  ~>
+  reboot { 'reboot after installing SQL Server 2016': }
   ->
   windows_env { "SQLSERVER_VERSION=${version}": }
 
