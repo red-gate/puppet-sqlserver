@@ -20,6 +20,7 @@ class sqlserver::v2016(
   $tempFolder = 'c:/temp',
   $instanceName = 'SQL2016',
   $version     = '2016RC0',
+  $reboot_timeout   = 0,
   $saPassword) {
 
   include archive
@@ -61,7 +62,9 @@ class sqlserver::v2016(
     require         => Reboot['reboot before installing SQL Server (if pending)'],
   }
   ~>
-  reboot { 'reboot after installing SQL Server 2016': }
+  reboot { 'reboot after installing SQL Server 2016':
+    timeout => $reboot_timeout,
+  }
   ->
   windows_env { "SQLSERVER_VERSION=${version}": }
 
