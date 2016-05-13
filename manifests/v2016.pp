@@ -20,7 +20,7 @@ class sqlserver::v2016(
   $tempFolder       = 'c:/temp',
   $instanceName     = 'SQL2016',
   $version          = '2016RC0',
-  $reboot_timeout   = 0,
+  $reboot_timeout   = 60,
   $saPassword) {
 
   include archive
