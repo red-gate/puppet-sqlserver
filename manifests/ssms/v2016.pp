@@ -1,8 +1,8 @@
 # Install SSMS 2016.
 class sqlserver::ssms::v2016(
-  $source = 'http://go.microsoft.com/fwlink/?LinkID=799832',
+  $source = 'http://go.microsoft.com/fwlink/?LinkID=828615',
   $filename = 'SSMS-Setup-ENU.exe',
-  $programName = 'Microsoft SQL Server Management Studio - June 2016',
+  $programName = 'Microsoft SQL Server Management Studio - 16.4.1',
   $tempFolder = 'c:/temp'
   ) {
 
