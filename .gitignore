@@ -179,3 +179,5 @@ example_env
 
 .bundle/
 Gemfile.lock
+.kitchen/
+.kitchen-modules/
