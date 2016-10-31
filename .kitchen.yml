@@ -17,14 +17,15 @@ provisioner:
     - 2 # The run succeeded, and some resources were changed.
     - 6 # The run succeeded, and included both changes and failures.
 
+transport:
+  name: winrm
+  elevated: true
+
 platforms:
   - name: windows-2012r2
     driver_plugin: vagrant
     driver_config:
-      box: kensykora/windows_2012_r2_standard
-    transport:
-      name: winrm
-      elevated: true
+      box: red-gate/windows-2012r2
 
 verifier:
   name: shell
