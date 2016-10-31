@@ -6,7 +6,7 @@ class sqlserver::ssms::v2016(
   $tempFolder = 'c:/temp'
   ) {
 
-  require archive
+  include archive
 
   ensure_resource('file', $tempFolder, { ensure => directory })
 

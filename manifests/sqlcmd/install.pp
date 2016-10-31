@@ -2,7 +2,7 @@
 class sqlserver::sqlcmd::install($tempFolder = 'C:/temp') {
 
   require chocolatey
-  require archive
+  include archive
 
   ensure_resource('file', $tempFolder, { ensure => directory })
 

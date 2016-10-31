@@ -24,7 +24,7 @@ class sqlserver::v2016(
   $saPassword) {
 
   require chocolatey
-  require archive
+  include archive
   include ::sqlserver::reboot
 
   $isofilename = inline_template('<%= File.basename(@source) %>')

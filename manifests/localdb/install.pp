@@ -8,7 +8,7 @@ define sqlserver::localdb::install(
   $tempFolder = 'c:/temp') {
 
   require chocolatey
-  require archive
+  include archive
 
   $filename = inline_template('<%= File.basename(@source) %>')
   $folder = "${tempFolder}/localdb${version}"

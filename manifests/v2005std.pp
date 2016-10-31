@@ -19,7 +19,7 @@ class sqlserver::v2005std(
     $saPassword) {
 
   require chocolatey
-  require archive
+  include archive
 
   if (!defined(File[$tempFolder]))
   {

@@ -22,7 +22,7 @@ class sqlserver::v2000dev(
   }
 
   require chocolatey
-  require archive
+  include archive
 
   if (!defined(File[$tempFolder]))
   {
