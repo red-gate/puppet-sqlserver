@@ -176,3 +176,6 @@ FakesAssemblies/
 Puppetfile.lock
 ext-modules
 example_env
+
+.bundle/
+Gemfile.lock
