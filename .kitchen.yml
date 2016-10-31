@@ -10,8 +10,12 @@ provisioner:
   resolve_with_librarian_puppet: false
   puppet_detailed_exitcodes: true
   require_puppet_collections: true
-  puppet_whitelist_exit_code:
-    - 2
+  puppet_detailed_exitcodes: true
+  max_retries: 2
+  wait_for_retry: 70
+  retry_on_exit_code:
+    - 2 # The run succeeded, and some resources were changed.
+    - 6 # The run succeeded, and included both changes and failures.
 
 platforms:
   - name: windows-2012r2
