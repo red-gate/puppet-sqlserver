@@ -35,7 +35,7 @@ namespace :check do
           # Note that we may instead want to add puppet to our Gemfiles but we are currently seeing
           # gem dependency conflicts between test-kitchen and puppet...
           # Since we already have puppet installed on our build/test agents, let's use it.
-          sh "puppet parser validate --parser future #{puppet_file}"
+          sh "puppet parser validate #{puppet_file}"
         end
       end
     end
