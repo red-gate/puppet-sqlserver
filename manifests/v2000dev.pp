@@ -21,7 +21,8 @@ class sqlserver::v2000dev(
     fail("SQL Server 2000 cannot be installed on ${::architecture} architecture")
   }
 
-  include archive
+  require chocolatey
+  require archive
 
   if (!defined(File[$tempFolder]))
   {

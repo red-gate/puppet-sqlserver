@@ -23,7 +23,8 @@ class sqlserver::v2016(
   $reboot_timeout   = 60,
   $saPassword) {
 
-  include archive
+  require chocolatey
+  require archive
   include ::sqlserver::reboot
 
   $isofilename = inline_template('<%= File.basename(@source) %>')

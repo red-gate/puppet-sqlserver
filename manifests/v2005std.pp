@@ -18,7 +18,8 @@ class sqlserver::v2005std(
     $instanceName = 'SQL2005',
     $saPassword) {
 
-  include archive
+  require chocolatey
+  require archive
 
   if (!defined(File[$tempFolder]))
   {
