@@ -8,8 +8,11 @@
   "project_page": "https://github.com/red-gate/puppet-sqlserver",
   "issues_url": "https://github.com/red-gate/puppet-sqlserver/issues",
   "dependencies": [
-    { "name": "nanliu/archive", "version_requirement": "= 0.3.0" },
-    { "name": "puppetlabs/reboot", "version_requirement": "= 1.2.1" }
+    { "name": "badgerious/windows_env", "version_requirement": "> 0" },
+    { "name": "puppet/archive", "version_requirement": "> 1.0" },
+    { "name": "puppetlabs/chocolatey", "version_requirement": "> 2.0" },
+    { "name": "puppetlabs/reboot", "version_requirement": "> 1.0" },
+    { "name": "puppetlabs/stdlib", "version_requirement": "> 4.0" }
   ],
   "description": "A SQL Server module for Puppet",
   "tags": [

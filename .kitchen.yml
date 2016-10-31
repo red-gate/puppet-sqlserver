@@ -1,0 +1,38 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: puppet_apply
+  manifests_path: spec/manifests
+  modules_path: .kitchen-modules
+  require_chef_for_busser: false
+  resolve_with_librarian_puppet: false
+  puppet_detailed_exitcodes: true
+  require_puppet_collections: true
+  puppet_detailed_exitcodes: true
+  max_retries: 2
+  wait_for_retry: 70
+  retry_on_exit_code:
+    - 2 # The run succeeded, and some resources were changed.
+    - 6 # The run succeeded, and included both changes and failures.
+
+transport:
+  name: winrm
+  elevated: true
+
+platforms:
+  - name: windows-2012r2
+    driver_plugin: vagrant
+    driver_config:
+      box: red-gate/windows-2012r2
+
+verifier:
+  name: shell
+
+suites:
+  - name: ssms2016
+    provisioner:
+      manifest: ssms2016.pp
+    verifier:
+      command: rspec -c -f d -I spec spec/acceptance/ssms2016_spec.rb

@@ -18,6 +18,7 @@ class sqlserver::v2005dev(
     $saPassword,
     $dataFolder = undef) {
 
+  require chocolatey
   include archive
 
   if (!defined(File[$tempFolder]))

@@ -23,6 +23,7 @@ class sqlserver::v2016(
   $reboot_timeout   = 60,
   $saPassword) {
 
+  require chocolatey
   include archive
   include ::sqlserver::reboot
 

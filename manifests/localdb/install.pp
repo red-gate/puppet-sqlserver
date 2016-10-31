@@ -7,6 +7,7 @@ define sqlserver::localdb::install(
   $version,
   $tempFolder = 'c:/temp') {
 
+  require chocolatey
   include archive
 
   $filename = inline_template('<%= File.basename(@source) %>')

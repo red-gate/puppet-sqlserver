@@ -1,7 +1,7 @@
 # Install sqlcmd.exe
 class sqlserver::sqlcmd::install($tempFolder = 'C:/temp') {
 
-  require chocolateyinstall
+  require chocolatey
   include archive
 
   ensure_resource('file', $tempFolder, { ensure => directory })
