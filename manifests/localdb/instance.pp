@@ -5,7 +5,7 @@
 define sqlserver::localdb::instance($localdb_sql_version = '110', $localdb_instance_name = 'v11.0') {
 
   Exec {
-    path     => "C:/Program Files/Microsoft SQL Server/${localdb_sql_version}/Tools/Binn",
+    cwd      => "C:/Program Files/Microsoft SQL Server/${localdb_sql_version}/Tools/Binn",
     provider => 'powershell',
   }
 
