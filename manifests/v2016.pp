@@ -30,6 +30,9 @@ class sqlserver::v2016(
   $isofilename = inline_template('<%= File.basename(@source) %>')
   $isofilename_notextension = inline_template('<%= File.basename(@source, ".*") %>')
 
+  $sp1_url = 'https://download.microsoft.com/download/3/0/D/30D3ECDD-AC0B-45B5-B8B9-C90E228BD3E5/ENU/SQLServer2016SP1-KB3182545-x64-ENU.exe'
+  $sp1_filename = inline_template('<%= File.basename(@sp1_url) %>')
+
   ensure_resource('file', $temp_folder, { ensure => directory })
 
   file { "${temp_folder}/${isofilename_notextension}":
@@ -66,7 +69,28 @@ class sqlserver::v2016(
   reboot { 'reboot after installing SQL Server 2016':
     timeout => $reboot_timeout,
   }
-  ->
-  windows_env { "SQLSERVER_VERSION=2016${install_type}": }
+
+  case  $install_type {
+    'SP1': {
+
+      # Download SP1 installer
+      archive { "${temp_folder}/${$sp1_filename}":
+        source => $sp1_url,
+      }
+
+      $windows_env_require = Archive["${temp_folder}/${$sp1_filename}"]
+
+    }
+    'RTM': {
+      $windows_env_require = Package[$program_entry_name]
+    }
+    default: {
+      fail("Unsupported value for install_type: '${install_type}'")
+    }
+  }
+
+  windows_env { "SQLSERVER_VERSION=2016${install_type}":
+    require => $windows_env_require,
+  }
 
 }
