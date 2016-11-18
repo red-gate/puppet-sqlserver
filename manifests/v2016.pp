@@ -56,7 +56,7 @@ class sqlserver::v2016(
       '/IACCEPTSQLSERVERLICENSETERMS',
       '/ACTION=install',
       '/FEATURES=SQL,IS,Tools',
-      "/instance_name=${instance_name}",
+      "/INSTANCENAME=${instance_name}",
       '/SQLSYSADMINACCOUNTS=BUILTIN\Administrators',
       '/SQLSVCACCOUNT=NT AUTHORITY\SYSTEM',
       '/SECURITYMODE=SQL',
