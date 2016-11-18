@@ -5,6 +5,8 @@
 #
 # $sa_password: The password for the sa account.
 #
+# $install_type: 'RTM' or 'SP1'. Defaults to SP1
+#
 # $program_entry_name: the entry in Add/Remove Programs that is created when installing SQL Server.
 #      This might change based on the version of the iso.
 #
@@ -12,16 +14,13 @@
 #
 # $instance_name: The name of the SQL Server instance.
 #
-# $version: the version that will be set as the value of the SQLSERVER_VERSION environment variable.
-#   (used to keep track of what version is installed)
-#
 class sqlserver::v2016(
   $source,
   $sa_password,
+  $install_type       = 'SP1',
   $program_entry_name = 'Microsoft SQL Server 2016 (64-bit)',
   $temp_folder        = 'c:/temp',
   $instance_name      = 'SQL2016',
-  $version            = '2016RTM',
   $reboot_timeout     = 60) {
 
   require chocolatey
@@ -68,6 +67,6 @@ class sqlserver::v2016(
     timeout => $reboot_timeout,
   }
   ->
-  windows_env { "SQLSERVER_VERSION=${version}": }
+  windows_env { "SQLSERVER_VERSION=2016${install_type}": }
 
 }
