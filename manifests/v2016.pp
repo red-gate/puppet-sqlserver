@@ -87,8 +87,26 @@ class sqlserver::v2016(
         creates      => "${temp_folder}/${sp1_filename_noextension}/setup.exe",
         cleanup      => true,
       }
+      ->
+      # This package is hidden from the Add/Remove Programs view,
+      # but this feels like our best bet to guess whether SP1 is already installed or not.
+      # (RTM would be v13.0.XXX while SP1 is v13.1.4001.0)
+      package { 'SQL Server 2016 Database Engine Services':
+        ensure          => '13.1.4001.0',
+        source          => "${temp_folder}/${sp1_filename_noextension}/setup.exe",
+        install_options => [
+          '/QUIET',
+          '/IACCEPTSQLSERVERLICENSETERMS',
+          '/IACCEPTROPENLICENSETERMS',
+          '/ACTION=Patch',
+          "/INSTANCENAME=${instance_name}"],
+      }
+      ~>
+      reboot { 'reboot after installing SQL Server 2016 SP1':
+        timeout => $reboot_timeout,
+      }
 
-      $windows_env_require = Archive["${temp_folder}/${$sp1_filename}"]
+      $windows_env_require = Package['SQL Server 2016 Database Engine Services']
 
     }
     'RTM': {
