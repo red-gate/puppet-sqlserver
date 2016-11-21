@@ -53,5 +53,6 @@ suites:
       manifest: sqlserver2016sp1.pp
       custom_facts:
         sqlserver2016_iso_url: <%= ENV['SQLSERVER2016_ISO_URL'] %>
+      max_retries: 3
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2016sp1_spec.rb
