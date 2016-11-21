@@ -41,3 +41,17 @@ suites:
       manifest: localdbs.pp
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/localdbs_spec.rb
+  - name: sqlserver2016rtm
+    provisioner:
+      manifest: sqlserver2016rtm.pp
+      custom_facts:
+        sqlserver2016_iso_url: <%= ENV['SQLSERVER2016_ISO_URL'] %>
+    verifier:
+      command: rspec -c -f d -I spec spec/acceptance/sqlserver2016rtm_spec.rb
+  - name: sqlserver2016sp1
+    provisioner:
+      manifest: sqlserver2016sp1.pp
+      custom_facts:
+        sqlserver2016_iso_url: <%= ENV['SQLSERVER2016_ISO_URL'] %>
+    verifier:
+      command: rspec -c -f d -I spec spec/acceptance/sqlserver2016sp1_spec.rb

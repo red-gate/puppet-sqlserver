@@ -8,13 +8,17 @@ require "bundler/setup"
 destroy_strategy = ENV['TEAMCITY_VERSION'] ? 'always' : 'passing'
 
 namespace :acceptance do
+  task :prerequisites do
+    raise 'Environment variable SQLSERVER2016_ISO_URL must be set to be able to run our acceptance tests' unless ENV['SQLSERVER2016_ISO_URL']
+  end
+
   desc 'Install puppet modules from Puppetfile'
   task :installpuppetmodules do
     sh "bundle exec r10k puppetfile install --verbose"
   end
 
   desc 'Execute the acceptance tests'
-  task :kitchen => [:installpuppetmodules] do |task, args|
+  task :kitchen => [:prerequisites, :installpuppetmodules] do |task, args|
     begin
       sh "kitchen test --destroy=#{destroy_strategy} --concurrency --log-level=info"
     ensure
