@@ -17,15 +17,16 @@
 class sqlserver::v2016(
   $source,
   $sa_password,
-  $install_type       = 'SP1',
-  $program_entry_name = 'Microsoft SQL Server 2016 (64-bit)',
-  $temp_folder        = 'c:/temp',
-  $instance_name      = 'SQL2016',
-  $data_drive         = 'D',
-  $log_drive          = 'D',
-  $backup_directory   = 'D:\Backups',
-  $sql_collation      = 'Latin1_General_CI_AS',
-  $reboot_timeout     = 60) {
+  $install_type              = 'SP1',
+  $program_entry_name        = 'Microsoft SQL Server 2016 (64-bit)',
+  $temp_folder               = 'c:/temp',
+  $instance_name             = 'SQL2016',
+  $data_drive                = 'D',
+  $log_drive                 = 'D',
+  $backup_directory          = 'D:\Backups',
+  $sql_collation             = 'Latin1_General_CI_AS',
+  $sqlserver_service_account = '',
+  $reboot_timeout            = 60) {
 
   require chocolatey
   include archive
@@ -41,6 +42,11 @@ class sqlserver::v2016(
   $instance_folder = $instance_name ? {
     'MSSQLSERVER' => 'MSSQL',
     default       => "MSSQL-${instance_name}",
+  }
+
+  $sqlsvcaccount = $sqlserver_service_account ? {
+    ''      => "NT Service\\${instance_name}",
+    defualt => $sqlserver_service_account,
   }
 
   ensure_resource('file', $temp_folder, { ensure => directory })
@@ -69,7 +75,7 @@ class sqlserver::v2016(
       "/INSTANCENAME=${instance_name}",
       "/SQLCOLLATION=${sql_collation}",
       '/SQLSYSADMINACCOUNTS=BUILTIN\Administrators',
-      '/SQLSVCACCOUNT=NT AUTHORITY\SYSTEM',
+      "/SQLSVCACCOUNT=\"${sqlsvcaccount}\"",
       '/SECURITYMODE=SQL',
       "/SAPWD=\"${sa_password}\"",
       "/INSTALLSHAREDDIR=\"${data_drive}:\\Program Files\\Microsoft SQL Server\"",
