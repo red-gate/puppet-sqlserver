@@ -21,6 +21,9 @@ class sqlserver::v2016(
   $program_entry_name = 'Microsoft SQL Server 2016 (64-bit)',
   $temp_folder        = 'c:/temp',
   $instance_name      = 'SQL2016',
+  $data_drive         = 'D',
+  $log_drive          = 'D',
+  $backup_directory   = 'D:\Backups',
   $sql_collation      = 'Latin1_General_CI_AS',
   $reboot_timeout     = 60) {
 
@@ -34,6 +37,11 @@ class sqlserver::v2016(
   $sp1_url = 'https://download.microsoft.com/download/3/0/D/30D3ECDD-AC0B-45B5-B8B9-C90E228BD3E5/ENU/SQLServer2016SP1-KB3182545-x64-ENU.exe'
   $sp1_filename = inline_template('<%= File.basename(@sp1_url) %>')
   $sp1_filename_noextension = inline_template('<%= File.basename(@sp1_url, ".*") %>')
+
+  $instance_folder = $instance_name ? {
+    'MSSQLSERVER' => 'MSSQL',
+    default       => "MSSQL-${instance_name}",
+  }
 
   ensure_resource('file', $temp_folder, { ensure => directory })
 
@@ -64,6 +72,15 @@ class sqlserver::v2016(
       '/SQLSVCACCOUNT=NT AUTHORITY\SYSTEM',
       '/SECURITYMODE=SQL',
       "/SAPWD=\"${sa_password}\"",
+      "/INSTALLSHAREDDIR=\"${data_drive}:\\Program Files\\Microsoft SQL Server\"",
+      "/INSTALLSHAREDWOWDIR=\"${data_drive}:\\Program Files (x86)\\Microsoft SQL Server\"",
+      "/INSTALLSQLDATADIR=\"${data_drive}:\\Program Files\\Microsoft SQL Server\"",
+      "/INSTANCEDIR=\"${data_drive}:\\Program Files\\Microsoft SQL Server\"",
+      "/SQLUSERDBDIR=\"${data_drive}:\\${instance_folder}\\Data\"",
+      "/SQLUSERDBLOGDIR=\"${log_drive}:\\${instance_folder}\\Log\"",
+      "/SQLBACKUPDIR=\"${backup_directory}\"",
+      "/SQLTEMPDBDIR=\"${data_drive}:\\${instance_folder}\\Data\"",
+      "/SQLTEMPDBLOGDIR=\"${log_drive}:\\${instance_folder}\\Log\"",
       '/FILESTREAMLEVEL=2',
       "/FILESTREAMSHARENAME=${instance_name}"],
     require         => Reboot['reboot before installing SQL Server (if pending)'],
