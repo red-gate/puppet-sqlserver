@@ -21,6 +21,7 @@ class sqlserver::v2016(
   $program_entry_name = 'Microsoft SQL Server 2016 (64-bit)',
   $temp_folder        = 'c:/temp',
   $instance_name      = 'SQL2016',
+  $sql_collation      = 'Latin1_General_CI_AS',
   $reboot_timeout     = 60) {
 
   require chocolatey
@@ -58,6 +59,7 @@ class sqlserver::v2016(
       '/ACTION=install',
       '/FEATURES=SQL,IS,Tools',
       "/INSTANCENAME=${instance_name}",
+      "/SQLCOLLATION=${sql_collation}",
       '/SQLSYSADMINACCOUNTS=BUILTIN\Administrators',
       '/SQLSVCACCOUNT=NT AUTHORITY\SYSTEM',
       '/SECURITYMODE=SQL',
