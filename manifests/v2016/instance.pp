@@ -68,7 +68,9 @@ define sqlserver::v2016::instance(
     ],
   }
   ~>
-  reboot { "reboot after installing SQL Server 2016 - ${instance_name}": }
+  reboot { "reboot after installing SQL Server 2016 - ${instance_name}":
+    when => pending,
+  }
 
   if $install_type == 'SP1' {
 
@@ -85,7 +87,9 @@ define sqlserver::v2016::instance(
       ],
     }
     ~>
-    reboot { "reboot after installing SP1 for ${instance_name}": }
+    reboot { "reboot after installing SP1 for ${instance_name}":
+      when => pending,
+    }
 
   }
 
