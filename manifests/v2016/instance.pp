@@ -7,7 +7,9 @@ define sqlserver::v2016::instance(
   $log_drive                 = 'D',
   $backup_directory          = 'D:\Backups',
   $sql_collation             = 'Latin1_General_CI_AS',
-  $sqlserver_service_account = undef
+  $sqlserver_service_account = undef,
+  $tempdb_filesize           = 8,
+  $tempdb_filegrowth         = 64
   ) {
 
   include ::sqlserver::reboot
@@ -44,8 +46,8 @@ define sqlserver::v2016::instance(
 /SQLBACKUPDIR=\"${backup_directory}\" \
 /SQLTEMPDBDIR=\"${data_drive}:\\${instance_folder}\\Data\" \
 /SQLTEMPDBLOGDIR=\"${log_drive}:\\${instance_folder}\\Log\" \
-/SQLTEMPDBFILESIZE=1024 \
-/SQLTEMPDBFILEGROWTH=1024 \
+/SQLTEMPDBFILESIZE=${tempdb_filesize} \
+/SQLTEMPDBFILEGROWTH=${tempdb_filegrowth} \
 /FILESTREAMLEVEL=2 \
 /FILESTREAMSHARENAME=${instance_name}",
     unless  => "C:\\Windows\\System32\\reg query \"HKLM\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\Instance Names\\SQL\" /v ${instance_name}",
