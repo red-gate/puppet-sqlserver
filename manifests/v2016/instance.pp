@@ -64,13 +64,9 @@ define sqlserver::v2016::instance(
     unless  => "reg.exe query ${get_instancename_from_registry}",
     require => [
       Class['::sqlserver::v2016::resources'],
-      Reboot['reboot before installing SQL Server (if pending)']
+      Class['::sqlserver::reboot']
     ],
-  }
-  ~>
-  reboot { "reboot (if pending only) after installing SQL Server 2016 - ${instance_name}":
-    when  => pending,
-    apply => immediately,
+    notify  => Class['::sqlserver::reboot'],
   }
 
   if $install_type == 'SP1' {
@@ -85,13 +81,9 @@ define sqlserver::v2016::instance(
       unless  => "cmd.exe /C reg query ${get_patchlevel_from_registry} | findstr ${::sqlserver::v2016::resources::sp1_patch_version}",
       require => [
         Exec["Install SQL Server instance: ${instance_name}"],
-        Reboot["reboot (if pending only) after installing SQL Server 2016 - ${instance_name}"]
+        Class['::sqlserver::reboot']
       ],
-    }
-    ~>
-    reboot { "reboot (if pending only) after installing SQL Server 2016 SP1 for ${instance_name}":
-      when  => pending,
-      apply => immediately,
+      notify  => Class['::sqlserver::reboot'],
     }
 
   }
