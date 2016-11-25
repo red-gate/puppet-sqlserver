@@ -61,9 +61,7 @@ define sqlserver::v2016::instance(
     ],
   }
   ~>
-  reboot { "reboot after installing SQL Server 2016 - ${title}":
-    timeout => $reboot_timeout,
-  }
+  reboot { "reboot after installing SQL Server 2016 - ${instance_name}": }
 
   if $install_type == 'SP1' {
 
@@ -81,9 +79,7 @@ define sqlserver::v2016::instance(
         "/INSTANCENAME=${instance_name}"],
     }
     ~>
-    reboot { "reboot after installing SP1 for ${instance_name}":
-      timeout => $reboot_timeout,
-    }
+    reboot { "reboot after installing SP1 for ${instance_name}": }
 
   }
 
