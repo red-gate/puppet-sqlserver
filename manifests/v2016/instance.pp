@@ -74,7 +74,7 @@ define sqlserver::v2016::instance(
 
   if $install_type == 'SP1' {
 
-    exec { "Install SQL Server instance: ${instance_name}":
+    exec { "Install SQL Server SP1 instance: ${instance_name}":
       command => "\"${sp1_installer}\" \
 /QUIET \
 /IACCEPTSQLSERVERLICENSETERMS \
