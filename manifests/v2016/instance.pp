@@ -15,6 +15,9 @@ define sqlserver::v2016::instance(
   include ::sqlserver::reboot
   require ::sqlserver::v2016::resources
 
+  $installer = "${::sqlserver::v2016::resources::temp_folder}/${::sqlserver::v2016::resources::isofilename_notextension}/setup.exe"
+  $sp1_installer = "${::sqlserver::v2016::resources::temp_folder}/${::sqlserver::v2016::resources::sp1_filename_noextension}/setup.exe"
+
   $instance_folder = $instance_name ? {
     'MSSQLSERVER' => 'MSSQL',
     default       => "MSSQL-${instance_name}",
@@ -26,7 +29,7 @@ define sqlserver::v2016::instance(
   }
 
   exec { "Install SQL Server instance: ${instance_name}":
-    command => "\"${::sqlserver::v2016::resources::temp_folder}/${::sqlserver::v2016::resources::isofilename_notextension}/setup.exe\" \
+    command => "\"${installer}\" \
 /Q \
 /IACCEPTSQLSERVERLICENSETERMS \
 /ACTION=install \
@@ -68,7 +71,7 @@ define sqlserver::v2016::instance(
     # (RTM would be v13.0.XXX while SP1 is v13.1.4001.0)
     package { 'SQL Server 2016 Database Engine Services':
       ensure          => '13.1.4001.0',
-      source          => "${::sqlserver::v2016::resources::temp_folder}/${::sqlserver::v2016::resources::sp1_filename_noextension}/setup.exe",
+      source          => $sp1_installer,
       install_options => [
         '/QUIET',
         '/IACCEPTSQLSERVERLICENSETERMS',
