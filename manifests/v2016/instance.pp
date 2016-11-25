@@ -66,6 +66,7 @@ define sqlserver::v2016::instance(
       Class['::sqlserver::v2016::resources'],
       Class['::sqlserver::reboot']
     ],
+    returns => [0,3010],
     notify  => Class['::sqlserver::reboot'],
   }
 
@@ -83,6 +84,7 @@ define sqlserver::v2016::instance(
         Exec["Install SQL Server instance: ${instance_name}"],
         Class['::sqlserver::reboot']
       ],
+      returns => [0,3010],
       notify  => Class['::sqlserver::reboot'],
     }
 
