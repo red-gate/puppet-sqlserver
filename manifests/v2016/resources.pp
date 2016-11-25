@@ -11,6 +11,7 @@ class sqlserver::v2016::resources(
   $isofilename_notextension = inline_template('<%= File.basename(@source, ".*") %>')
 
   $sp1_url = 'https://download.microsoft.com/download/3/0/D/30D3ECDD-AC0B-45B5-B8B9-C90E228BD3E5/ENU/SQLServer2016SP1-KB3182545-x64-ENU.exe'
+  $sp1_patch_version = '13.0.4001.0'
   $sp1_filename = inline_template('<%= File.basename(@sp1_url) %>')
   $sp1_filename_noextension = inline_template('<%= File.basename(@sp1_url, ".*") %>')
 

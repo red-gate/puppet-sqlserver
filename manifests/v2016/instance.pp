@@ -15,6 +15,11 @@ define sqlserver::v2016::instance(
   include ::sqlserver::reboot
   require ::sqlserver::v2016::resources
 
+  Exec {
+    path    => 'C:/Windows/System32',
+    timeout => 1800,
+  }
+
   $installer = "${::sqlserver::v2016::resources::temp_folder}/${::sqlserver::v2016::resources::isofilename_notextension}/setup.exe"
   $sp1_installer = "${::sqlserver::v2016::resources::temp_folder}/${::sqlserver::v2016::resources::sp1_filename_noextension}/setup.exe"
 
@@ -28,9 +33,12 @@ define sqlserver::v2016::instance(
     default => $sqlserver_service_account,
   }
 
+  $get_instancename_from_registry = "\"HKLM\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\Instance Names\\SQL\" /v ${instance_name}"
+  $get_patchlevel_from_registry = "\"HKLM\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\MSSQL13.${instance_name}\\Setup\" /v PatchLevel"
+
   exec { "Install SQL Server instance: ${instance_name}":
     command => "\"${installer}\" \
-/Q \
+/QUIET \
 /IACCEPTSQLSERVERLICENSETERMS \
 /ACTION=install \
 /FEATURES=SQL,IS,Tools \
@@ -53,8 +61,7 @@ define sqlserver::v2016::instance(
 /SQLTEMPDBFILEGROWTH=${tempdb_filegrowth} \
 /FILESTREAMLEVEL=2 \
 /FILESTREAMSHARENAME=${instance_name}",
-    unless  => "C:\\Windows\\System32\\reg.exe query \"HKLM\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\Instance Names\\SQL\" /v ${instance_name}",
-    timeout => 1800,
+    unless  => "reg.exe query ${get_instancename_from_registry}",
     require => [
       Class['::sqlserver::v2016::resources'],
       Reboot['reboot before installing SQL Server (if pending)']
@@ -65,18 +72,17 @@ define sqlserver::v2016::instance(
 
   if $install_type == 'SP1' {
 
-    # This package is hidden from the Add/Remove Programs view,
-    # but this feels like our best bet to guess whether SP1 is already installed or not.
-    # (RTM would be v13.0.XXX while SP1 is v13.1.4001.0)
-    package { 'SQL Server 2016 Database Engine Services':
-      ensure          => '13.1.4001.0',
-      source          => $sp1_installer,
-      install_options => [
-        '/QUIET',
-        '/IACCEPTSQLSERVERLICENSETERMS',
-        '/IACCEPTROPENLICENSETERMS',
-        '/ACTION=Patch',
-        "/INSTANCENAME=${instance_name}"],
+    exec { "Install SQL Server instance: ${instance_name}":
+      command => "\"${sp1_installer}\" \
+/QUIET \
+/IACCEPTSQLSERVERLICENSETERMS \
+/IACCEPTROPENLICENSETERMS \
+/ACTION=Patch \
+/INSTANCENAME=${instance_name}",
+      unless  => "cmd.exe /C reg query ${get_patchlevel_from_registry} | findstr ${::sqlserver::v2016::resources::sp1_patch_version}",
+      require => [
+        Exec["Install SQL Server instance: ${instance_name}"]
+      ],
     }
     ~>
     reboot { "reboot after installing SP1 for ${instance_name}": }
