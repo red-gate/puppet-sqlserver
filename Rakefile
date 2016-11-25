@@ -6,6 +6,8 @@ require "bundler/setup"
 
 # always destroy the kitchen when running within Teamcity
 destroy_strategy = ENV['TEAMCITY_VERSION'] ? 'always' : 'passing'
+color = ENV['TEAMCITY_VERSION'] ? '--no-color' : '--color'
+ENV['PUPPET_COLOR'] = '--color false' if ENV['TEAMCITY_VERSION']
 
 namespace :acceptance do
   task :prerequisites do
@@ -20,7 +22,10 @@ namespace :acceptance do
   desc 'Execute the acceptance tests'
   task :kitchen => [:prerequisites, :installpuppetmodules] do |task, args|
     begin
-      sh "kitchen test --destroy=#{destroy_strategy} --concurrency --log-level=info"
+      Dir.mkdir('.kitchen') unless Dir.exist?('.kitchen')
+      sh "kitchen test --destroy=#{destroy_strategy} --concurrency 2 --log-level=info #{color} 2> .kitchen/kitchen.stderr" do |ok, res|
+        raise IO.read('.kitchen/kitchen.stderr') unless ok
+      end
     ensure
       puts "##teamcity[publishArtifacts '#{Dir.pwd}/.kitchen/logs/*.log => logs.zip']"
     end
@@ -36,9 +41,6 @@ namespace :check do
         Bundler.with_clean_env  do
           # Use bundler.with_clean_env as the way bundler set ruby environment variables
           # is killing puppet on windows.
-          # Note that we may instead want to add puppet to our Gemfiles but we are currently seeing
-          # gem dependency conflicts between test-kitchen and puppet...
-          # Since we already have puppet installed on our build/test agents, let's use it.
           sh "puppet parser validate #{puppet_file}"
         end
       end

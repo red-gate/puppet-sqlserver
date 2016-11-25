@@ -4,6 +4,8 @@ driver:
 
 provisioner:
   name: puppet_apply
+  custom_options: <%= ENV['PUPPET_COLOR'] %>
+  puppet_debug: <%= ENV['PUPPET_DEBUG'] %>
   manifests_path: spec/manifests
   modules_path: .kitchen-modules
   require_chef_for_busser: false
