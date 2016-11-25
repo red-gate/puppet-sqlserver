@@ -24,17 +24,15 @@ class sqlserver::v2016(
   $sqlserver_service_account = undef,
   $reboot_timeout            = 60) {
 
-  class { '::sqlserver::v2016_resources':
+  class { '::sqlserver::v2016::resources':
     source       => $source,
     install_type => $install_type,
     temp_folder  => $temp_folder,
   }
-
   ->
   sqlserver::v2016::instance { $instance_name:
     sa_password               => $sa_password,
     install_type              => $install_type,
-    temp_folder               => $temp_folder,
     data_drive                => $data_drive,
     log_drive                 => $log_drive,
     backup_directory          => $backup_directory,

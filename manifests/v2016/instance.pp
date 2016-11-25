@@ -55,7 +55,7 @@ define sqlserver::v2016::instance(
 /FILESTREAMSHARENAME=${instance_name}",
     unless  => "C:\\Windows\\System32\\reg query \"HKLM\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\Instance Names\\SQL\" /v ${instance_name}",
     require => [
-      Class['::sqlserver::v2016_resources'],
+      Class['::sqlserver::v2016::resources'],
       Reboot['reboot before installing SQL Server (if pending)']
     ],
   }
