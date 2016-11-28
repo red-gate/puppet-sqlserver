@@ -14,7 +14,7 @@
 class sqlserver::v2016(
   $source,
   $sa_password,
-  $install_type              = 'SP1',
+  $install_type              = 'Patch',
   $temp_folder               = 'c:/temp',
   $instance_name             = 'SQL2016',
   $data_drive                = 'D',
