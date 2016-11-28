@@ -19,3 +19,11 @@ end
     it { should have_property_value('PatchLevel', :type_string, '13.1.4001.0') }
   end
 end
+
+describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL13.SQL2016_1\Setup') do
+  it { should have_property_value('Collation', :type_string, 'Latin1_General_CI_AS') }
+end
+
+describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL13.SQL2016_2\Setup') do
+  it { should have_property_value('Collation', :type_string, 'Latin1_General_CS_AS_KS_WS') }
+end

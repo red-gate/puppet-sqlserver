@@ -14,7 +14,8 @@ sqlserver::v2016::instance { 'SQL2016_1':
 }
 
 sqlserver::v2016::instance { 'SQL2016_2':
-  sa_password  => 'sdf347RT!',
-  install_type => 'SP1',
-  require      => Class['::sqlserver::v2016::resources'],
+  sa_password   => 'sdf347RT!',
+  install_type  => 'SP1',
+  sql_collation => 'Latin1_General_CS_AS_KS_WS',
+  require       => Class['::sqlserver::v2016::resources'],
 }
