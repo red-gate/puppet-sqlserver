@@ -12,7 +12,16 @@ define sqlserver::v2016::instance(
   $tempdb_filegrowth         = 64
   ) {
 
-  include ::sqlserver::reboot
+  reboot { "reboot before installing ${instance_name} (if pending)":
+    when => pending,
+  }
+  reboot { "reboot before installing ${instance_name} SP1 (if pending)":
+    when => pending,
+  }
+  reboot { "reboot after installing ${instance_name} SP1 (if pending)":
+    when => pending,
+  }
+
   require ::sqlserver::v2016::resources
 
   Exec {
@@ -64,10 +73,10 @@ define sqlserver::v2016::instance(
     unless  => "reg.exe query ${get_instancename_from_registry}",
     require => [
       Class['::sqlserver::v2016::resources'],
-      Class['::sqlserver::reboot']
+      Reboot["reboot before installing ${instance_name} (if pending)"]
     ],
     returns => [0,3010],
-    notify  => Class['::sqlserver::reboot'],
+    notify  => Reboot["reboot before installing ${instance_name} SP1 (if pending)"],
   }
 
   if $install_type == 'SP1' {
@@ -82,10 +91,10 @@ define sqlserver::v2016::instance(
       unless  => "cmd.exe /C reg query ${get_patchlevel_from_registry} | findstr ${::sqlserver::v2016::resources::sp1_patch_version}",
       require => [
         Exec["Install SQL Server instance: ${instance_name}"],
-        Class['::sqlserver::reboot']
+        Reboot["reboot before installing ${instance_name} SP1 (if pending)"]
       ],
       returns => [0,3010],
-      notify  => Class['::sqlserver::reboot'],
+      notify  => Reboot["reboot after installing ${instance_name} SP1 (if pending)"],
     }
 
   }
