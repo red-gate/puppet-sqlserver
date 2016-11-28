@@ -4,6 +4,8 @@ driver:
 
 provisioner:
   name: puppet_apply
+  custom_options: <%= ENV['PUPPET_COLOR'] %>
+  puppet_debug: <%= ENV['PUPPET_DEBUG'] %>
   manifests_path: spec/manifests
   modules_path: .kitchen-modules
   require_chef_for_busser: false
@@ -12,7 +14,7 @@ provisioner:
   require_puppet_collections: true
   puppet_detailed_exitcodes: true
   max_retries: 2
-  wait_for_retry: 70
+  wait_for_retry: 30
   retry_on_exit_code:
     - 2 # The run succeeded, and some resources were changed.
     - 6 # The run succeeded, and included both changes and failures.
@@ -50,9 +52,9 @@ suites:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2016rtm_spec.rb
   - name: sqlserver2016sp1
     provisioner:
-      manifest: sqlserver2016sp1.pp
+      manifest: sqlserver2016sp1_2_instances.pp
       custom_facts:
         sqlserver2016_iso_url: <%= ENV['SQLSERVER2016_ISO_URL'] %>
-      max_retries: 3
+      max_retries: 4
     verifier:
-      command: rspec -c -f d -I spec spec/acceptance/sqlserver2016sp1_spec.rb
+      command: rspec -c -f d -I spec spec/acceptance/sqlserver2016sp1_2_instances_spec.rb
