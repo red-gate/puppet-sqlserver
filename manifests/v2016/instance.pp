@@ -1,7 +1,14 @@
 # Install an configure a single SQL Server 2016 Instance.
+#
+# $install_type:
+#   'RTM' (don't patch)
+#   or
+#   'Patch' (install the latest Service Pack/Patch we are aware of.)
+#     The patch installed can be customized by using the ::sqlserver::v2016::patch class.
+#
 define sqlserver::v2016::instance(
   $sa_password,
-  $install_type              = 'SP1',
+  $install_type              = 'Patch',
   $instance_name             = $title,
   $data_drive                = 'D',
   $log_drive                 = 'D',
@@ -15,22 +22,19 @@ define sqlserver::v2016::instance(
   reboot { "reboot before installing ${instance_name} (if pending)":
     when => pending,
   }
-  reboot { "reboot before installing ${instance_name} SP1 (if pending)":
+  reboot { "reboot before installing ${instance_name} Patch (if pending)":
     when => pending,
   }
-  reboot { "reboot after installing ${instance_name} SP1 (if pending)":
+  reboot { "reboot after installing ${instance_name} Patch (if pending)":
     when => pending,
   }
 
-  require ::sqlserver::v2016::resources
+  require ::sqlserver::v2016::iso
 
   Exec {
     path    => 'C:/Windows/System32',
     timeout => 1800,
   }
-
-  $installer = "${::sqlserver::v2016::resources::temp_folder}/${::sqlserver::v2016::resources::isofilename_notextension}/setup.exe"
-  $sp1_installer = "${::sqlserver::v2016::resources::temp_folder}/${::sqlserver::v2016::resources::sp1_filename_noextension}/setup.exe"
 
   $instance_folder = $instance_name ? {
     'MSSQLSERVER' => 'MSSQL',
@@ -46,7 +50,7 @@ define sqlserver::v2016::instance(
   $get_patchlevel_from_registry = "\"HKLM\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\MSSQL13.${instance_name}\\Setup\" /v PatchLevel"
 
   exec { "Install SQL Server instance: ${instance_name}":
-    command => "\"${installer}\" \
+    command => "\"${::sqlserver::v2016::iso::installer}\" \
 /QUIET \
 /IACCEPTSQLSERVERLICENSETERMS \
 /ACTION=install \
@@ -71,30 +75,29 @@ define sqlserver::v2016::instance(
 /FILESTREAMLEVEL=2 \
 /FILESTREAMSHARENAME=${instance_name}",
     unless  => "reg.exe query ${get_instancename_from_registry}",
-    require => [
-      Class['::sqlserver::v2016::resources'],
-      Reboot["reboot before installing ${instance_name} (if pending)"]
-    ],
+    require => Reboot["reboot before installing ${instance_name} (if pending)"],
     returns => [0,3010],
-    notify  => Reboot["reboot before installing ${instance_name} SP1 (if pending)"],
+    notify  => Reboot["reboot before installing ${instance_name} Patch (if pending)"],
   }
 
-  if $install_type == 'SP1' {
+  if $install_type == 'Patch' {
 
-    exec { "Install SQL Server SP1 instance: ${instance_name}":
-      command => "\"${sp1_installer}\" \
+    require ::sqlserver::v2016::patch
+
+    exec { "Install SQL Server Patch instance: ${instance_name}":
+      command => "\"${::sqlserver::v2016::patch::installer}\" \
 /QUIET \
 /IACCEPTSQLSERVERLICENSETERMS \
 /IACCEPTROPENLICENSETERMS \
 /ACTION=Patch \
 /INSTANCENAME=${instance_name}",
-      unless  => "cmd.exe /C reg query ${get_patchlevel_from_registry} | findstr ${::sqlserver::v2016::resources::sp1_patch_version}",
+      unless  => "cmd.exe /C reg query ${get_patchlevel_from_registry} | findstr ${::sqlserver::v2016::patch::version}",
       require => [
         Exec["Install SQL Server instance: ${instance_name}"],
-        Reboot["reboot before installing ${instance_name} SP1 (if pending)"]
+        Reboot["reboot before installing ${instance_name} Patch (if pending)"]
       ],
       returns => [0,3010],
-      notify  => Reboot["reboot after installing ${instance_name} SP1 (if pending)"],
+      notify  => Reboot["reboot after installing ${instance_name} Patch (if pending)"],
     }
 
   }
