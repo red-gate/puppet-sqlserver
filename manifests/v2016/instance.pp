@@ -10,6 +10,7 @@ define sqlserver::v2016::instance(
   $sa_password,
   $install_type               = 'Patch',
   $instance_name              = $title,
+  $features                   = 'SQL,Tools',
   $data_drive                 = 'D',
   $log_drive                  = 'D',
   $backup_directory           = 'D:\Backups',
@@ -60,7 +61,7 @@ define sqlserver::v2016::instance(
 /QUIET \
 /IACCEPTSQLSERVERLICENSETERMS \
 /ACTION=install \
-/FEATURES=SQL,IS,Tools \
+/FEATURES=${features} \
 /INSTANCENAME=${instance_name} \
 /SQLCOLLATION=${sql_collation} \
 /SQLSYSADMINACCOUNTS=BUILTIN\\Administrators \
