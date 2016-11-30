@@ -17,7 +17,9 @@ define sqlserver::v2016::instance(
   $sqlserver_service_account  = undef,
   $tempdb_filesize            = 8,
   $tempdb_filegrowth          = 64,
-  $browserservice_startuptype = 'Automatic'
+  $browserservice_startuptype = 'Automatic',
+  $namedpipes_enabled         = true,
+  $tcpip_enabled              = true,
   ) {
 
   reboot { "reboot before installing ${instance_name} (if pending)":
@@ -47,6 +49,9 @@ define sqlserver::v2016::instance(
     default => $sqlserver_service_account,
   }
 
+  $npenabled = bool2num($namedpipes_enabled)
+  $tcpenabled = bool2num($tcpip_enabled)
+
   $get_instancename_from_registry = "\"HKLM\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\Instance Names\\SQL\" /v ${instance_name}"
   $get_patchlevel_from_registry = "\"HKLM\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\MSSQL13.${instance_name}\\Setup\" /v PatchLevel"
 
@@ -65,6 +70,8 @@ define sqlserver::v2016::instance(
 /BROWSERSVCSTARTUPTYPE=${browserservice_startuptype} \
 /SECURITYMODE=SQL \
 /SAPWD=\"${sa_password}\" \
+/NPENABLED=${npenabled} \
+/TCPENABLED=${tcpenabled} \
 /INSTALLSQLDATADIR=\"${data_drive}:\\Program Files\\Microsoft SQL Server\" \
 /INSTANCEDIR=\"${data_drive}:\\Program Files\\Microsoft SQL Server\" \
 /SQLUSERDBDIR=\"${data_drive}:\\${instance_folder}\\Data\" \
