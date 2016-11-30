@@ -24,6 +24,17 @@ describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft S
   it { should have_property_value('Collation', :type_string, 'Latin1_General_CI_AS') }
 end
 
+describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL13.SQL2016_1\Mssqlserver\Supersocketnetlib\tcp\ipall') do
+  it { should have_property_value('tcpdynamicports', :type_string, '') }
+  it { should have_property_value('tcpport', :type_string, '1433') }
+end
+
+
 describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL13.SQL2016_2\Setup') do
   it { should have_property_value('Collation', :type_string, 'Latin1_General_CS_AS_KS_WS') }
+end
+
+describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL13.SQL2016_2\Mssqlserver\Supersocketnetlib\tcp\ipall') do
+  it { should have_property_value('tcpdynamicports', :type_string, '') }
+  it { should have_property_value('tcpport', :type_string, '1434') }
 end
