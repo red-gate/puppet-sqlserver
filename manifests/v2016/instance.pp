@@ -8,15 +8,16 @@
 #
 define sqlserver::v2016::instance(
   $sa_password,
-  $install_type              = 'Patch',
-  $instance_name             = $title,
-  $data_drive                = 'D',
-  $log_drive                 = 'D',
-  $backup_directory          = 'D:\Backups',
-  $sql_collation             = 'Latin1_General_CI_AS',
-  $sqlserver_service_account = undef,
-  $tempdb_filesize           = 8,
-  $tempdb_filegrowth         = 64
+  $install_type               = 'Patch',
+  $instance_name              = $title,
+  $data_drive                 = 'D',
+  $log_drive                  = 'D',
+  $backup_directory           = 'D:\Backups',
+  $sql_collation              = 'Latin1_General_CI_AS',
+  $sqlserver_service_account  = undef,
+  $tempdb_filesize            = 8,
+  $tempdb_filegrowth          = 64,
+  $browserservice_startuptype = 'Automatic'
   ) {
 
   reboot { "reboot before installing ${instance_name} (if pending)":
@@ -61,6 +62,7 @@ define sqlserver::v2016::instance(
 /SQLSVCACCOUNT=\"${sqlsvcaccount}\" \
 /AGTSVCSTARTUPTYPE=Automatic \
 /SQLSVCINSTANTFILEINIT=True \
+/BROWSERSVCSTARTUPTYPE=${browserservice_startuptype} \
 /SECURITYMODE=SQL \
 /SAPWD=\"${sa_password}\" \
 /INSTALLSQLDATADIR=\"${data_drive}:\\Program Files\\Microsoft SQL Server\" \
