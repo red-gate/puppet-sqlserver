@@ -8,6 +8,8 @@ require "bundler/setup"
 destroy_strategy = ENV['TEAMCITY_VERSION'] ? 'always' : 'passing'
 color = ENV['TEAMCITY_VERSION'] ? '--no-color' : '--color'
 ENV['PUPPET_COLOR'] = '--color false' if ENV['TEAMCITY_VERSION']
+rootdir = File.dirname(__FILE__)
+ENV['SSL_CERT_FILE'] = "#{rootdir}/cacert.pem" unless ENV['SSL_CERT_FILE']
 
 namespace :acceptance do
   task :prerequisites do

@@ -21,6 +21,7 @@ define sqlserver::v2016::instance(
   $browserservice_startuptype = 'Automatic',
   $namedpipes_enabled         = true,
   $tcpip_enabled              = true,
+  $tcp_port                   = 0,
   ) {
 
   reboot { "reboot before installing ${instance_name} (if pending)":
@@ -53,8 +54,9 @@ define sqlserver::v2016::instance(
   $npenabled = bool2num($namedpipes_enabled)
   $tcpenabled = bool2num($tcpip_enabled)
 
+  $registry_instance_folder = "HKLM\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\MSSQL13.${instance_name}"
   $get_instancename_from_registry = "\"HKLM\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\Instance Names\\SQL\" /v ${instance_name}"
-  $get_patchlevel_from_registry = "\"HKLM\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\MSSQL13.${instance_name}\\Setup\" /v PatchLevel"
+  $get_patchlevel_from_registry = "\"${registry_instance_folder}\\Setup\" /v PatchLevel"
 
   exec { "Install SQL Server instance: ${instance_name}":
     command => "\"${::sqlserver::v2016::iso::installer}\" \
@@ -109,8 +111,26 @@ define sqlserver::v2016::instance(
       returns => [0,3010],
       notify  => Reboot["reboot after installing ${instance_name} Patch (if pending)"],
     }
-
   }
 
+  ensure_resource('service', "MSSQL$${instance_name}", {})
+
+  if $tcp_port > 0 {
+
+    registrykey { "${instance_name}: Disable dynamic ports":
+      key     => "${registry_instance_folder}\\Mssqlserver\\Supersocketnetlib\\tcp\\ipall",
+      subName => 'tcpdynamicports',
+      data    => '',
+      require => Exec["Install SQL Server instance: ${instance_name}"],
+    }
+    ->
+    registrykey { "${instance_name}: Set port to ${tcp_port}":
+      key     => "${registry_instance_folder}\\Mssqlserver\\Supersocketnetlib\\tcp\\ipall",
+      subName => 'tcpport',
+      data    => $tcp_port,
+      notify  => Service["MSSQL$${instance_name}"],
+    }
+
+  }
 
 }
