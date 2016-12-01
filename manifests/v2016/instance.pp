@@ -113,7 +113,16 @@ define sqlserver::v2016::instance(
     }
   }
 
-  ensure_resource('service', "MSSQL$${instance_name}", {})
+  ensure_resource('service', "SQLAGENT$${instance_name}", { ensure => running, })
+
+  exec { "Restart MSSQL$${instance_name}":
+    # Restart SQL Server ourselves so that we can pass /yes to net stop
+    command     => "cmd.exe /c net stop \"MSSQL$${instance_name}\" /yes && net start \"MSSQL$${instance_name}\"",
+    path        => 'C:/Windows/system32',
+    refreshonly => true,
+    # Make sure to refresh the SQL Agent service which is stopped when using net stop /yes
+    notify      => Service["SQLAGENT$${instance_name}"],
+  }
 
   if $tcp_port > 0 {
 
@@ -128,7 +137,7 @@ define sqlserver::v2016::instance(
       key     => "HKLM:\\${registry_instance_path}\\MSSQLServer\\SuperSocketNetLib\\Tcp\\IPAll",
       subName => 'TcpPort',
       data    => $tcp_port,
-      notify  => Service["MSSQL$${instance_name}"],
+      notify  => Exec["Restart MSSQL$${instance_name}"],
     }
 
   }
