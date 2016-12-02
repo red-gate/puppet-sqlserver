@@ -62,6 +62,6 @@ suites:
     provisioner:
       manifest: sqlserver2014rtm.pp
       custom_facts:
-        sqlserver2016_iso_url: <%= ENV['SQLSERVER2014_ISO_URL'] %>
+        sqlserver2014_iso_url: <%= ENV['SQLSERVER2014_ISO_URL'] %>
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2014rtm_spec.rb
