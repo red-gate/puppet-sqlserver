@@ -61,7 +61,6 @@ define sqlserver::v2014::instance(
 /SQLSYSADMINACCOUNTS=BUILTIN\\Administrators \
 /SQLSVCACCOUNT=\"${sqlsvcaccount}\" \
 /AGTSVCSTARTUPTYPE=Automatic \
-/SQLSVCINSTANTFILEINIT=True \
 /BROWSERSVCSTARTUPTYPE=${browserservice_startuptype} \
 /SECURITYMODE=SQL \
 /SAPWD=\"${sa_password}\" \
@@ -74,8 +73,6 @@ define sqlserver::v2014::instance(
 /SQLBACKUPDIR=\"${backup_directory}\" \
 /SQLTEMPDBDIR=\"${data_drive}:\\${instance_folder}\\Data\" \
 /SQLTEMPDBLOGDIR=\"${log_drive}:\\${instance_folder}\\Log\" \
-/SQLTEMPDBFILESIZE=${tempdb_filesize} \
-/SQLTEMPDBFILEGROWTH=${tempdb_filegrowth} \
 /FILESTREAMLEVEL=2 \
 /FILESTREAMSHARENAME=${instance_name}",
     unless  => "reg.exe query ${get_instancename_from_registry}",
