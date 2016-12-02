@@ -1,30 +1,9 @@
 # Download and extract a SQL Server 2016 iso.
-class sqlserver::v2016::iso(
-  $source,
-  $temp_folder = 'c:/temp'
-  ) {
+class sqlserver::v2016::iso($source) {
+  # $installer points to setup.exe
+  $installer = inline_template('<%= "C:/Windows/Temp/" + File.basename(@source, ".*") + "/setup.exe" %>')
 
-  require archive
-
-  $isofilename = inline_template('<%= File.basename(@source) %>')
-  $isofilename_noextension = inline_template('<%= File.basename(@source, ".*") %>')
-  $installer = "${temp_folder}/${isofilename_noextension}/setup.exe"
-
-  ensure_resource('file', $temp_folder, { ensure => directory })
-
-  file { "${temp_folder}/${isofilename_noextension}":
-    ensure  => directory,
-    require => File[$temp_folder],
+  sqlserver::common::download_installer { $title:
+    source  => $source
   }
-  ->
-  archive { "${temp_folder}/${isofilename}":
-    source       => $source,
-    extract      => true,
-    extract_path => "${temp_folder}/${isofilename_noextension}",
-    creates      => $installer,
-    cleanup      => true,
-  }
-
-
-
 }
