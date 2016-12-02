@@ -13,7 +13,6 @@ define sqlserver::v2016::instance(
   $features                   = 'SQL,Tools',
   $data_drive                 = 'D',
   $log_drive                  = 'D',
-  $backup_directory           = 'D:\Backups',
   $sql_collation              = 'Latin1_General_CI_AS',
   $sqlserver_service_account  = undef,
   $tempdb_filesize            = 8,
@@ -79,7 +78,7 @@ define sqlserver::v2016::instance(
 /INSTANCEDIR=\"${data_drive}:\\Program Files\\Microsoft SQL Server\" \
 /SQLUSERDBDIR=\"${data_drive}:\\${instance_folder}\\Data\" \
 /SQLUSERDBLOGDIR=\"${log_drive}:\\${instance_folder}\\Log\" \
-/SQLBACKUPDIR=\"${backup_directory}\" \
+/SQLBACKUPDIR=\"${log_drive}:\\${instance_folder}\\Backups\" \
 /SQLTEMPDBDIR=\"${data_drive}:\\${instance_folder}\\Data\" \
 /SQLTEMPDBLOGDIR=\"${log_drive}:\\${instance_folder}\\Log\" \
 /SQLTEMPDBFILESIZE=${tempdb_filesize} \
