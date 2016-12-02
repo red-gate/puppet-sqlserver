@@ -23,15 +23,7 @@ define sqlserver::v2016::instance(
   $tcp_port                   = 0,
   ) {
 
-  reboot { "reboot before installing ${instance_name} (if pending)":
-    when => pending,
-  }
-  reboot { "reboot before installing ${instance_name} Patch (if pending)":
-    when => pending,
-  }
-  reboot { "reboot after installing ${instance_name} Patch (if pending)":
-    when => pending,
-  }
+  sqlserver::common::reboot_resources { $instance_name: }
 
   require ::sqlserver::v2016::iso
 
