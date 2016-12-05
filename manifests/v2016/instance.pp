@@ -7,23 +7,11 @@
 #     The patch installed can be customized by using the ::sqlserver::v2016::patch class.
 #
 define sqlserver::v2016::instance(
-  $sa_password,
-  $install_type               = 'Patch',
-  $instance_name              = $title,
-  $features                   = 'SQL,Tools',
-  $data_drive                 = 'D',
-  $log_drive                  = 'D',
-  $sql_collation              = 'Latin1_General_CI_AS',
-  $sqlserver_service_account  = undef,
-  $tempdb_filesize            = 8,
-  $tempdb_filegrowth          = 64,
-  $browserservice_startuptype = 'Automatic',
-  $namedpipes_enabled         = true,
-  $tcpip_enabled              = true,
-  $tcp_port                   = 0,
+  $instance_name  = $title,
+  $install_type   = 'Patch',
+  $install_params = {},
+  $tcp_port       = 0
   ) {
-
-  sqlserver::common::reboot_resources { $instance_name: }
 
   require ::sqlserver::v2016::iso
 
@@ -32,75 +20,17 @@ define sqlserver::v2016::instance(
     timeout => 1800,
   }
 
-  $instance_folder = $instance_name ? {
-    'MSSQLSERVER' => 'MSSQL',
-    default       => "MSSQL-${instance_name}",
-  }
-
-  $sqlsvcaccount = $sqlserver_service_account ? {
-    undef   => "NT Service\\MSSQL$${instance_name}",
-    default => $sqlserver_service_account,
-  }
-
-  $npenabled = bool2num($namedpipes_enabled)
-  $tcpenabled = bool2num($tcpip_enabled)
-
-  $registry_instance_path = "SOFTWARE\\Microsoft\\Microsoft SQL Server\\MSSQL13.${instance_name}"
-  $get_instancename_from_registry = "\"HKLM\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\Instance Names\\SQL\" /v ${instance_name}"
-  $get_patchlevel_from_registry = "\"HKLM\\${registry_instance_path}\\Setup\" /v PatchLevel"
-
-  exec { "Install SQL Server instance: ${instance_name}":
-    command => "\"${::sqlserver::v2016::iso::installer}\" \
-/QUIET \
-/IACCEPTSQLSERVERLICENSETERMS \
-/ACTION=install \
-/FEATURES=${features} \
-/INSTANCENAME=${instance_name} \
-/SQLCOLLATION=${sql_collation} \
-/SQLSYSADMINACCOUNTS=BUILTIN\\Administrators \
-/SQLSVCACCOUNT=\"${sqlsvcaccount}\" \
-/AGTSVCSTARTUPTYPE=Automatic \
-/SQLSVCINSTANTFILEINIT=True \
-/BROWSERSVCSTARTUPTYPE=${browserservice_startuptype} \
-/SECURITYMODE=SQL \
-/SAPWD=\"${sa_password}\" \
-/NPENABLED=${npenabled} \
-/TCPENABLED=${tcpenabled} \
-/INSTALLSQLDATADIR=\"${data_drive}:\\Program Files\\Microsoft SQL Server\" \
-/INSTANCEDIR=\"${data_drive}:\\Program Files\\Microsoft SQL Server\" \
-/SQLUSERDBDIR=\"${data_drive}:\\${instance_folder}\\Data\" \
-/SQLUSERDBLOGDIR=\"${log_drive}:\\${instance_folder}\\Log\" \
-/SQLBACKUPDIR=\"${log_drive}:\\${instance_folder}\\Backups\" \
-/SQLTEMPDBDIR=\"${data_drive}:\\${instance_folder}\\Data\" \
-/SQLTEMPDBLOGDIR=\"${log_drive}:\\${instance_folder}\\Log\" \
-/SQLTEMPDBFILESIZE=${tempdb_filesize} \
-/SQLTEMPDBFILEGROWTH=${tempdb_filegrowth} \
-/FILESTREAMLEVEL=2 \
-/FILESTREAMSHARENAME=${instance_name}",
-    unless  => "reg.exe query ${get_instancename_from_registry}",
-    require => Reboot["reboot before installing ${instance_name} (if pending)"],
-    returns => [0,3010],
-    notify  => Reboot["reboot before installing ${instance_name} Patch (if pending)"],
+  sqlserver::common::install_sqlserver_instance { $instance_name:
+    install_path   => $::sqlserver::v2016::iso::installer,
+    install_params => $install_params,
   }
 
   if $install_type == 'Patch' {
-
     require ::sqlserver::v2016::patch
 
-    exec { "Install SQL Server Patch instance: ${instance_name}":
-      command => "\"${::sqlserver::v2016::patch::installer}\" \
-/QUIET \
-/IACCEPTSQLSERVERLICENSETERMS \
-/IACCEPTROPENLICENSETERMS \
-/ACTION=Patch \
-/INSTANCENAME=${instance_name}",
-      unless  => "cmd.exe /C reg query ${get_patchlevel_from_registry} | findstr ${::sqlserver::v2016::patch::version}",
-      require => [
-        Exec["Install SQL Server instance: ${instance_name}"],
-        Reboot["reboot before installing ${instance_name} Patch (if pending)"]
-      ],
-      returns => [0,3010],
-      notify  => Reboot["reboot after installing ${instance_name} Patch (if pending)"],
+    sqlserver::common::patch_sqlserver_instance { $instance_name:
+      installer_path => $::sqlserver::v2016::patch::installer,
+      patch_version  => $::sqlserver::v2016::patch::version,
     }
   }
 
