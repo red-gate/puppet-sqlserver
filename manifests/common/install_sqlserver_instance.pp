@@ -1,3 +1,17 @@
+# Install a single SQL Server instance
+#
+# $installer_path: Full path to setup.exe
+#
+# $instance_name: The name of the SQL Server instance to install
+#
+# $install_params: a Hash of the parameters to pass to setup.exe
+#    Example: install_params => {
+#      features     => 'SQL,Tools',
+#      sqlcollation => 'Latin1_General_CI_AS',
+#      securitymode => 'SQL',
+#      sapwd        => 'YouBetterChangeThis!',
+#    }
+#
 define sqlserver::common::install_sqlserver_instance(
   $installer_path,
   $instance_name  = $title,
