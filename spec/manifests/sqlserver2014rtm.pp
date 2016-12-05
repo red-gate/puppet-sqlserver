@@ -7,7 +7,9 @@ class { '::sqlserver::v2014::iso':
 }
 
 sqlserver::v2014::instance { 'SQL2014':
-  sa_password  => 'sdf347RT!',
-  install_type => 'RTM',
-  tcp_port     => 1433,
+  install_type   => 'RTM',
+  tcp_port       => 1433,
+  install_params => {
+    sapwd => 'sdf347RT!',
+  }
 }
