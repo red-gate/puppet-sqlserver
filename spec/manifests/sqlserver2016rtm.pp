@@ -20,6 +20,11 @@ sqlserver::options::max_memory { 'SQL2016: Max Memory':
   require => Class['::sqlserver::v2016'],
   value   => 512,
 }
+sqlserver::options::xp_cmdshell { 'SQL2016: xp_cmdshell':
+  server  => 'localhost\SQL2016',
+  require => Class['::sqlserver::v2016'],
+  value   => 1,
+}
 
 # Test logins/roles
 sqlserver::users::login_windows { 'SQL2016: Everyone login':
