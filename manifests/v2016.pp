@@ -19,7 +19,6 @@ class sqlserver::v2016(
   $instance_name             = 'SQL2016',
   $data_drive                = 'D',
   $log_drive                 = 'D',
-  $backup_directory          = 'D:\Backups',
   $sql_collation             = 'Latin1_General_CI_AS',
   $sqlserver_service_account = undef,
   $reboot_timeout            = 60) {
@@ -34,7 +33,6 @@ class sqlserver::v2016(
     install_type              => $install_type,
     data_drive                => $data_drive,
     log_drive                 => $log_drive,
-    backup_directory          => $backup_directory,
     sql_collation             => $sql_collation,
     sqlserver_service_account => $sqlserver_service_account,
   }
