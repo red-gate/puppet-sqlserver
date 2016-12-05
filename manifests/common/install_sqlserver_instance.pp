@@ -32,7 +32,7 @@ define sqlserver::common::install_sqlserver_instance(
     sqltempdbdir          => "D:\\${instance_folder}\\Data",
     sqltempdblogdir       => "D:\\${instance_folder}\\Log",
     filestreamlevel       => 2,
-    # filestreamsharename   => $title,
+    filestreamsharename   => $instance_name,
   }
 
   # Override the default parameters with parameters passed in $install_params
