@@ -7,15 +7,12 @@
 #
 # $install_type: 'RTM' or 'SP1'. Defaults to SP1
 #
-# $temp_folder: path to a local folder where the SQL Server iso will be downloaded/extracted.
-#
 # $instance_name: The name of the SQL Server instance.
 #
 class sqlserver::v2016(
   $source,
   $sa_password,
   $install_type              = 'Patch',
-  $temp_folder               = 'c:/temp',
   $instance_name             = 'SQL2016',
   $data_drive                = 'D',
   $log_drive                 = 'D',
@@ -25,7 +22,6 @@ class sqlserver::v2016(
 
   class { '::sqlserver::v2016::iso':
     source      => $source,
-    temp_folder => $temp_folder,
   }
   ->
   sqlserver::v2016::instance { $instance_name:
