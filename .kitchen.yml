@@ -69,7 +69,7 @@ suites:
     provisioner:
       manifest: sqlserver2014sp2_2_instances.pp
       custom_facts:
-        sqlserver2016_iso_url: <%= ENV['SQLSERVER2014_ISO_URL'] %>
+        sqlserver2014_iso_url: <%= ENV['SQLSERVER2014_ISO_URL'] %>
       max_retries: 4
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2014sp2_2_instances_spec.rb
