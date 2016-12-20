@@ -5,7 +5,8 @@
 #
 # $sa_password: The password for the sa account.
 #
-# $install_type: 'RTM' or 'SP1'. Defaults to SP1
+# $install_type: 'RTM' or 'Patch'. Defaults to 'Patch'
+#   'Patch' will upgrade SQL Server to the latest Service Pack.
 #
 # $instance_name: The name of the SQL Server instance.
 #
@@ -13,8 +14,7 @@ class sqlserver::v2016(
   $source,
   $sa_password,
   $install_type   = 'Patch',
-  $instance_name  = 'SQL2016',
-  $reboot_timeout = 60) {
+  $instance_name  = 'SQL2016') {
 
   class { '::sqlserver::v2016::iso':
     source      => $source,
