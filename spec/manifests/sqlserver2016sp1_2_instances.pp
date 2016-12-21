@@ -7,14 +7,18 @@ class { '::sqlserver::v2016::iso':
 }
 
 sqlserver::v2016::instance { 'SQL2016_1':
-  sa_password  => 'sdf347RT!',
-  install_type => 'Patch',
-  tcp_port     => 1433,
+  install_type   => 'Patch',
+  install_params => {
+    sapwd => 'sdf347RT!',
+  },
+  tcp_port       => 1433,
 }
 
 sqlserver::v2016::instance { 'SQL2016_2':
-  sa_password   => 'sdf347RT!',
-  install_type  => 'Patch',
-  sql_collation => 'Latin1_General_CS_AS_KS_WS',
-  tcp_port      => 1434,
+  install_type   => 'Patch',
+  install_params => {
+    sapwd        => 'sdf347RT!',
+    sqlcollation => 'Latin1_General_CS_AS_KS_WS',
+  },
+  tcp_port       => 1434,
 }
