@@ -2,11 +2,11 @@ Reboot {
   timeout => 5,
 }
 
-class { '::sqlserver::v2016::iso':
-  source => $::sqlserver2016_iso_url,
+class { '::sqlserver::v2014::iso':
+  source => $::sqlserver2014_iso_url,
 }
 
-sqlserver::v2016::instance { 'SQL2016_1':
+sqlserver::v2014::instance { 'SQL2014_1':
   install_type   => 'Patch',
   install_params => {
     sapwd => 'sdf347RT!',
@@ -14,7 +14,7 @@ sqlserver::v2016::instance { 'SQL2016_1':
   tcp_port       => 1433,
 }
 
-sqlserver::v2016::instance { 'SQL2016_2':
+sqlserver::v2014::instance { 'SQL2014_2':
   install_type   => 'Patch',
   install_params => {
     sapwd        => 'sdf347RT!',
