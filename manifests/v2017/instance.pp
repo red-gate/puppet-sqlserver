@@ -26,12 +26,13 @@ define sqlserver::v2017::instance(
   }
 
   if $install_type == 'Patch' {
-    require ::sqlserver::v2017::patch
+# Patch is not yet supported for SQL Server 2017, so do just act like base install
+#    require ::sqlserver::v2017::patch
 
-    sqlserver::common::patch_sqlserver_instance { $instance_name:
-      installer_path => $::sqlserver::v2017::patch::installer,
-      patch_version  => $::sqlserver::v2017::patch::version,
-    }
+#    sqlserver::common::patch_sqlserver_instance { $instance_name:
+#      installer_path => $::sqlserver::v2017::patch::installer,
+#      patch_version  => $::sqlserver::v2017::patch::version,
+#    }
   }
 
   if $tcp_port > 0 {
