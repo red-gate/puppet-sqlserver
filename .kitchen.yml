@@ -88,3 +88,8 @@ suites:
       max_retries: 4
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2017ctp_2_instances_spec.rb
+  - name: ssms2017
+    provisioner:
+      manifest: ssms2017.pp
+    verifier:
+      command: rspec -c -f d -I spec spec/acceptance/ssms2017_spec.rb
