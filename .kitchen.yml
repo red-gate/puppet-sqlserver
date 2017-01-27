@@ -73,3 +73,23 @@ suites:
       max_retries: 4
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2014sp2_2_instances_spec.rb
+  - name: sqlserver2017ctp
+    provisioner:
+      manifest: sqlserver2017ctp.pp
+      custom_facts:
+        sqlserver2017_iso_url: <%= ENV['SQLSERVER2017_ISO_URL'] %>
+    verifier:
+      command: rspec -c -f d -I spec spec/acceptance/sqlserver2017ctp_spec.rb
+  - name: sqlserver2017ctpmultiple
+    provisioner:
+      manifest: sqlserver2017ctp_2_instances.pp
+      custom_facts:
+        sqlserver2017_iso_url: <%= ENV['SQLSERVER2017_ISO_URL'] %>
+      max_retries: 4
+    verifier:
+      command: rspec -c -f d -I spec spec/acceptance/sqlserver2017ctp_2_instances_spec.rb
+  - name: ssms2017
+    provisioner:
+      manifest: ssms2017.pp
+    verifier:
+      command: rspec -c -f d -I spec spec/acceptance/ssms2017_spec.rb

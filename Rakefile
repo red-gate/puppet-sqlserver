@@ -14,6 +14,7 @@ ENV['SSL_CERT_FILE'] = "#{rootdir}/cacert.pem" unless ENV['SSL_CERT_FILE']
 namespace :acceptance do
   task :prerequisites do
     raise 'Environment variable SQLSERVER2016_ISO_URL must be set to be able to run our acceptance tests' unless ENV['SQLSERVER2016_ISO_URL']
+    raise 'Environment variable SQLSERVER2017_ISO_URL must be set to be able to run our acceptance tests' unless ENV['SQLSERVER2017_ISO_URL']
   end
 
   desc 'Install puppet modules from Puppetfile'
