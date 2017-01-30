@@ -30,8 +30,8 @@ define sqlserver::v2017::instance(
 #    require ::sqlserver::v2017::patch
 
 #    sqlserver::common::patch_sqlserver_instance { $instance_name:
-#      installer_path => $::sqlserver::v2017::patch::installer,
-#      patch_version  => $::sqlserver::v2017::patch::version,
+#      installer_path     => $::sqlserver::v2017::patch::installer,
+#      applies_to_version => $::sqlserver::v2017::patch::applies_to_version,
 #    }
 #  }
 
