@@ -1,4 +1,12 @@
 # Install a patch / Service pack for a SQL Server instance.
+#
+# $installer_path: Full path to a setup.exe file.
+#
+# $applies_to_version: The current expected PatchLevel of the SQL Server instance this patch
+#                      is going to be applied to.
+#                      If the PatchLevel is different, than the patch is not applied.
+#
+# $instance_name: The name of the SQL Server instance to patch
 define sqlserver::common::patch_sqlserver_instance(
   $installer_path,
   $applies_to_version,
