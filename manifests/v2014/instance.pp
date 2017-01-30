@@ -3,8 +3,7 @@
 # $install_type:
 #   'RTM' (don't patch)
 #   or
-#   'Patch' (install the latest Service Pack/Patch we are aware of.)
-#     The patch installed can be customized by using the ::sqlserver::v2014::patch class.
+#   'Patch' (install the latest Service Pack/Patch/CU we are aware of.)
 #
 define sqlserver::v2014::instance(
   $instance_name  = $title,
