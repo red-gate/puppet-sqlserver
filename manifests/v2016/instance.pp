@@ -3,8 +3,7 @@
 # $install_type:
 #   'RTM' (don't patch)
 #   or
-#   'Patch' (install the latest Service Pack/Patch we are aware of.)
-#     The patch installed can be customized by using the ::sqlserver::v2016::patch class.
+#   'Patch' (install the latest Service Pack/Patch/CU we are aware of.)
 #
 define sqlserver::v2016::instance(
   $instance_name  = $title,
@@ -26,11 +25,11 @@ define sqlserver::v2016::instance(
   }
 
   if $install_type == 'Patch' {
-    require ::sqlserver::v2016::patch
+    require ::sqlserver::v2016::sp1
 
     sqlserver::common::patch_sqlserver_instance { $instance_name:
-      installer_path => $::sqlserver::v2016::patch::installer,
-      patch_version  => $::sqlserver::v2016::patch::version,
+      installer_path     => $::sqlserver::v2016::sp1::installer,
+      applies_to_version => $::sqlserver::v2016::sp1::applies_to_version,
     }
   }
 
