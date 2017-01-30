@@ -26,7 +26,7 @@ define sqlserver::common::patch_sqlserver_instance(
     $additional_parameters = ''
   }
 
-  exec { "Install SQL Server Patch instance: ${instance_name}":
+  exec { "${installer_path} : ${instance_name}":
     command => "\"${installer_path}\" \
 /QUIET \
 /IACCEPTSQLSERVERLICENSETERMS \

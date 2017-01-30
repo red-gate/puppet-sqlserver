@@ -29,12 +29,14 @@ define sqlserver::v2014::instance(
     require ::sqlserver::v2014::sp2
     require ::sqlserver::v2014::kb3194714
 
-    sqlserver::common::patch_sqlserver_instance { $instance_name:
+    sqlserver::common::patch_sqlserver_instance { "${instance_name}:${::sqlserver::v2014::sp2::installer}":
+      instance_name      => $instance_name,
       installer_path     => $::sqlserver::v2014::sp2::installer,
       applies_to_version => $::sqlserver::v2014::sp2::applies_to_version,
     }
     ->
-    sqlserver::common::patch_sqlserver_instance { $instance_name:
+    sqlserver::common::patch_sqlserver_instance { "${instance_name}:${::sqlserver::v2014::kb3194714::installer}":
+      instance_name      => $instance_name,
       installer_path     => $::sqlserver::v2014::kb3194714::installer,
       applies_to_version => $::sqlserver::v2014::kb3194714::applies_to_version,
     }
