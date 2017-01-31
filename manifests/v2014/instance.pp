@@ -3,8 +3,7 @@
 # $install_type:
 #   'RTM' (don't patch)
 #   or
-#   'Patch' (install the latest Service Pack/Patch we are aware of.)
-#     The patch installed can be customized by using the ::sqlserver::v2014::patch class.
+#   'Patch' (install the latest Service Pack/Patch/CU we are aware of.)
 #
 define sqlserver::v2014::instance(
   $instance_name  = $title,
@@ -26,11 +25,19 @@ define sqlserver::v2014::instance(
   }
 
   if $install_type == 'Patch' {
-    require ::sqlserver::v2014::patch
+    require ::sqlserver::v2014::sp2
+    require ::sqlserver::v2014::kb3194714
 
-    sqlserver::common::patch_sqlserver_instance { $instance_name:
-      installer_path => $::sqlserver::v2014::patch::installer,
-      patch_version  => $::sqlserver::v2014::patch::version,
+    sqlserver::common::patch_sqlserver_instance { "${instance_name}:${::sqlserver::v2014::sp2::installer}":
+      instance_name      => $instance_name,
+      installer_path     => $::sqlserver::v2014::sp2::installer,
+      applies_to_version => $::sqlserver::v2014::sp2::applies_to_version,
+    }
+    ->
+    sqlserver::common::patch_sqlserver_instance { "${instance_name}:${::sqlserver::v2014::kb3194714::installer}":
+      instance_name      => $instance_name,
+      installer_path     => $::sqlserver::v2014::kb3194714::installer,
+      applies_to_version => $::sqlserver::v2014::kb3194714::applies_to_version,
     }
   }
 
