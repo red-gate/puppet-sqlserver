@@ -43,6 +43,14 @@ suites:
       manifest: localdbs.pp
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/localdbs_spec.rb
+  - name: sqlserver2012sp3
+    provisioner:
+      manifest: sqlserver2012sp3_2_instances.pp
+      custom_facts:
+        sqlserver2012_iso_url: <%= ENV['SQLSERVER2012_ISO_URL'] %>
+      max_retries: 4
+    verifier:
+      command: rspec -c -f d -I spec spec/acceptance/sqlserver2012sp3_2_instances_spec.rb
   - name: sqlserver2016rtm
     provisioner:
       manifest: sqlserver2016rtm.pp
