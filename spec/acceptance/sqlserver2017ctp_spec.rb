@@ -1,7 +1,7 @@
 # Encoding: utf-8
 require_relative 'spec_windowshelper'
 
-describe package('Microsoft SQL Server vNext CTP1.2 (64-bit)') do
+describe package('Microsoft SQL Server vNext CTP1.3 (64-bit)') do
   it { should be_installed }
 end
 

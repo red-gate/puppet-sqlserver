@@ -1,7 +1,7 @@
 # Encoding: utf-8
 require_relative 'spec_windowshelper'
 
-describe package('Microsoft SQL Server vNext CTP1.2 (64-bit)') do
+describe package('Microsoft SQL Server vNext CTP1.3 (64-bit)') do
   it { should be_installed }
 end
 
@@ -16,7 +16,7 @@ end
 
   describe windows_registry_key("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\MSSQL14.#{instance_name}\\Setup") do
     it { should exist }
-    it { should have_property_value('PatchLevel', :type_string, '14.0.200.24') }
+    it { should have_property_value('PatchLevel', :type_string, '14.0.304.138') }
   end
 end
 
