@@ -28,22 +28,32 @@ platforms:
     driver_plugin: vagrant
     driver_config:
       box: red-gate/windows-2012r2
+  - name: windows-2008r2
+    driver_plugin: vagrant
+    driver_config:
+      box: red-gate/windows-2008r2
 
 verifier:
   name: shell
 
 suites:
   - name: ssms2016
+    excludes:
+      - windows-2008r2
     provisioner:
       manifest: ssms2016.pp
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/ssms2016_spec.rb
   - name: localdbs
+    excludes:
+      - windows-2008r2
     provisioner:
       manifest: localdbs.pp
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/localdbs_spec.rb
   - name: sqlserver2005sp4
+    excludes:
+      - windows-2012r2
     provisioner:
       manifest: sqlserver2005sp4_2_instances.pp
       custom_facts:
@@ -52,6 +62,8 @@ suites:
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2005sp4_2_instances_spec.rb
   - name: sqlserver2008sp4
+    excludes:
+      - windows-2008r2
     provisioner:
       manifest: sqlserver2008sp4_2_instances.pp
       custom_facts:
@@ -60,6 +72,8 @@ suites:
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2008sp4_2_instances_spec.rb
   - name: sqlserver2012sp3
+    excludes:
+      - windows-2008r2
     provisioner:
       manifest: sqlserver2012sp3_2_instances.pp
       custom_facts:
@@ -68,6 +82,8 @@ suites:
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2012sp3_2_instances_spec.rb
   - name: sqlserver2016rtm
+    excludes:
+      - windows-2008r2
     provisioner:
       manifest: sqlserver2016rtm.pp
       custom_facts:
@@ -75,6 +91,8 @@ suites:
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2016rtm_spec.rb
   - name: sqlserver2016sp1
+    excludes:
+      - windows-2008r2
     provisioner:
       manifest: sqlserver2016sp1_2_instances.pp
       custom_facts:
@@ -83,6 +101,8 @@ suites:
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2016sp1_2_instances_spec.rb
   - name: sqlserver2014rtm
+    excludes:
+      - windows-2008r2
     provisioner:
       manifest: sqlserver2014rtm.pp
       custom_facts:
@@ -90,6 +110,8 @@ suites:
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2014rtm_spec.rb
   - name: sqlserver2014sp2
+    excludes:
+      - windows-2008r2
     provisioner:
       manifest: sqlserver2014sp2_2_instances.pp
       custom_facts:
@@ -98,6 +120,8 @@ suites:
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2014sp2_2_instances_spec.rb
   - name: sqlserver2017ctp
+    excludes:
+      - windows-2008r2
     provisioner:
       manifest: sqlserver2017ctp.pp
       custom_facts:
@@ -105,6 +129,8 @@ suites:
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2017ctp_spec.rb
   - name: sqlserver2017ctpmultiple
+    excludes:
+      - windows-2008r2
     provisioner:
       manifest: sqlserver2017ctp_2_instances.pp
       custom_facts:
@@ -113,6 +139,8 @@ suites:
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2017ctp_2_instances_spec.rb
   - name: ssms2017
+    excludes:
+      - windows-2008r2
     provisioner:
       manifest: ssms2017.pp
     verifier:

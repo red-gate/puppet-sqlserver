@@ -2,6 +2,11 @@ Reboot {
   timeout => 5,
 }
 
+package { 'procexp':
+  ensure   => 'installed',
+  provider => 'chocolatey',
+}
+
 class { '::sqlserver::v2005::iso':
   source => $::sqlserver2005_iso_url,
 }
