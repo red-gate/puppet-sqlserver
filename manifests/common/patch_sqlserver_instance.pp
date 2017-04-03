@@ -20,16 +20,15 @@ define sqlserver::common::patch_sqlserver_instance(
   $registry_instance_path = "SOFTWARE\\Microsoft\\Microsoft SQL Server\\MSSQL${major_version}.${instance_name}"
   $get_patchlevel_from_registry = "\"HKLM\\${registry_instance_path}\\Setup\" /v PatchLevel"
 
-  if $major_version > 12 {
-    $additional_parameters = '/IACCEPTROPENLICENSETERMS'
-  } else {
-    $additional_parameters = ''
+  case $major_version {
+    11, 12: { $additional_parameters = '/IACCEPTSQLSERVERLICENSETERMS' }
+    13: { $additional_parameters = '/IACCEPTSQLSERVERLICENSETERMS /IACCEPTROPENLICENSETERMS' }
+    default: { $additional_parameters = '' }
   }
 
   exec { "${installer_path} : ${instance_name}":
     command => "\"${installer_path}\" \
 /QUIET \
-/IACCEPTSQLSERVERLICENSETERMS \
 ${additional_parameters} \
 /ACTION=Patch \
 /INSTANCENAME=${instance_name}",
