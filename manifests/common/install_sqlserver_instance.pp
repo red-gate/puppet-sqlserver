@@ -12,10 +12,15 @@
 #      sapwd        => 'YouBetterChangeThis!',
 #    }
 #
+# $quiet_params: can be used to pass additional parameters for quiet mode.
+#   defaults to '/QUIET /IACCEPTSQLSERVERLICENSETERMS'
+#   could be set to '/QUIET' only for versions of SQL Server that do not support /IACCEPTSQLSERVERLICENSETERMS
+#
 define sqlserver::common::install_sqlserver_instance(
   $installer_path,
   $instance_name  = $title,
-  $install_params = {}
+  $install_params = {},
+  $quiet_params = '/QUIET /IACCEPTSQLSERVERLICENSETERMS'
   ) {
 
   $get_instancename_from_registry = "\"HKLM\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\Instance Names\\SQL\" /v ${instance_name}"
@@ -57,10 +62,7 @@ define sqlserver::common::install_sqlserver_instance(
   $parameters = convert_to_parameter_string($params)
 
   exec { "Install SQL Server instance: ${instance_name}":
-    command => "\"${installer_path}\" \
-/QUIET \
-/IACCEPTSQLSERVERLICENSETERMS \
-${parameters}",
+    command => "\"${installer_path}\" ${quiet_params} ${parameters}",
     unless  => "reg.exe query ${get_instancename_from_registry}",
     require => Reboot["reboot before installing ${instance_name} (if pending)"],
     returns => [0,3010],

@@ -19,9 +19,17 @@ define sqlserver::v2008::instance(
     timeout => 1800,
   }
 
+  $default_parameters = {
+    # SQL Server 2008 does not support virtual account so default to
+    # NetworkService if $install_params doesn't specifi sqlsvcaccount
+    sqlsvcaccount => 'NT AUTHORITY\NetworkService',
+    agtsvcaccount => 'NT AUTHORITY\NetworkService',
+  }
+
   sqlserver::common::install_sqlserver_instance { $instance_name:
     installer_path => $::sqlserver::v2008::iso::installer,
-    install_params => $install_params,
+    install_params => deep_merge($default_parameters, $install_params),
+    quiet_params   => '/QUIET', # SQL Server 2008 does not know about /IACCEPTSQLSERVERLICENSETERMS
   }
 
   if $install_type == 'Patch' {
@@ -37,7 +45,7 @@ define sqlserver::v2008::instance(
   if $tcp_port > 0 {
     sqlserver::common::tcp_port { $instance_name:
       tcp_port          => $tcp_port,
-      sqlserver_version => 11,
+      sqlserver_version => 10,
     }
   }
 
