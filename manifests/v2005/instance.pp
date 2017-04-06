@@ -77,7 +77,7 @@ define sqlserver::v2005::instance(
       $sapwd = $params[sapwd]
 
       exec { "${instance_name} SP4":
-        command   => "${::sqlserver::v2005::sp4::installer} /quiet /instancename=${instance_name} /sqlcollation=${collation} /sapwd=${sapwd}",
+        command   => "${::sqlserver::v2005::sp4::installer} /quiet /instancename=${instance_name} /sapwd=${sapwd}",
         logoutput => true,
         returns   => ['0', '3010'],
         onlyif    => "cmd.exe /C reg query ${get_patchlevel_from_registry} | findstr ${::sqlserver::v2005::sp4::applies_to_version}",

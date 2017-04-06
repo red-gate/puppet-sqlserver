@@ -29,10 +29,6 @@ describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft S
   it { should have_property_value('tcpport', :type_string, '1433') }
 end
 
-describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL.2\Setup') do
-  it { should have_property_value('Collation', :type_string, 'Latin1_General_CS_AS_KS_WS') }
-end
-
 describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL.2\Mssqlserver\Supersocketnetlib\tcp\ipall') do
   it { should have_property_value('tcpport', :type_string, '1434') }
 end
