@@ -18,7 +18,7 @@ sqlserver::v2005::instance { 'SQL2005_1':
   },
   tcp_port       => 1433,
 }
-
+->
 sqlserver::v2005::instance { 'SQL2005_2':
   install_type   => 'Patch',
   install_params => {
