@@ -12,25 +12,27 @@ end
     it { should be_running }
     it { should have_start_mode('Automatic') }
   end
+end
 
-  describe windows_registry_key("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\MSSQL9.#{instance_name}\\Setup") do
+['1', '2'].each do |instance_number|
+  describe windows_registry_key("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\MSSQL.#{instance_number}\\Setup") do
     it { should exist }
-    it { should have_property_value('PatchLevel', :type_string, '10.4.6000.29') }
+    it { should have_property_value('PatchLevel', :type_string, '9.4.5000') }
   end
 end
 
-describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL9.SQL2005_1\Setup') do
+describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL.1\Setup') do
   it { should have_property_value('Collation', :type_string, 'Latin1_General_CI_AS') }
 end
 
-describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL9.SQL2005_1\Mssqlserver\Supersocketnetlib\tcp\ipall') do
+describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL.1\Mssqlserver\Supersocketnetlib\tcp\ipall') do
   it { should have_property_value('tcpport', :type_string, '1433') }
 end
 
-describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL9.SQL2005_2\Setup') do
+describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL.2\Setup') do
   it { should have_property_value('Collation', :type_string, 'Latin1_General_CS_AS_KS_WS') }
 end
 
-describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL9.SQL2005_2\Mssqlserver\Supersocketnetlib\tcp\ipall') do
+describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL.2\Mssqlserver\Supersocketnetlib\tcp\ipall') do
   it { should have_property_value('tcpport', :type_string, '1434') }
 end

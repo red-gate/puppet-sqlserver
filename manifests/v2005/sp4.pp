@@ -1,6 +1,6 @@
 # Download and extract SQL Server 2005 Sp4. (9.0.5000)
 # SQL Server 2005 build versions: https://sqlserverbuilds.blogspot.co.uk/
-class sqlserver::v2005::sp4($applies_to_version = '9.0.1399.06') {
+class sqlserver::v2005::sp4($applies_to_version = '9.00.1399.06') {
 
   if($::architecture == 'x64') {
     $source = 'http://download.windowsupdate.com/msdownload/update/software/svpk/2011/01/sqlserver2005sp4-kb2463332-x64-enu_40c41a66693561adc22727697be96aeac8597f40.exe'
