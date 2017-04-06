@@ -37,7 +37,7 @@ define sqlserver::v2005::instance(
   $default_parameters = {
     addlocal                => 'SQL_Engine',
     instancename            => $instance_name,
-    installsqldatadir       => "D:\\${instance_folder}\\Data",
+    installsqldatadir       => 'D:',
     sqlbrowseraccount       => 'NT AUTHORITY\LOCAL SERVICE',
     sqlaccount              => 'NT AUTHORITY\NETWORK SERVICE',
     agtaccount              => 'NT AUTHORITY\LOCAL SERVICE',
@@ -74,15 +74,13 @@ define sqlserver::v2005::instance(
 
       $get_patchlevel_from_registry = "\"HKLM\\${instance_registry_path}\\Setup\" /v PatchLevel"
       $collation = $params[sqlcollation]
+      $sapwd = $params[sapwd]
 
       exec { "${instance_name} SP4":
-        command   => "${::sqlserver::v2005::sp4::installer} /quiet /instancename=${instance_name} /sqlcollation=${collation}",
+        command   => "${::sqlserver::v2005::sp4::installer} /quiet /instancename=${instance_name} /sqlcollation=${collation} /sapwd=${sapwd}",
         logoutput => true,
         returns   => ['0', '3010'],
         onlyif    => "cmd.exe /C reg query ${get_patchlevel_from_registry} | findstr ${::sqlserver::v2005::sp4::applies_to_version}",
-        # return exit code 1 if patch level is not RTM
-  #       onlyif    => "\$folder = (Get-ItemProperty 'HKLM:\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\Instance Names\\SQL' ${instance_name}).${instance_name}; \
-  # if( (Get-ItemProperty \"HKLM:\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\\$folder\\Setup\" PatchLevel).PatchLevel -ne ${::sqlserver::v2005::sp4::applies_to_version}) { exit 1 }",
         require   => Exec["Install SQL Server instance: ${instance_name}"],
         notify    => Reboot["reboot before installing ${instance_name} Patch (if pending)"],
       }
