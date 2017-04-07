@@ -39,7 +39,7 @@ define sqlserver::v2005::instance(
     instancename            => $instance_name,
     installsqldatadir       => 'D:\\',
     sqlbrowseraccount       => 'NT AUTHORITY\LOCAL SERVICE',
-    sqlaccount              => 'NT AUTHORITY\NETWORK SERVICE',
+    sqlaccount              => 'NT AUTHORITY\SYSTEM',
     agtaccount              => 'NT AUTHORITY\LOCAL SERVICE',
     asaccount               => 'NT AUTHORITY\LOCAL SERVICE',
     rsaccount               => 'NT AUTHORITY\LOCAL SERVICE',
