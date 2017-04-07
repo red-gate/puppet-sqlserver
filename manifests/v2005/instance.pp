@@ -35,7 +35,7 @@ define sqlserver::v2005::instance(
   }
 
   $default_parameters = {
-    addlocal                => 'SQL_Engine',
+    addlocal                => 'SQL_Engine,SQL_Tools90',
     instancename            => $instance_name,
     installsqldatadir       => 'D:\\',
     sqlbrowseraccount       => 'NT AUTHORITY\LOCAL SERVICE',
