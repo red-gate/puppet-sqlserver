@@ -35,8 +35,7 @@ define sqlserver::v2016::instance(
 
   if $tcp_port > 0 {
     sqlserver::common::tcp_port { $instance_name:
-      tcp_port          => $tcp_port,
-      sqlserver_version => 13,
+      tcp_port => $tcp_port,
     }
   }
 

@@ -13,13 +13,12 @@ define sqlserver::common::download_installer(
   ) {
     require archive
 
-    if $creates {
-      $folder = inline_template('<%= File.dirname(@create, ".*") %>')
-      $setup_file = $creates
-    } else {
-      $folder_name = inline_template('<%= File.basename(@source, ".*") %>')
-      $folder = "c:/windows/temp/${folder_name}"
-      $setup_file = "${folder}/setup.exe"
+    $folder_name = inline_template('<%= File.basename(@source, ".*") %>')
+    $folder = "c:/windows/temp/${folder_name}"
+
+    $setup_file = $creates ? {
+      undef   => "${folder}/setup.exe",
+      default => $creates,
     }
 
     $downloaded_filename = inline_template('<%= File.basename(@source) %>')
