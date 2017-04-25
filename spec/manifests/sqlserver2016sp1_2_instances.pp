@@ -7,7 +7,7 @@ class { '::sqlserver::v2016::iso':
 }
 
 sqlserver::v2016::instance { 'SQL2016_1':
-  install_type   => 'Patch',
+  install_type   => 'SP1',
   install_params => {
     sapwd => 'sdf347RT!',
   },
@@ -15,7 +15,7 @@ sqlserver::v2016::instance { 'SQL2016_1':
 }
 
 sqlserver::v2016::instance { 'SQL2016_2':
-  install_type   => 'Patch',
+  install_type   => 'SP1',
   install_params => {
     sapwd        => 'sdf347RT!',
     sqlcollation => 'Latin1_General_CS_AS_KS_WS',
