@@ -81,15 +81,6 @@ suites:
       max_retries: 4
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2012sp3_2_instances_spec.rb
-  - name: sqlserver2016rtm
-    excludes:
-      - windows-2008r2
-    provisioner:
-      manifest: sqlserver2016rtm.pp
-      custom_facts:
-        sqlserver2016_iso_url: <%= ENV['SQLSERVER2016_ISO_URL'] %>
-    verifier:
-      command: rspec -c -f d -I spec spec/acceptance/sqlserver2016rtm_spec.rb
   - name: sqlserver2016sp1
     excludes:
       - windows-2008r2
@@ -100,15 +91,6 @@ suites:
       max_retries: 4
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2016sp1_2_instances_spec.rb
-  - name: sqlserver2014rtm
-    excludes:
-      - windows-2008r2
-    provisioner:
-      manifest: sqlserver2014rtm.pp
-      custom_facts:
-        sqlserver2014_iso_url: <%= ENV['SQLSERVER2014_ISO_URL'] %>
-    verifier:
-      command: rspec -c -f d -I spec spec/acceptance/sqlserver2014rtm_spec.rb
   - name: sqlserver2014sp2
     excludes:
       - windows-2008r2
@@ -119,15 +101,6 @@ suites:
       max_retries: 4
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2014sp2_2_instances_spec.rb
-  - name: sqlserver2017ctp
-    excludes:
-      - windows-2008r2
-    provisioner:
-      manifest: sqlserver2017ctp.pp
-      custom_facts:
-        sqlserver2017_iso_url: <%= ENV['SQLSERVER2017_ISO_URL'] %>
-    verifier:
-      command: rspec -c -f d -I spec spec/acceptance/sqlserver2017ctp_spec.rb
   - name: sqlserver2017ctpmultiple
     excludes:
       - windows-2008r2
