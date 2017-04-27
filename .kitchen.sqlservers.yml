@@ -1,0 +1,53 @@
+# Test Installation and Setup of SQL Servers
+---
+platforms:
+  - name: windows-2012r2
+    driver_plugin: vagrant
+    driver_config:
+      box: red-gate/windows-2012r2
+  - name: windows-2016
+    driver_plugin: vagrant
+    driver_config:
+      box: red-gate/windows-2016
+
+suites:
+  - name: sqlserver2008sp4
+    provisioner:
+      manifest: sqlserver2008sp4_2_instances.pp
+      custom_facts:
+        sqlserver2008_iso_url: <%= ENV['SQLSERVER2008_ISO_URL'] %>
+      max_retries: 4
+    verifier:
+      command: rspec -c -f d -I spec spec/acceptance/sqlserver2008sp4_2_instances_spec.rb
+  - name: sqlserver2012sp3
+    provisioner:
+      manifest: sqlserver2012sp3_2_instances.pp
+      custom_facts:
+        sqlserver2012_iso_url: <%= ENV['SQLSERVER2012_ISO_URL'] %>
+      max_retries: 4
+    verifier:
+      command: rspec -c -f d -I spec spec/acceptance/sqlserver2012sp3_2_instances_spec.rb
+  - name: sqlserver2014sp2
+    provisioner:
+      manifest: sqlserver2014sp2_2_instances.pp
+      custom_facts:
+        sqlserver2014_iso_url: <%= ENV['SQLSERVER2014_ISO_URL'] %>
+      max_retries: 4
+    verifier:
+      command: rspec -c -f d -I spec spec/acceptance/sqlserver2014sp2_2_instances_spec.rb
+  - name: sqlserver2016sp1
+    provisioner:
+      manifest: sqlserver2016sp1_2_instances.pp
+      custom_facts:
+        sqlserver2016_iso_url: <%= ENV['SQLSERVER2016_ISO_URL'] %>
+      max_retries: 4
+    verifier:
+      command: rspec -c -f d -I spec spec/acceptance/sqlserver2016sp1_2_instances_spec.rb
+  - name: sqlserver2017ctpmultiple
+    provisioner:
+      manifest: sqlserver2017ctp_2_instances.pp
+      custom_facts:
+        sqlserver2017_iso_url: <%= ENV['SQLSERVER2017_ISO_URL'] %>
+      max_retries: 4
+    verifier:
+      command: rspec -c -f d -I spec spec/acceptance/sqlserver2017ctp_2_instances_spec.rb
