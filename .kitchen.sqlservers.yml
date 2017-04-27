@@ -47,6 +47,8 @@ suites:
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2008sp4_2_instances_spec.rb
   - name: sqlserver2012sp3
+    excludes:
+      - windows-2012r2
     provisioner:
       manifest: sqlserver2012sp3_2_instances.pp
       custom_facts:
@@ -55,6 +57,8 @@ suites:
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2012sp3_2_instances_spec.rb
   - name: sqlserver2014sp2
+    excludes:
+      - windows-2012r2
     provisioner:
       manifest: sqlserver2014sp2_2_instances.pp
       custom_facts:
@@ -63,6 +67,8 @@ suites:
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2014sp2_2_instances_spec.rb
   - name: sqlserver2016sp1
+    excludes:
+      - windows-2012r2
     provisioner:
       manifest: sqlserver2016sp1_2_instances.pp
       custom_facts:
