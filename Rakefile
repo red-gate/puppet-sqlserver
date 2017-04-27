@@ -2,7 +2,7 @@ require 'rake'
 require 'rake_performance'
 require 'find'
 require 'fileutils'
-require "bundler/setup"
+require 'bundler/setup'
 
 # always destroy the kitchen when running within Teamcity
 destroy_strategy = ENV['TEAMCITY_VERSION'] ? 'always' : 'passing'
@@ -19,21 +19,20 @@ namespace :acceptance do
 
   desc 'Install puppet modules from Puppetfile'
   task :installpuppetmodules do
-    sh "bundle exec r10k puppetfile install --verbose"
+    sh 'bundle exec r10k puppetfile install --verbose'
   end
 
   desc 'Execute the acceptance tests'
-  task :kitchen => [:prerequisites, :installpuppetmodules] do |task, args|
+  task kitchen: [:prerequisites, :installpuppetmodules] do
     begin
       Dir.mkdir('.kitchen') unless Dir.exist?('.kitchen')
-      sh "kitchen test --destroy=#{destroy_strategy} --concurrency 2 --log-level=info #{color} 2> .kitchen/kitchen.stderr" do |ok, res|
+      sh "kitchen test --destroy=#{destroy_strategy} --concurrency 2 --log-level=info #{color} 2> .kitchen/kitchen.stderr" do |ok, _|
         raise IO.read('.kitchen/kitchen.stderr') unless ok
       end
     ensure
       puts "##teamcity[publishArtifacts '#{Dir.pwd}/.kitchen/logs/*.log => logs.zip']"
     end
   end
-
 end
 
 namespace :check do
@@ -57,7 +56,7 @@ namespace :check do
       # config.ignore_paths = ['modules/apt', 'modules/stdlib']
 
       # List of checks to disable
-      config.disable_checks = ['80chars', 'trailing_whitespace', '2sp_soft_tabs', 'hard_tabs']
+      config.disable_checks = %w(80chars trailing_whitespace 2sp_soft_tabs hard_tabs)
 
       # # Enable automatic fixing of problems, defaults to false
       # config.fix = true
@@ -75,8 +74,7 @@ namespace :check do
       end
     end
   end
-
 end
 
-task :checks => ['check:manifests:syntax', 'check:manifests:lint', 'check:ruby:syntax']
-task :default => :checks
+task checks: ['check:manifests:syntax', 'check:manifests:lint', 'check:ruby:syntax']
+task default: :checks
