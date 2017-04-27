@@ -13,8 +13,18 @@ ENV['SSL_CERT_FILE'] = "#{rootdir}/cacert.pem" unless ENV['SSL_CERT_FILE']
 
 namespace :acceptance do
   task :prerequisites do
-    raise 'Environment variable SQLSERVER2016_ISO_URL must be set to be able to run our acceptance tests' unless ENV['SQLSERVER2016_ISO_URL']
-    raise 'Environment variable SQLSERVER2017_ISO_URL must be set to be able to run our acceptance tests' unless ENV['SQLSERVER2017_ISO_URL']
+    raise 'Environment variable KITCHEN_YAML should be set to either .kitchen.oldsqlservers.yml, .kitchen.sqlservers.yml or .kitchen.ssms.yml' unless ENV['KITCHEN_YAML']
+
+    case ENV['KITCHEN_YAML']
+    when '.kitchen.oldsqlservers.yml'
+      raise 'Environment variable SQLSERVER2005_ISO_URL must be set to be able to run our acceptance tests' unless ENV['SQLSERVER2005_ISO_URL']
+    when '.kitchen.sqlservers.yml'
+      raise 'Environment variable SQLSERVER2008_ISO_URL must be set to be able to run our acceptance tests' unless ENV['SQLSERVER2008_ISO_URL']
+      raise 'Environment variable SQLSERVER2012_ISO_URL must be set to be able to run our acceptance tests' unless ENV['SQLSERVER2012_ISO_URL']
+      raise 'Environment variable SQLSERVER2014_ISO_URL must be set to be able to run our acceptance tests' unless ENV['SQLSERVER2014_ISO_URL']
+      raise 'Environment variable SQLSERVER2016_ISO_URL must be set to be able to run our acceptance tests' unless ENV['SQLSERVER2016_ISO_URL']
+      raise 'Environment variable SQLSERVER2017_ISO_URL must be set to be able to run our acceptance tests' unless ENV['SQLSERVER2017_ISO_URL']
+    end
   end
 
   desc 'Install puppet modules from Puppetfile'
