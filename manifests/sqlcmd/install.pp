@@ -1,10 +1,10 @@
 # Install sqlcmd.exe
-class sqlserver::sqlcmd::install($tempFolder = 'C:/temp') {
+class sqlserver::sqlcmd::install($temp_folder = 'C:/temp') {
 
   require chocolatey
   include archive
 
-  ensure_resource('file', $tempFolder, { ensure => directory })
+  ensure_resource('file', $temp_folder, { ensure => directory })
 
   if $::architecture == 'x86' {
     $odbcdriver_source = 'https://download.microsoft.com/download/5/7/2/57249A3A-19D6-4901-ACCE-80924ABEB267/ENU/x86/msodbcsql.msi'
@@ -14,24 +14,24 @@ class sqlserver::sqlcmd::install($tempFolder = 'C:/temp') {
     $sqlcmdutils_source = 'https://download.microsoft.com/download/5/5/B/55BEFD44-B899-4B54-ACD7-506E03142B34/1033/x64/MsSqlCmdLnUtils.msi'
   }
 
-  archive { "${tempFolder}/msodbcsql.msi":
+  archive { "${temp_folder}/msodbcsql.msi":
     source  => $odbcdriver_source,
-    require => File[$tempFolder],
+    require => File[$temp_folder],
   }
   ->
   package { 'Microsoft ODBC Driver 11 for SQL Server':
     ensure          => installed,
-    source          => "${tempFolder}/msodbcsql.msi",
+    source          => "${temp_folder}/msodbcsql.msi",
     install_options => ['ADDLOCAL=ALL', 'IACCEPTMSODBCSQLLICENSETERMS=YES'],
   }
   ->
-  archive { "${tempFolder}/MsSqlCmdLnUtils.msi":
+  archive { "${temp_folder}/MsSqlCmdLnUtils.msi":
     source  => $sqlcmdutils_source,
   }
   ->
   package { 'Microsoft Command Line Utilities 11 for SQL Server':
     ensure          => installed,
-    source          => "${tempFolder}/MsSqlCmdLnUtils.msi",
+    source          => "${temp_folder}/MsSqlCmdLnUtils.msi",
     install_options => ['IACCEPTMSSQLCMDLNUTILSLICENSETERMS=YES'],
   }
 
