@@ -54,3 +54,21 @@ sqlserver::users::login_role { 'SQL2016_1: Everyone is sysadmin':
   role_name  => 'sysadmin',
   require    => Sqlserver::V2016::Instance['SQL2016_1'],
 }
+
+$create_database_script = @(SCRIPT)
+  use [master]
+  GO
+  CREATE DATABASE [test_database]
+  GO
+SCRIPT
+
+file { 'C:/Windows/Temp/create_db.sql':
+  content => $create_database_script,
+}
+->
+sqlserver::sqlcmd::sqlscript { 'create test_database on SQL2016_1':
+  server  => 'localhost\SQL2016_1',
+  require => Sqlserver::V2016::Instance['SQL2016_1'],
+  path    => 'C:/Windows/Temp/create_db.sql',
+  unless  => "IF NOT EXISTS(SELECT * FROM sys.databases WHERE name = 'test_database') raiserror ('Database does not exist',1,1)",
+}
