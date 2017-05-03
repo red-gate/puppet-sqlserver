@@ -36,3 +36,7 @@ end
 describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL13.SQL2016_2\Mssqlserver\Supersocketnetlib\tcp\ipall') do
   it { should have_property_value('tcpport', :type_string, '1434') }
 end
+
+describe command('sqlcmd -s localhost\SQL2016_1 -Q "select name from sys.databases"') do
+  its(:stdout) { should include 'test_database' }
+end
