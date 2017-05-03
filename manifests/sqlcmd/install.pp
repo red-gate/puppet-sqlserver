@@ -1,10 +1,8 @@
 # Install sqlcmd.exe
-class sqlserver::sqlcmd::install($temp_folder = 'C:/temp') {
+class sqlserver::sqlcmd::install($temp_folder = 'C:/Windows/Temp') {
 
   require chocolatey
   include archive
-
-  ensure_resource('file', $temp_folder, { ensure => directory })
 
   if $::architecture == 'x86' {
     $odbcdriver_source = 'https://download.microsoft.com/download/5/7/2/57249A3A-19D6-4901-ACCE-80924ABEB267/ENU/x86/msodbcsql.msi'
@@ -16,7 +14,6 @@ class sqlserver::sqlcmd::install($temp_folder = 'C:/temp') {
 
   archive { "${temp_folder}/msodbcsql.msi":
     source  => $odbcdriver_source,
-    require => File[$temp_folder],
   }
   ->
   package { 'Microsoft ODBC Driver 11 for SQL Server':
