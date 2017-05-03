@@ -34,4 +34,16 @@ class sqlserver::sqlcmd::install($tempFolder = 'C:/temp') {
     source          => "${tempFolder}/MsSqlCmdLnUtils.msi",
     install_options => ['IACCEPTMSSQLCMDLNUTILSLICENSETERMS=YES'],
   }
+
+  # The folders where to find sqlcmd.exe
+  $paths = [
+    'C:/Program Files/Microsoft SQL Server/Client SDK/ODBC/130/Tools/Binn',
+    'C:/Program Files/Microsoft SQL Server/Client SDK/ODBC/120/Tools/Binn',
+    'C:/Program Files/Microsoft SQL Server/Client SDK/ODBC/110/Tools/Binn',
+    'C:/Program Files/Microsoft SQL Server/120/Tools/Binn',
+    'C:/Program Files/Microsoft SQL Server/110/Tools/Binn',
+    'C:/Program Files/Microsoft SQL Server/100/Tools/Binn',
+    'C:/Program Files/Microsoft SQL Server/90/Tools/Binn',
+    'C:/Program Files/Microsoft SQL Server/80/Tools/Binn',
+  ]
 }
