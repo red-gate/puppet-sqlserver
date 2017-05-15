@@ -7,7 +7,4 @@ define sqlserver::common::reboot_resources($instance_name = $title){
   reboot { "reboot before installing ${instance_name} Patch (if pending)":
     when => pending,
   }
-  reboot { "reboot after installing ${instance_name} Patch (if pending)":
-    when => pending,
-  }
 }

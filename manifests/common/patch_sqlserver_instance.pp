@@ -40,4 +40,8 @@ ${additional_parameters} \
     returns => [0,3010],
     notify  => Reboot["reboot after installing ${instance_name} Patch (if pending)"],
   }
+  ~> reboot { "Reboot after patching ${instance_name}":
+    apply   => finished,
+    message => "Reboot after patching ${instance_name}",
+  }
 }
