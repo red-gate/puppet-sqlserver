@@ -36,6 +36,9 @@ platforms:
     driver_plugin: vagrant
     driver_config:
       box: red-gate/windows-2016
+      provision: true
+      vagrantfiles:
+        - spec/vagrantfile.rb
 #  - name: windows-10
 #    driver_plugin: vagrant
 #    driver_config:
