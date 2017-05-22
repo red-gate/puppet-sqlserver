@@ -1,5 +1,5 @@
 Reboot {
-  timeout => 5,
+  timeout => 10,
 }
 
 class { '::sqlserver::v2014::iso':

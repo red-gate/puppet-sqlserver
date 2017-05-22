@@ -14,8 +14,8 @@ provisioner:
   puppet_detailed_exitcodes: true
   require_puppet_collections: true
   puppet_detailed_exitcodes: true
-  max_retries: 2
-  wait_for_retry: 30
+  max_retries: 5
+  wait_for_retry: 40
   retry_on_exit_code:
     - 2 # The run succeeded, and some resources were changed.
     - 6 # The run succeeded, and included both changes and failures.
@@ -39,6 +39,5 @@ suites:
       manifest: sqlserver2005sp4_2_instances.pp
       custom_facts:
         sqlserver2005_iso_url: <%= ENV['SQLSERVER2005_ISO_URL'] %>
-      max_retries: 4
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2005sp4_2_instances_spec.rb

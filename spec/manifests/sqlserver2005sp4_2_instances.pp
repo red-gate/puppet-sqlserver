@@ -1,5 +1,5 @@
 Reboot {
-  timeout => 5,
+  timeout => 10,
 }
 
 package { 'procexp':
