@@ -32,6 +32,10 @@ platforms:
     driver_plugin: vagrant
     driver_config:
       box: red-gate/windows-2008r2
+  - name: windows-2008sp2
+    driver_plugin: vagrant
+    driver_config:
+      box: red-gate/windows-2008sp2
 
 suites:
   - name: sqlserver2005sp4
@@ -41,3 +45,13 @@ suites:
         sqlserver2005_iso_url: <%= ENV['SQLSERVER2005_ISO_URL'] %>
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2005sp4_2_instances_spec.rb
+  - name: sqlserver2000sp3
+    excludes:
+      - windows-2008r2
+    provisioner:
+      manifest: sqlserver2000sp3_2_instances.pp
+      custom_facts:
+        sqlserver2000_iso_url: <%= ENV['SQLSERVER2000_ISO_URL'] %>
+        sqlserver2000_sp3_url: <%= ENV['SQLSERVER2000_SP3_URL'] %>
+    verifier:
+      command: rspec -c -f d -I spec spec/acceptance/sqlserver2000sp3_2_instances_spec.rb
