@@ -20,7 +20,7 @@ require_relative 'spec_windowshelper'
 end
 
 describe windows_registry_key('HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\SQL2000_1\\MSSQLServer') do
-  it { should have_property_value('DefaultCollationName', :type_string, 'Latin1_General_CP1_CI_AS') }
+  it { should have_property_value('DefaultCollationName', :type_string, 'Latin1_General_CI_AS') }
 end
 
 describe windows_registry_key('HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\SQL2000_1\\MSSQLServer\Supersocketnetlib\tcp') do
