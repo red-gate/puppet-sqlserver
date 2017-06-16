@@ -9,7 +9,7 @@ define sqlserver::v2000::instance(
   $sa_encrypted_password,
   $instance_name  = $title,
   $install_type   = 'Patch',
-  $sqlcollation   = 'Latin1_General_CP1_CI_AS',
+  $sqlcollation   = 'Latin1_General_CI_AS',
   $datadir        = 'D:\\',
   $tcp_port       = 0
   ) {
