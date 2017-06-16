@@ -10,6 +10,7 @@ define sqlserver::v2000::instance(
   $instance_name  = $title,
   $install_type   = 'Patch',
   $sqlcollation   = 'Latin1_General_CP1_CI_AS',
+  $datadir        = 'D:\\',
   $tcp_port       = 0
   ) {
 
@@ -62,7 +63,7 @@ define sqlserver::v2000::instance(
       logoutput => true,
       unless    => "cmd.exe /C reg query \"${get_instancename_from_registry}\\CurrentVersion\" /v CSDVersion | findstr ${::sqlserver::v2000::sp3::version}",
       require   => [
-        Exec["Install SQL Server instance: ${instance_name}"],
+        Service[$service_name],
         Reboot["reboot before installing ${instance_name} Patch (if pending)"]
       ],
       notify    => Service[$service_name],
