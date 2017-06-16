@@ -34,7 +34,7 @@ Result=1
 [SdLicense-0]
 Result=1
 [DlgInstanceName-0]
-InstanceName=<%= @instanceName %>
+InstanceName=<%= @instance_name %>
 Result=0
 [DlgMaintainInstall-0]
 Type=12
@@ -59,13 +59,13 @@ Result=1
 EnableErrorReporting=0
 Result=0
 [DlgCollation-0]
-collation_name=SQL_Latin1_General_CP1_CI_AS
+collation_name=<%= @sqlcollation %>
 Result=1
 [DlgServerNetwork-0]
 NetworkLibs=255
 TCPPort=0
 TCPPrxy=Default
-NMPPipeName=\\.\pipe\MSSQL$<%= @instanceName %>\sql\query
+NMPPipeName=\\.\pipe\MSSQL$<%= @instance_name %>\sql\query
 Result=1
 [SdStartCopy-0]
 Result=1
