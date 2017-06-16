@@ -66,7 +66,6 @@ define sqlserver::v2000::instance(
         Service[$service_name],
         Reboot["reboot before installing ${instance_name} Patch (if pending)"]
       ],
-      notify    => Service[$service_name],
     }
   }
 
