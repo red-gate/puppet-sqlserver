@@ -34,21 +34,22 @@ class { 'sqlserver::sqlcmd::install':
 }
 
 sqlserver::options::max_memory { 'SQL2000_1: Max Memory':
-  server  => 'localhost\SQL2000_1',
-  require => Sqlserver::V2000::Instance['SQL2000_1'],
-  value   => 512,
+  server    => 'localhost\SQL2000_1',
+  require   => Sqlserver::V2000::Instance['SQL2000_1'],
+  value     => 512,
+  issql2000 => true,
 }
 
 # Test logins/roles
-sqlserver::users::login_windows { 'SQL2000_1: Everyone login':
-  server     => 'localhost\SQL2000_1',
-  login_name => '\Everyone',
-  require    => Sqlserver::V2000::Instance['SQL2000_1'],
+sqlserver::users::login_windows { 'SQL2000_1: BUILTIN\Users login':
+  server      => 'localhost\SQL2000_1',
+  login_name  => 'BUILTIN\Users',
+  is_sql_2000 => true,
+  require     => Sqlserver::V2000::Instance['SQL2000_1'],
 }
-->
-sqlserver::users::login_role { 'SQL2000_1: Everyone is sysadmin':
-  server     => 'localhost\SQL2000_1',
-  login_name => '\Everyone',
-  role_name  => 'sysadmin',
-  require    => Sqlserver::V2000::Instance['SQL2000_1'],
+-> sqlserver::users::login_role { 'SQL2000_1: BUILTIN\Users is sysadmin':
+  server      => 'localhost\SQL2000_1',
+  login_name  => 'BUILTIN\Users',
+  role_name   => 'sysadmin',
+  is_sql_2000 => true,
 }
