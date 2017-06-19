@@ -22,7 +22,7 @@ class sqlserver::sqlcmd::install::v10($temp_folder = 'C:/Windows/Temp') {
   -> archive { "${temp_folder}/MsSqlCmdLnUtils_v10.msi":
     source  => $sqlcmdutils_source,
   }
-  -> package { 'Microsoft Command Line Utilities 10 for SQL Server':
+  -> package { 'Microsoft SQL Server 2008 R2 Command Line Utilities':
     ensure          => installed,
     source          => "${temp_folder}/MsSqlCmdLnUtils_v10.msi",
     install_options => ['IACCEPTMSSQLCMDLNUTILSLICENSETERMS=YES'],
