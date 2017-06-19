@@ -47,15 +47,14 @@ sqlserver::options::xp_cmdshell { 'SQL2005_1: xp_cmdshell':
 }
 
 # Test logins/roles
-sqlserver::users::login_windows { 'SQL2005_1: Everyone login':
+sqlserver::users::login_windows { 'SQL2005_1: BUILTIN\Users login':
   server     => 'localhost\SQL2005_1',
-  login_name => '\Everyone',
+  login_name => 'BUILTIN\Users',
   require    => Sqlserver::V2005::Instance['SQL2005_1'],
 }
-->
-sqlserver::users::login_role { 'SQL2005_1: Everyone is sysadmin':
+-> sqlserver::users::login_role { 'SQL2005_1: BUILTIN\Users is sysadmin':
   server     => 'localhost\SQL2005_1',
-  login_name => '\Everyone',
+  login_name => 'BUILTIN\Users',
   role_name  => 'sysadmin',
   require    => Sqlserver::V2005::Instance['SQL2005_1'],
 }
