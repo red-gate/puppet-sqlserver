@@ -56,5 +56,9 @@ sqlserver::users::login_windows { 'SQL2005_1: BUILTIN\Users login':
   server     => 'localhost\SQL2005_1',
   login_name => 'BUILTIN\Users',
   role_name  => 'sysadmin',
-  require    => Sqlserver::V2005::Instance['SQL2005_1'],
+}
+-> sqlserver::users::default_database { 'SQL2005_1: BUILTIN\Users default database is tempdb':
+  server                => 'localhost\SQL2005_1',
+  login_name            => 'BUILTIN\Users',
+  default_database_name => 'tempdb',
 }

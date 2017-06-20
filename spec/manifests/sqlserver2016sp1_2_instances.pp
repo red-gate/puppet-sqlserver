@@ -52,7 +52,11 @@ sqlserver::users::login_role { 'SQL2016_1: Everyone is sysadmin':
   server     => 'localhost\SQL2016_1',
   login_name => '\Everyone',
   role_name  => 'sysadmin',
-  require    => Sqlserver::V2016::Instance['SQL2016_1'],
+}
+-> sqlserver::users::default_database { 'SQL2016_1: Everyone default database is tempdb':
+  server                => 'localhost\SQL2016_1',
+  login_name            => '\Everyone',
+  default_database_name => 'tempdb',
 }
 
 $create_database_script = @(SCRIPT)

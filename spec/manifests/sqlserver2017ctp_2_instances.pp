@@ -53,5 +53,9 @@ sqlserver::users::login_role { 'SQL2017_1: Everyone is sysadmin':
   server     => 'localhost\SQL2017_1',
   login_name => '\Everyone',
   role_name  => 'sysadmin',
-  require    => Sqlserver::V2017::Instance['SQL2017_1'],
+}
+-> sqlserver::users::default_database { 'SQL2017_1: Everyone default database is tempdb':
+  server                => 'localhost\SQL2017_1',
+  login_name            => '\Everyone',
+  default_database_name => 'tempdb',
 }

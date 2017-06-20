@@ -52,5 +52,9 @@ sqlserver::users::login_role { 'SQL2008_1: Everyone is sysadmin':
   server     => 'localhost\SQL2008_1',
   login_name => '\Everyone',
   role_name  => 'sysadmin',
-  require    => Sqlserver::V2008::Instance['SQL2008_1'],
+}
+-> sqlserver::users::default_database { 'SQL2008_1: Everyone default database is tempdb':
+  server                => 'localhost\SQL2008_1',
+  login_name            => '\Everyone',
+  default_database_name => 'tempdb',
 }
