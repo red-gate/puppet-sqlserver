@@ -46,6 +46,12 @@ sqlserver::options::xp_cmdshell { 'SQL2005_1: xp_cmdshell':
   value   => 1,
 }
 
+sqlserver::database::readonly { 'SQL2005_1: Set model readonly':
+  server        => 'localhost\SQL2005_1',
+  database_name => 'model',
+  require       => Sqlserver::V2005::Instance['SQL2005_1'],
+}
+
 # Test logins/roles
 sqlserver::users::login_windows { 'SQL2005_1: BUILTIN\Users login':
   server     => 'localhost\SQL2005_1',

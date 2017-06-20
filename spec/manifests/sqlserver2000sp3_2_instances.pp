@@ -40,6 +40,13 @@ sqlserver::options::max_memory { 'SQL2000_1: Max Memory':
   issql2000 => true,
 }
 
+sqlserver::database::readonly { 'SQL2000_1: Set model readonly':
+  server        => 'localhost\SQL2000_1',
+  database_name => 'model',
+  is_sql_2000   => true,
+  require       => Sqlserver::V2000::Instance['SQL2000_1'],
+}
+
 # Test logins/roles
 sqlserver::users::login_windows { 'SQL2000_1: BUILTIN\Users login':
   server      => 'localhost\SQL2000_1',

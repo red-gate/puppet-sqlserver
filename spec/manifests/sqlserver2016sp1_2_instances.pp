@@ -41,6 +41,12 @@ sqlserver::options::xp_cmdshell { 'SQL2016_1: xp_cmdshell':
   value   => 1,
 }
 
+sqlserver::database::readonly { 'SQL2016_1: Set model readonly':
+  server        => 'localhost\SQL2016_1',
+  database_name => 'model',
+  require       => Sqlserver::V2016::Instance['SQL2016_1'],
+}
+
 # Test logins/roles
 sqlserver::users::login_windows { 'SQL2016_1: Everyone login':
   server     => 'localhost\SQL2016_1',

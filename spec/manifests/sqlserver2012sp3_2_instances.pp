@@ -41,6 +41,12 @@ sqlserver::options::xp_cmdshell { 'SQL2012_1: xp_cmdshell':
   value   => 1,
 }
 
+sqlserver::database::readonly { 'SQL2012_1: Set model readonly':
+  server        => 'localhost\SQL2012_1',
+  database_name => 'model',
+  require       => Sqlserver::V2012::Instance['SQL2012_1'],
+}
+
 # Test logins/roles
 sqlserver::users::login_windows { 'SQL2012_1: Everyone login':
   server     => 'localhost\SQL2012_1',
