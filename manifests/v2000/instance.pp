@@ -67,6 +67,10 @@ define sqlserver::v2000::instance(
         Reboot["reboot before installing ${instance_name} Patch (if pending)"]
       ],
     }
+    ~> exec { "Restart ${service_name} after SP3 upgrade":
+      command     => "C:\\Windows\\System32\\sc.exe start ${service_name}",
+      refreshonly => true,
+    }
   }
 
   service { $service_name:
