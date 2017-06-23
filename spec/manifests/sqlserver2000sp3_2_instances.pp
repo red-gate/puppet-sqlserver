@@ -55,10 +55,9 @@ sqlserver::users::login_windows { 'SQL2000_1: BUILTIN\Users login':
   require     => Sqlserver::V2000::Instance['SQL2000_1'],
 }
 -> sqlserver::users::login_role { 'SQL2000_1: BUILTIN\Users is sysadmin':
-  server      => 'localhost\SQL2000_1',
-  login_name  => 'BUILTIN\Users',
-  role_name   => 'sysadmin',
-  is_sql_2000 => true,
+  server     => 'localhost\SQL2000_1',
+  login_name => 'BUILTIN\Users',
+  role_name  => 'sysadmin',
 }
 -> sqlserver::users::default_database { 'SQL2000_1: BUILTIN\Users default database is tempdb':
   server                => 'localhost\SQL2000_1',
