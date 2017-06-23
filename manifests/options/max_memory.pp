@@ -10,11 +10,12 @@ define sqlserver::options::max_memory($server, $value, $username = undef, $passw
   }
 
   sqlserver::options::base { "${server} - Setting Max Memory to ${value}MB":
-    server       => $server,
-    username     => $username,
-    password     => $password,
-    option_name  => $option_name,
-    option_value => $value,
-    issql2000    => $issql2000,
+    server          => $server,
+    username        => $username,
+    password        => $password,
+    option_name     => $option_name,
+    option_set_name => 'max server memory (MB)',
+    option_value    => $value,
+    issql2000       => $issql2000,
   }
 }

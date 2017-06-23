@@ -1,7 +1,7 @@
 # Encoding: utf-8
 require_relative 'spec_windowshelper'
 
-describe package('Microsoft SQL Server 2005 (64-bit)') do
+describe package('Microsoft SQL Server 2005*') do
   it { should be_installed }
 end
 

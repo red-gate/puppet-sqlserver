@@ -1,35 +1,12 @@
 # Install sqlcmd.exe
-class sqlserver::sqlcmd::install($temp_folder = 'C:/Windows/Temp') {
+class sqlserver::sqlcmd::install(
+  $version = '11',
+  $temp_folder = 'C:/Windows/Temp') {
 
-  require chocolatey
-  include archive
-
-  if $::architecture == 'x86' {
-    $odbcdriver_source = 'https://download.microsoft.com/download/5/7/2/57249A3A-19D6-4901-ACCE-80924ABEB267/ENU/x86/msodbcsql.msi'
-    $sqlcmdutils_source = 'https://download.microsoft.com/download/5/5/B/55BEFD44-B899-4B54-ACD7-506E03142B34/1033/x86/MsSqlCmdLnUtils.msi'
-  } else {
-    $odbcdriver_source = 'https://download.microsoft.com/download/5/7/2/57249A3A-19D6-4901-ACCE-80924ABEB267/ENU/x64/msodbcsql.msi'
-    $sqlcmdutils_source = 'https://download.microsoft.com/download/5/5/B/55BEFD44-B899-4B54-ACD7-506E03142B34/1033/x64/MsSqlCmdLnUtils.msi'
-  }
-
-  archive { "${temp_folder}/msodbcsql.msi":
-    source  => $odbcdriver_source,
-  }
-  ->
-  package { 'Microsoft ODBC Driver 11 for SQL Server':
-    ensure          => installed,
-    source          => "${temp_folder}/msodbcsql.msi",
-    install_options => ['ADDLOCAL=ALL', 'IACCEPTMSODBCSQLLICENSETERMS=YES'],
-  }
-  ->
-  archive { "${temp_folder}/MsSqlCmdLnUtils.msi":
-    source  => $sqlcmdutils_source,
-  }
-  ->
-  package { 'Microsoft Command Line Utilities 11 for SQL Server':
-    ensure          => installed,
-    source          => "${temp_folder}/MsSqlCmdLnUtils.msi",
-    install_options => ['IACCEPTMSSQLCMDLNUTILSLICENSETERMS=YES'],
+  case $version {
+    '11': { include sqlserver::sqlcmd::install::v11 }
+    '10': { include sqlserver::sqlcmd::install::v10 }
+    default: { fail("version must be either 10 or 11. ${version} is not supported.") }
   }
 
   # The folders where to find sqlcmd.exe

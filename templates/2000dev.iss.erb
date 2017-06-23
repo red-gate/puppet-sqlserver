@@ -41,12 +41,12 @@ Result=1
 Type=2
 Result=1
 [DlgInstanceName-0]
-InstanceName=<%= @instanceName %>
+InstanceName=<%= @instance_name %>
 Result=1
 [SetupTypeSQL-0]
 szDir=%PROGRAMFILES%\Microsoft SQL Server
 Result=303
-szDataDir=%PROGRAMFILES%\Microsoft SQL Server
+szDataDir=<%= @datadir %>
 [SQLComponentMult-0]
 SQLProg\SQLServr\SCMDev-type=string
 SQLProg\SQLServr\SCMDev-count=3
@@ -267,16 +267,16 @@ AutoStart=15
 Result=1
 [DlgSQLSecurity-0]
 LoginMode=2
-szPwd=<%= @saEncryptedPassword %>
+szPwd=<%= @sa_encrypted_password %>
 Result=1
 [DlgCollation-0]
-collation_name=SQL_Latin1_General_CP1_CI_AS
+collation_name=<%= @sqlcollation %>
 Result=1
 [DlgServerNetwork-0]
 NetworkLibs=255
-TCPPort=1400
+TCPPort=<%= @tcp_port %>
 TCPPrxy=Default
-NMPPipeName=\\.\pipe\MSSQL$<%= @instanceName %>\sql\query
+NMPPipeName=\\.\pipe\MSSQL$<%= @instance_name %>\sql\query
 Result=1
 [SdStartCopy-0]
 Result=1

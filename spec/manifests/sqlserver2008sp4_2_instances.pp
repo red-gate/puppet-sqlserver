@@ -41,6 +41,12 @@ sqlserver::options::xp_cmdshell { 'SQL2008_1: xp_cmdshell':
   value   => 1,
 }
 
+sqlserver::database::readonly { 'SQL2008_1: Set model readonly':
+  server        => 'localhost\SQL2008_1',
+  database_name => 'model',
+  require       => Sqlserver::V2008::Instance['SQL2008_1'],
+}
+
 # Test logins/roles
 sqlserver::users::login_windows { 'SQL2008_1: Everyone login':
   server     => 'localhost\SQL2008_1',
@@ -52,5 +58,9 @@ sqlserver::users::login_role { 'SQL2008_1: Everyone is sysadmin':
   server     => 'localhost\SQL2008_1',
   login_name => '\Everyone',
   role_name  => 'sysadmin',
-  require    => Sqlserver::V2008::Instance['SQL2008_1'],
+}
+-> sqlserver::users::default_database { 'SQL2008_1: Everyone default database is tempdb':
+  server                => 'localhost\SQL2008_1',
+  login_name            => '\Everyone',
+  default_database_name => 'tempdb',
 }
