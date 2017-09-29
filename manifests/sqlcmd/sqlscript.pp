@@ -10,7 +10,7 @@ define sqlserver::sqlcmd::sqlscript($server, $path, $unless = undef, $username =
   }
 
   if $unless {
-    $unlesssqlcmd = "sqlcmd.exe -b -V 1 -S ${server} ${auth_arguments} -Q \"${unless}\""
+    $unlesssqlcmd = "sqlcmd.exe -b -V 1 -S ${server} ${auth_arguments} -Q \"${unless}\" ${additional_arguments}"
   } else {
     $unlesssqlcmd = undef
   }
