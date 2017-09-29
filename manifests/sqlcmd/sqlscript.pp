@@ -1,5 +1,5 @@
 # Execute a SQL script using sqlcmd.exe
-define sqlserver::sqlcmd::sqlscript($server, $path, $unless = undef, $username = undef, $password = undef, $additional_arguments = '', $refreshonly = false) {
+define sqlserver::sqlcmd::sqlscript($server, $path, $unless = undef, $username = undef, $password = undef, $additional_arguments = '', $unless_additional_arguments = '', $refreshonly = false) {
 
   require sqlserver::sqlcmd::install
 
@@ -10,7 +10,7 @@ define sqlserver::sqlcmd::sqlscript($server, $path, $unless = undef, $username =
   }
 
   if $unless {
-    $unlesssqlcmd = "sqlcmd.exe -b -V 1 -S ${server} ${auth_arguments} -Q \"${unless}\" ${additional_arguments}"
+    $unlesssqlcmd = "sqlcmd.exe -b -V 1 -S ${server} ${auth_arguments} -Q \"${unless}\" ${unless_additional_arguments}"
   } else {
     $unlesssqlcmd = undef
   }
