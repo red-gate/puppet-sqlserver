@@ -1,8 +1,8 @@
-# Install SSMS 2017.
+# Install SSMS 2017.5
 class sqlserver::ssms::v2017(
-  $source = 'https://go.microsoft.com/fwlink/?linkid=847722',
+  $source = 'https://go.microsoft.com/fwlink/?linkid=867670',
   $filename = 'SSMS-Setup-ENU.exe',
-  $programName = 'Microsoft SQL Server Management Studio - 17.0',
+  $programName = 'Microsoft SQL Server Management Studio - 17.5',
   $tempFolder = 'c:/temp'
   ) {
 
