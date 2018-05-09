@@ -13,11 +13,11 @@ describe command("sqllocaldb info") do
 end
 
 describe command("sqllocaldb info MSSQLLocalDB") do
-  its(:stdout) { should match /13.1.4001.0/ }
+  its(:stdout) { should match /Name:\s*MSSQLLocalDB/ }
 end
 
 describe command("sqllocaldb info v11.0") do
-  its(:stdout) { should match /11.0.2318.0/ }
+  its(:stdout) { should match /Name:\s*v11\.0/ }
 end
 
 describe package('Active Directory Authentication Library for SQL Server (x86)') do
