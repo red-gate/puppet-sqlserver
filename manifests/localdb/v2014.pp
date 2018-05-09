@@ -6,5 +6,8 @@ class sqlserver::localdb::v2014($tempFolder = 'c:/temp') {
     version    => 2014,
     tempFolder => $tempFolder
   }
-
+  # make sure that the MSSQLLocalDB auto instance is created and is valid.
+  -> sqlserver::localdb::instance { 'Create MSSQLLocalDB':
+    localdb_instance_name => 'MSSQLLocalDB',
+  }
 }
