@@ -1,7 +1,7 @@
 # Encoding: utf-8
 require_relative 'spec_windowshelper'
 
-describe package('Microsoft SQL Server 2017 CTP2.1 (64-bit)') do
+describe package('Microsoft SQL Server 2017 (64-bit)') do
   it { should be_installed }
 end
 
@@ -16,7 +16,7 @@ end
 
   describe windows_registry_key("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\MSSQL14.#{instance_name}\\Setup") do
     it { should exist }
-    it { should have_property_value('PatchLevel', :type_string, '14.0.600.250') }
+    it { should have_property_value('PatchLevel', :type_string, '14.0.1000.169') }
   end
 end
 
