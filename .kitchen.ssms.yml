@@ -62,3 +62,10 @@ suites:
       manifest: ssms2017.pp
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/ssms2017_spec.rb
+  - name: ssms2018
+    excludes:
+      - windows-2008r2
+    provisioner:
+      manifest: ssms2018.pp
+    verifier:
+      command: rspec -c -f d -I spec spec/acceptance/ssms2018_spec.rb
