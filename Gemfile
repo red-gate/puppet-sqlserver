@@ -18,4 +18,4 @@ gem 'rake', '~> 11'
 # This gem tells us how long each rake task takes.
 gem 'rake-performance'
 
-gem 'r10k', '~> 2'
+gem 'r10k', '~> 2.6.2.0'
