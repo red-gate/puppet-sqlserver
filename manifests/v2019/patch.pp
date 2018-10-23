@@ -1,5 +1,5 @@
-# Download and extract a SQL Server 2017 patch.
-class sqlserver::v2017::patch(
+# Download and extract a SQL Server 2019 patch.
+class sqlserver::v2019::patch(
   $source = '',
   $version = ''
   ) {
