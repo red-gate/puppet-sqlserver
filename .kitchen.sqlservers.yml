@@ -32,16 +32,18 @@ platforms:
     driver_plugin: vagrant
     driver_config:
       box: red-gate/windows-2012r2
-  - name: windows-2016
+  - name: windows-2019
     driver_plugin: vagrant
     driver_config:
-      box: red-gate/windows-2016
+      box: red-gate/windows-2019
       provision: true
       vagrantfiles:
         - spec/vagrantfile.rb
 
 suites:
   - name: sqlserver2008sp4
+    excludes:
+      - windows-2019
     provisioner:
       manifest: sqlserver2008sp4_2_instances.pp
       custom_facts:
@@ -50,7 +52,7 @@ suites:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2008sp4_2_instances_spec.rb
   - name: sqlserver2012sp3
     excludes:
-      - windows-2012r2
+      - windows-2019
     provisioner:
       manifest: sqlserver2012sp3_2_instances.pp
       custom_facts:
@@ -59,7 +61,7 @@ suites:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2012sp3_2_instances_spec.rb
   - name: sqlserver2014sp2
     excludes:
-      - windows-2012r2
+      - windows-2019
     provisioner:
       manifest: sqlserver2014sp2_2_instances.pp
       custom_facts:
@@ -76,6 +78,8 @@ suites:
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2016sp1_2_instances_spec.rb
   - name: sqlserver2017multiple
+    excludes:
+      - windows-2012r2
     provisioner:
       manifest: sqlserver2017rtm_2_instances.pp
       custom_facts:
