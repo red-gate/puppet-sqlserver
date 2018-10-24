@@ -82,3 +82,12 @@ suites:
         sqlserver2017_iso_url: <%= ENV['SQLSERVER2017_ISO_URL'] %>
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2017rtm_2_instances_spec.rb
+  - name: sqlserver2019multiple
+    excludes:
+      - windows-2012r2
+    provisioner:
+      manifest: sqlserver2019rtm_2_instances.pp
+      custom_facts:
+        sqlserver2017_iso_url: <%= ENV['SQLSERVER2019_ISO_URL'] %>
+    verifier:
+      command: rspec -c -f d -I spec spec/acceptance/sqlserver2019rtm_2_instances_spec.rb
