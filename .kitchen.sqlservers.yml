@@ -92,6 +92,6 @@ suites:
     provisioner:
       manifest: sqlserver2019rtm_2_instances.pp
       custom_facts:
-        sqlserver2017_iso_url: <%= ENV['SQLSERVER2019_ISO_URL'] %>
+        sqlserver2019_iso_url: <%= ENV['SQLSERVER2019_ISO_URL'] %>
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2019rtm_2_instances_spec.rb
