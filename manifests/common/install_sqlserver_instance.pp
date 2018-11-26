@@ -62,7 +62,7 @@ define sqlserver::common::install_sqlserver_instance(
   $parameters = convert_to_parameter_string($params)
 
   exec { "Install SQL Server instance: ${instance_name}":
-    command => "\"${installer_path}\" ${quiet_params} ${parameters}",
+    command => "\"${installer_path}\" ${quiet_params} ${parameters} /SkipRules=ServerCoreBlockUnsupportedSxSCheck",
     unless  => "reg.exe query ${get_instancename_from_registry}",
     require => Reboot["reboot before installing ${instance_name} (if pending)"],
     returns => [0,3010],
