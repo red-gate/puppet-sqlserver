@@ -12,7 +12,7 @@ class { '::sqlserver::v2005::iso':
 }
 
 sqlserver::v2005::instance { 'SQL2005_1':
-  install_type   => 'Patch',
+  install_type   => 'SP4',
   install_params => {
     sapwd => 'sdf347RT!',
   },
@@ -20,7 +20,7 @@ sqlserver::v2005::instance { 'SQL2005_1':
 }
 ->
 sqlserver::v2005::instance { 'SQL2005_2':
-  install_type   => 'Patch',
+  install_type   => 'SP4',
   install_params => {
     sapwd        => 'sdf347RT!',
     sqlcollation => 'Latin1_General_CS_AS_KS_WS',

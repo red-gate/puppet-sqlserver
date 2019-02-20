@@ -1,13 +1,10 @@
 # Install an configure a single SQL Server 2005 Instance.
 #
-# $install_type:
-#   'RTM' (don't patch)
-#   or
-#   'Patch' (install the latest Service Pack/Patch/CU we are aware of.)
+# $install_type: 'RTM' or 'SP4'
 #
 define sqlserver::v2005::instance(
   $instance_name  = $title,
-  $install_type   = 'Patch',
+  $install_type   = 'SP4',
   $install_params = {},
   $tcp_port       = 0
   ) {
@@ -69,7 +66,7 @@ define sqlserver::v2005::instance(
   if has_key($::sqlserver_instances, $instance_name) {
     $instance_registry_path = $::sqlserver_instances[$instance_name][registry_path]
 
-    if $install_type == 'Patch' {
+    if $install_type == 'Patch' or $install_type = 'SP4' {
       require ::sqlserver::v2005::sp4
 
       $get_patchlevel_from_registry = "\"HKLM\\${instance_registry_path}\\Setup\" /v PatchLevel"
