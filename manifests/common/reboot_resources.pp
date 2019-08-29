@@ -10,7 +10,8 @@ define sqlserver::common::reboot_resources($instance_name = $title){
     apply => 'immediately',
   }
   reboot { "Reboot after patching ${instance_name}":
-    apply   => finished,
+    when    => 'pending',
+    apply   => 'immediately',
     message => "Reboot after patching ${instance_name}",
   }
 }
