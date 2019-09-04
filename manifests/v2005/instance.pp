@@ -60,7 +60,6 @@ define sqlserver::v2005::instance(
     unless  => "reg.exe query ${get_instancename_from_registry}",
     require => Reboot["reboot before installing ${instance_name} (if pending)"],
     returns => [0, 3010],
-    notify  => Reboot["reboot before installing ${instance_name} Patch (if pending)"],
   }
 
   if has_key($::sqlserver_instances, $instance_name) {
@@ -78,8 +77,10 @@ define sqlserver::v2005::instance(
         logoutput => true,
         returns   => ['0', '3010'],
         onlyif    => "cmd.exe /C reg query ${get_patchlevel_from_registry} | findstr ${::sqlserver::v2005::sp4::applies_to_version}",
-        require   => Exec["Install SQL Server instance: ${instance_name}"],
-        notify    => Reboot["reboot before installing ${instance_name} Patch (if pending)"],
+        require   => [
+          Exec["Install SQL Server instance: ${instance_name}"],
+          Reboot["reboot before installing ${instance_name} Patch (if pending)"],
+        ],
       }
     }
 

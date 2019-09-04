@@ -66,7 +66,6 @@ define sqlserver::common::install_sqlserver_instance(
     unless  => "reg.exe query ${get_instancename_from_registry}",
     require => Reboot["reboot before installing ${instance_name} (if pending)"],
     returns => [0,3010],
-    notify  => Reboot["reboot before installing ${instance_name} Patch (if pending)"],
   }
 
 }
