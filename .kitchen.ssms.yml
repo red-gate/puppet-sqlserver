@@ -14,7 +14,7 @@ provisioner:
   puppet_detailed_exitcodes: true
   require_puppet_collections: true
   puppet_detailed_exitcodes: true
-  max_retries: 2
+  max_retries: 3
   wait_for_retry: 40
   retry_on_exit_code:
     - 2 # The run succeeded, and some resources were changed.
@@ -28,10 +28,6 @@ verifier:
   name: shell
 
 platforms:
-  - name: windows-2012r2
-    driver_plugin: vagrant
-    driver_config:
-      box: red-gate/windows-2012r2
   - name: windows-2016
     driver_plugin: vagrant
     driver_config:
@@ -39,10 +35,6 @@ platforms:
       provision: true
       vagrantfiles:
         - spec/vagrantfile.rb
-#  - name: windows-10
-#    driver_plugin: vagrant
-#    driver_config:
-#      box: red-gate/windows-10
 
 suites:
   - name: localdbs
@@ -56,15 +48,11 @@ suites:
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/ssms2016_spec.rb
   - name: ssms2017
-    excludes:
-      - windows-2008r2
     provisioner:
       manifest: ssms2017.pp
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/ssms2017_spec.rb
   - name: ssms2018
-    excludes:
-      - windows-2008r2
     provisioner:
       manifest: ssms2018.pp
     verifier:
