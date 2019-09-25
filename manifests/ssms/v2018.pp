@@ -1,8 +1,8 @@
-# Install SSMS 18 Preview 4
+# Install SSMS 18.3
 class sqlserver::ssms::v2018(
-  $source = 'https://go.microsoft.com/fwlink/?linkid=2088649',
+  $source = 'https://go.microsoft.com/fwlink/?linkid=2104251',
   $filename = 'SSMS-Setup-ENU.exe',
-  $programName = 'Microsoft SQL Server Management Studio - 18.0',
+  $programName = 'Microsoft SQL Server Management Studio - 18.3',
   $tempFolder = 'c:/temp'
   ) {
 
