@@ -15,7 +15,7 @@ define sqlserver::sqlcmd::sqlquery($server, $query, $unless = undef, $username =
     $unlesssqlcmd = undef
   }
 
-  exec { "${title} - ${query}":
+  exec { $title:
     path        => $sqlserver::sqlcmd::install::paths,
     command     => "sqlcmd.exe -b -V 1 -S ${server} ${auth_arguments} -Q \"${query}\"",
     unless      => $unlesssqlcmd,
