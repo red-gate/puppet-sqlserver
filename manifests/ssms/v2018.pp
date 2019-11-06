@@ -1,8 +1,8 @@
-# Install latest SSMS (18.4 as of 06/11/2019)
+# Install SSMS 18.4
 class sqlserver::ssms::v2018(
-  $source = 'https://aka.ms/ssmsfullsetup',
+  $source = 'https://go.microsoft.com/fwlink/?linkid=2108895',
   $filename = 'SSMS-Setup-ENU.exe',
-  $programName = 'Microsoft SQL Server Management Studio - 18.4+',
+  $programName = 'Microsoft SQL Server Management Studio - 18.4',
   $tempFolder = 'c:/temp'
   ) {
 
