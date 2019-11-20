@@ -6,11 +6,11 @@ define sqlserver::users::login_windows($server, $login_name, $query_username = u
     false => "CREATE LOGIN [${login_name}] FROM WINDOWS",
   }
 
-  ::sqlserver::sqlcmd::sqlquery { "${server} - Create ${login_name} login":
+  ::sqlserver::sqlcmd::sqlquery { "${server} - Create ${login_name} login - Windows Auth":
     server   => $server,
     username => $query_username,
     password => $query_password,
     query    => $sql_query,
-    unless   => "IF NOT EXISTS(SELECT * from master.dbo.syslogins WHERE loginname = '${login_name}') raiserror ('Login does not exist',1,1)",
+    unless   => "IF NOT EXISTS(SELECT * from master.dbo.syslogins WHERE loginname = '${login_name}' AND isntname = 1) raiserror ('Login does not exist',1,1)",
   }
 }
