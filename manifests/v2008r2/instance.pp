@@ -24,7 +24,6 @@ define sqlserver::v2008r2::instance(
   sqlserver::common::install_sqlserver_instance { $instance_name:
     installer_path => $::sqlserver::v2008r2::iso::installer,
     install_params => deep_merge($default_parameters, $install_params),
-    quiet_params   => '/QUIET', # SQL Server 2008 r2 does not know about /IACCEPTSQLSERVERLICENSETERMS
   }
 
   # 'Patch' is equivalent to 'SP4' for backwards compatibility
