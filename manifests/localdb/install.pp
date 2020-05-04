@@ -5,7 +5,7 @@
 define sqlserver::localdb::install(
   $source,
   $version,
-  $tempFolder = 'c:/temp') {
+  $tempFolder = 'C:/Windows/Temp') {
 
   require chocolatey
   include archive
@@ -13,7 +13,7 @@ define sqlserver::localdb::install(
   $filename = inline_template('<%= File.basename(@source) %>')
   $folder = "${tempFolder}/localdb${version}"
 
-  ensure_resource('file', [$tempFolder, $folder], { ensure => directory })
+  ensure_resource('file', $folder, { ensure => directory })
 
   archive { "${tempFolder}/localdb${version}/${filename}":
     source  => $source,
