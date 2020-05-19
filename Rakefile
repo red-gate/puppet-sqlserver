@@ -50,12 +50,10 @@ namespace :check do
   namespace :manifests do
     desc 'Validate syntax for all manifests'
     task :syntax do
-      Dir.glob('**/*.pp').each do |puppet_file|
-        Bundler.with_clean_env  do
-          # Use bundler.with_clean_env as the way bundler set ruby environment variables
-          # is killing puppet on windows.
-          sh "puppet parser validate #{puppet_file}"
-        end
+      Bundler.with_clean_env  do
+        # Use bundler.with_clean_env as the way bundler set ruby environment variables
+        # is killing puppet on windows.
+        sh "puppet parser validate #{rootdir}"
       end
     end
 
