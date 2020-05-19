@@ -61,14 +61,10 @@ namespace :check do
     Rake::Task[:lint].clear
     desc 'puppet-lint all the manifests'
     PuppetLint::RakeTask.new :lint do |config|
-      # # Pattern of files to ignore
-      # config.ignore_paths = ['modules/apt', 'modules/stdlib']
-
       # List of checks to disable
       config.disable_checks = %w(80chars trailing_whitespace 2sp_soft_tabs hard_tabs)
 
-      # # Enable automatic fixing of problems, defaults to false
-      # config.fix = true
+      config.relative = true
     end
   end
 
