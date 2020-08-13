@@ -71,7 +71,7 @@ sqlserver::users::login_sql { 'SQL2017_1: sql_user login':
   server     => 'localhost\SQL2017_1',
   login_name => 'sql_user',
   password   => 'SomePassw0rdForT3stPurposes!',
-  require    => Sqlserver::V2019::Instance['SQL2017_1'],
+  require    => Sqlserver::V2017::Instance['SQL2017_1'],
 }
 -> sqlserver::users::login_role { 'SQL2017_1: sql_user is sysadmin':
   server     => 'localhost\SQL2017_1',
