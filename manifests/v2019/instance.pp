@@ -15,7 +15,7 @@ define sqlserver::v2019::instance(
     pbportrange           => '16450-16460',
     pbengsvcaccount       => 'BUILTIN\\Administrators',
     pbengsvcpassword      => 'YouBetterChangeThis!',
-    pbdmssvcaccount       => "<DomainName>\<UserName>',
+    pbdmssvcaccount       => 'BUILTIN\\Administrators',
     pbdmssvcpassword      => 'YouBetterChangeThis!',
   },
   $tcp_port       = 0
