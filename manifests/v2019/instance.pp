@@ -9,7 +9,15 @@
 define sqlserver::v2019::instance(
   $instance_name  = $title,
   $install_type   = 'Patch',
-  $install_params = {},
+  $install_params = {
+    features              => 'SQL,Tools,PolyBase',
+    pbscaleout            => 'true',
+    pbportrange           => '16450-16460',
+    pbengsvcaccount       => 'BUILTIN\\Administrators',
+    pbengsvcpassword      => 'YouBetterChangeThis!',
+    pbdmssvcaccount       => "<DomainName>\<UserName>',
+    pbdmssvcpassword      => 'YouBetterChangeThis!',
+  },
   $tcp_port       = 0
   ) {
 
