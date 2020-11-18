@@ -31,15 +31,7 @@ define sqlserver::v2008::instance(
 
   # 'Patch' is equivalent to 'Jan2018CU' for backwards compatibility
   if $install_type == 'Patch' or $install_type == 'Jan2018CU' {
-    # Install SP4, then the Jan 2018 cumulative update
-    require ::sqlserver::v2008::sp4
     require ::sqlserver::v2008::jan2018cu
-
-    sqlserver::common::patch_sqlserver_instance { $instance_name:
-      instance_name      => $instance_name,
-      installer_path     => $::sqlserver::v2008::sp4::installer,
-      applies_to_version => $::sqlserver::v2008::sp4::applies_to_version,
-    }
 
     sqlserver::common::patch_sqlserver_instance { $instance_name:
       instance_name      => $instance_name,
