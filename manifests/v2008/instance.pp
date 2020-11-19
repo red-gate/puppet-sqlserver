@@ -41,11 +41,18 @@ define sqlserver::v2008::instance(
       applies_to_version => $::sqlserver::v2008::sp4::applies_to_version,
     }
 
-    sqlserver::common::patch_sqlserver_instance { $instance_name:
-      instance_name      => $instance_name,
-      installer_path     => $::sqlserver::v2008::jan2018cu::installer,
-      applies_to_version => $::sqlserver::v2008::jan2018cu::applies_to_version,
+    exec { "${::sqlserver::v2008::jan2018cu::installer} : ${instance_name}":
+      command => "\"${::sqlserver::v2008::jan2018cu::installer}\" \
+/QUIET \
+/ACTION=Patch \
+/INSTANCENAME=${instance_name}",
+      require => [
+        Exec["Install SQL Server instance: ${instance_name}"],
+        Reboot["reboot before installing ${instance_name} Patch (if pending)"]
+      ],
+      returns => [0,3010],
     }
+    -> Reboot["Reboot after patching ${instance_name}"]
   }
   elsif $install_type == 'SP4' {
     require ::sqlserver::v2008::sp4
