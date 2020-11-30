@@ -35,16 +35,17 @@ define sqlserver::v2008::instance(
     require ::sqlserver::v2008::sp4
     require ::sqlserver::v2008::jan2018cu
 
-    sqlserver::common::patch_sqlserver_instance { $instance_name:
+    sqlserver::common::patch_sqlserver_instance { "${instance_name}-sp4":
       instance_name      => $instance_name,
       installer_path     => $::sqlserver::v2008::sp4::installer,
       applies_to_version => $::sqlserver::v2008::sp4::applies_to_version,
     }
 
-    sqlserver::common::patch_sqlserver_instance { $instance_name:
+    sqlserver::common::patch_sqlserver_instance { "${instance_name}-2018cu":
       instance_name      => $instance_name,
       installer_path     => $::sqlserver::v2008::jan2018cu::installer,
       applies_to_version => $::sqlserver::v2008::jan2018cu::applies_to_version,
+      require            => Sqlserver::Common::Patch_sqlserver_instance["${instance_name}-sp4"],
     }
   }
   elsif $install_type == 'SP4' {
