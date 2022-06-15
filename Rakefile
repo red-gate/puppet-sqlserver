@@ -25,6 +25,7 @@ namespace :acceptance do
       raise 'Environment variable SQLSERVER2016_ISO_URL must be set to be able to run our acceptance tests' unless ENV['SQLSERVER2016_ISO_URL']
       raise 'Environment variable SQLSERVER2017_ISO_URL must be set to be able to run our acceptance tests' unless ENV['SQLSERVER2017_ISO_URL']
       raise 'Environment variable SQLSERVER2019_ISO_URL must be set to be able to run our acceptance tests' unless ENV['SQLSERVER2019_ISO_URL']
+      raise 'Environment variable SQLSERVER2022_ISO_URL must be set to be able to run our acceptance tests' unless ENV['SQLSERVER2022_ISO_URL']
     end
   end
 
