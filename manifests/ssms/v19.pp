@@ -2,7 +2,7 @@
 class sqlserver::ssms::v19(
   $source = 'https://go.microsoft.com/fwlink/?linkid=2195969&clcid=0x409',
   $filename = 'SSMS-Setup-ENU.exe',
-  $programName = 'Microsoft SQL Server Management Studio 19',
+  $programName = 'Microsoft SQL Server Management Studio - 19.0 Preview 2',
   $tempFolder = 'C:/Windows/Temp',
   ) {
 
