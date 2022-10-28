@@ -39,11 +39,55 @@ platforms:
       provision: true
       vagrantfiles:
         - spec/vagrantfile.rb
+  - name: windows-2022
+    driver_plugin: vagrant
+    driver_config:
+      box: red-gate/windows-2022
+  - name: ubuntu-20.04
+    driver_plugin: vagrant
+    driver_config:
+      customize:
+        audio: "none"
+        memory: 2048
+    driver:
+      box_url: https://vagrantcloud.com/bento/ubuntu-20.04
+    provisioner:
+      puppet_apt_collections_repo: https://apt.puppetlabs.com/puppet6-release-focal.deb
+    transport:
+      name: ssh_tgz
+  - name: ubuntu-18.04
+    driver_plugin: vagrant
+    driver_config:
+      customize:
+        audio: "none"
+        memory: 2048
+    driver:
+      box_url: https://vagrantcloud.com/bento/ubuntu-18.04
+    provisioner:
+      puppet_apt_collections_repo: https://apt.puppetlabs.com/puppet6-release-bionic.deb
+    transport:
+      name: ssh_tgz
+  - name: ubuntu-16.04
+    driver_plugin: vagrant
+    driver_config:
+      customize:
+        audio: "none"
+        memory: 2048
+    driver:
+      box_url: https://vagrantcloud.com/bento/ubuntu-16.04
+    provisioner:
+      puppet_apt_collections_repo: https://apt.puppetlabs.com/puppet6-release-xenial.deb
+    transport:
+      name: ssh_tgz
 
 suites:
   - name: sqlserver2008sp4
     excludes:
       - windows-2019
+      - windows-2022
+      - ubuntu-20.04
+      - ubuntu-18.04
+      - ubuntu-16.04
     provisioner:
       manifest: sqlserver2008sp4_2_instances.pp
       custom_facts:
@@ -53,6 +97,10 @@ suites:
   - name: sqlserver2012sp3
     excludes:
       - windows-2019
+      - windows-2022
+      - ubuntu-20.04
+      - ubuntu-18.04
+      - ubuntu-16.04
     provisioner:
       manifest: sqlserver2012sp3_2_instances.pp
       custom_facts:
@@ -62,6 +110,10 @@ suites:
   - name: sqlserver2014sp2
     excludes:
       - windows-2019
+      - windows-2022
+      - ubuntu-20.04
+      - ubuntu-18.04
+      - ubuntu-16.04
     provisioner:
       manifest: sqlserver2014sp2_2_instances.pp
       custom_facts:
@@ -71,6 +123,10 @@ suites:
   - name: sqlserver2016sp1
     excludes:
       - windows-2012r2
+      - windows-2022
+      - ubuntu-20.04
+      - ubuntu-18.04
+      - ubuntu-16.04
     provisioner:
       manifest: sqlserver2016sp1_2_instances.pp
       custom_facts:
@@ -80,6 +136,10 @@ suites:
   - name: sqlserver2017multiple
     excludes:
       - windows-2012r2
+      - windows-2022
+      - ubuntu-20.04
+      - ubuntu-18.04
+      - ubuntu-16.04
     provisioner:
       manifest: sqlserver2017rtm_2_instances.pp
       custom_facts:
@@ -89,6 +149,10 @@ suites:
   - name: sqlserver2019multiple
     excludes:
       - windows-2012r2
+      - windows-2022
+      - ubuntu-20.04
+      - ubuntu-18.04
+      - ubuntu-16.04
     provisioner:
       manifest: sqlserver2019rtm_2_instances.pp
       custom_facts:
@@ -98,9 +162,31 @@ suites:
   - name: sqlserver2022multiple
     excludes:
       - windows-2012r2
+      - ubuntu-20.04
+      - ubuntu-18.04
+      - ubuntu-16.04
     provisioner:
       manifest: sqlserver2022ctp_2_instances.pp
       custom_facts:
         sqlserver2022_iso_url: <%= ENV['SQLSERVER2022_ISO_URL'] %>
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2022ctp_2_instances_spec.rb
+  - name: sqlserver2019linux
+    excludes:
+      - windows-2012r2
+      - windows-2019
+      - windows-2022
+    provisioner:
+      manifest: sqlserver2019linux.pp
+    verifier:
+      command: rspec -c -f d -I spec spec/acceptance/sqlserver2019linux_spec.rb
+  - name: sqlserver2017linux
+    excludes:
+      - windows-2012r2
+      - windows-2019
+      - windows-2022
+      - ubuntu-20.04
+    provisioner:
+      manifest: sqlserver2017linux.pp
+    verifier:
+      command: rspec -c -f d -I spec spec/acceptance/sqlserver2017linux_spec.rb
