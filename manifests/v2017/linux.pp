@@ -11,6 +11,9 @@
 # @param install_sql_fulltext
 #     Optional. Boolean. Specify if the SQL Full Text search should be enabled.
 #     Default: false
+# @param install_sql_tools
+#     Optional. Boolean. Whether to install SQL tools or not.
+#     Default: true
 # @param ensure
 #     Optional. Specify the `ensure` value for the mssql-server and mssql-server-fts packages.
 #     Default: latest
@@ -19,21 +22,20 @@ define sqlserver::v2017::linux(
   Enum['evaluation','developer','express','web','enterprise'] $mssql_product_id,
   Boolean $mssql_agent_enabled = true,
   Boolean $install_sql_fulltext = false,
+  Boolean $install_sql_tools = true,
   $ensure = 'latest',
 ) {
 
-  sqlserver::common::add_apt_repo {'sqlserver linux apt repo':
+  class {'sqlserver::common::add_apt_repo':
     sql_version  => '2017'
   } 
-
 
   sqlserver::common::install_sqlserver_linux {'install sqlserver linux 2017':
     sa_password          => $sa_password,
     mssql_product_id     => $mssql_product_id,
     mssql_agent_enabled  => $mssql_agent_enabled,
     install_sql_fulltext => $install_sql_fulltext,
+    install_sql_tools    => $install_sql_tools,
     ensure               => $ensure,
-  }
-
-  
+  } 
 }

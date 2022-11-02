@@ -2,7 +2,7 @@
 #
 # @param sql_version
 #   Version of SQL Server to install
-define sqlserver::common::add_apt_repo(
+class sqlserver::common::add_apt_repo(
   Enum['2017','2019'] $sql_version
 ) {
   include apt

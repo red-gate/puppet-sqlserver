@@ -32,6 +32,7 @@ platforms:
     driver_plugin: vagrant
     driver_config:
       box: red-gate/windows-2019
+      box_url: https://vagrant.red-gate.com/red-gate/windows-2019
       provision: true
       vagrantfiles:
         - spec/vagrantfile.rb
