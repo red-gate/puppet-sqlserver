@@ -3,6 +3,15 @@ define sqlserver::sqlcmd::sqlscript($server, $path, $unless = undef, $username =
 
   require sqlserver::sqlcmd::install
 
+  if($::osfamily == 'windows')
+  {
+    $sqlcmd_name = 'sqlcmd.exe'
+  }
+  else
+  {
+    $sqlcmd_name = 'sqlcmd'
+  }
+
   if $username {
     $auth_arguments = "-U \"${username}\" -P \"${password}\""
   } else {
@@ -10,14 +19,14 @@ define sqlserver::sqlcmd::sqlscript($server, $path, $unless = undef, $username =
   }
 
   if $unless {
-    $unlesssqlcmd = "sqlcmd.exe -b -V 1 -S ${server} ${auth_arguments} -Q \"${unless}\" ${unless_additional_arguments}"
+    $unlesssqlcmd = "${sqlcmd_name} -b -V 1 -S ${server} ${auth_arguments} -Q \"${unless}\" ${unless_additional_arguments}"
   } else {
     $unlesssqlcmd = undef
   }
 
   exec { "${title} - ${path}":
     path        => $sqlserver::sqlcmd::install::paths,
-    command     => "sqlcmd.exe -b -V 1 -S ${server} ${auth_arguments} -i \"${path}\" ${additional_arguments}",
+    command     => "${sqlcmd_name} -b -V 1 -S ${server} ${auth_arguments} -i \"${path}\" ${additional_arguments}",
     unless      => $unlesssqlcmd,
     refreshonly => $refreshonly,
     timeout     => $timeout,
