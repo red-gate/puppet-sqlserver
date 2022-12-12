@@ -6,7 +6,7 @@ define sqlserver::v2008r2::instance(
   $instance_name  = $title,
   $install_type   = 'SP3',
   $install_params = {},
-  $tcp_port       = 0
+  $tcp_port       = undef
   ) {
 
   require ::sqlserver::v2008r2::iso
@@ -37,7 +37,7 @@ define sqlserver::v2008r2::instance(
     }
   }
 
-  if $tcp_port > 0 {
+  if $tcp_port {
     sqlserver::common::tcp_port { $instance_name:
       tcp_port => $tcp_port,
     }
