@@ -41,4 +41,5 @@ define sqlserver::v2008r2::instance(
     sqlserver::common::tcp_port { $instance_name:
       tcp_port => $tcp_port,
     }
+  }
 }
