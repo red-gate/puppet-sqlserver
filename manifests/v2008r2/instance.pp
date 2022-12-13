@@ -38,12 +38,7 @@ define sqlserver::v2008r2::instance(
   }
 
   if $tcp_port {
-    notify{"The value is ${tcp_port}": }
     sqlserver::common::tcp_port { $instance_name:
       tcp_port => $tcp_port,
     }
-  } else {
-    notify{"No TCP Port": }
-  }
-
 }
