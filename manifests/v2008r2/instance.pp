@@ -6,7 +6,7 @@ define sqlserver::v2008r2::instance(
   $instance_name  = $title,
   $install_type   = 'SP3',
   $install_params = {},
-  $tcp_port       = undef
+  $tcp_port
   ) {
 
   require ::sqlserver::v2008r2::iso
