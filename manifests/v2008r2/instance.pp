@@ -38,6 +38,7 @@ define sqlserver::v2008r2::instance(
   }
 
   if $tcp_port {
+    warning('Setting port ... maybe')
     sqlserver::common::tcp_port { $instance_name:
       tcp_port => $tcp_port,
     }
