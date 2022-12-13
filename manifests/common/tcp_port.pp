@@ -14,6 +14,8 @@ define sqlserver::common::tcp_port(
 
     ensure_resource('service', "SQLAGENT$${instance_name}", { ensure => running, })
 
+    notify{"Running registry changes for ${tcp_port}": }
+
     exec { "Restart MSSQL$${instance_name} after changing TCP port":
       # Restart SQL Server ourselves so that we can pass /yes to net stop
       command     => "cmd.exe /c net stop \"MSSQL$${instance_name}\" /yes && net start \"MSSQL$${instance_name}\"",
@@ -39,6 +41,7 @@ define sqlserver::common::tcp_port(
 
   } else {
     warning('Cannot retrieve SQL instance data from the $sqlserver_instances fact. Skip configuring TCP port in this run...')
+    notify{"Not running registry changes for ${tcp_port}": }
   }
 
 }
