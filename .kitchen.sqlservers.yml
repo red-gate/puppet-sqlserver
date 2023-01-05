@@ -173,7 +173,7 @@ suites:
       custom_facts:
         sqlserver2022_iso_url: <%= ENV['SQLSERVER2022_ISO_URL'] %>
     verifier:
-      command: rspec -c -f d -I spec spec/acceptance/sqlserver2022ctp_2_instances_spec.rb
+      command: rspec -c -f d -I spec spec/acceptance/sqlserver2022rtm_2_instances_spec.rb
   - name: sqlserver2019linux
     excludes:
       - windows-2012r2
