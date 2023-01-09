@@ -3,8 +3,7 @@ source 'https://rubygems.org'
 gem 'puppet-lint'
 
 gem 'test-kitchen', '~> 2'
-# Use our own fork which makes it easier to download the latest version of puppet 6 for windows
-gem 'kitchen-puppet', :git => 'https://github.com/red-gate/kitchen-puppet', :branch => 'master'
+gem 'kitchen-puppet', '~> 3'
 gem 'kitchen-vagrant', '~> 1'
 gem 'kitchen-zip', :git => 'https://github.com/red-gate/kitchen-zip', :branch => 'master'
 
