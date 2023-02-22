@@ -1,8 +1,8 @@
-# Install SSMS 19 Preview 4
+# Install SSMS 19
 class sqlserver::ssms::v19(
-  $source = 'https://go.microsoft.com/fwlink/?linkid=2219772&clcid=0x409',
+  $source = 'https://go.microsoft.com/fwlink/?linkid=2223741&clcid=0x409',
   $filename = 'SSMS-Setup-ENU.exe',
-  $programName = 'Microsoft SQL Server Management Studio - 19.0 Preview 4',
+  $programName = 'Microsoft SQL Server Management Studio 19',
   $tempFolder = 'C:/Windows/Temp',
   ) {
 
