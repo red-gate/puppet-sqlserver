@@ -62,7 +62,7 @@ define sqlserver::v2005::instance(
     returns => [0, 3010],
   }
 
-  if has_key($::sqlserver_instances, $instance_name) {
+  if $instance_name in $::sqlserver_instances {
     $instance_registry_path = $::sqlserver_instances[$instance_name][registry_path]
 
     if $install_type == 'Patch' or $install_type == 'SP4' {
