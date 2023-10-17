@@ -10,4 +10,4 @@ mod 'puppetlabs-pwshlib', '0.10.2' # dependency of puppetlabs/powershell
 mod 'puppetlabs/reboot', '3.0.0'
 mod 'puppetlabs/stdlib', '9.4.0'
 mod 'redgate/registrykey', :git => 'git@github.com:red-gate/puppet-registrykey', :ref => 'master'
-mod 'puppetlabs/apt'
+mod 'puppetlabs/apt', '9.0.2' # Later versions drop puppet6 support.
