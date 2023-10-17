@@ -36,7 +36,7 @@ platforms:
       box: red-gate/windows-2012r2
       customize:
         cpus: 2
-        memory: 4096
+        memory: 2048
         vrde: "off"
         vram: 64
   - name: windows-2019
@@ -45,7 +45,7 @@ platforms:
       box: red-gate/windows-2019
       customize:
         cpus: 2
-        memory: 4096
+        memory: 2048
         vrde: "off"
         vram: 64
       provision: true
@@ -57,7 +57,7 @@ platforms:
       box: red-gate/windows-2022
       customize:
         cpus: 2
-        memory: 4096
+        memory: 2048
         vrde: "off"
         vram: 64
   - name: ubuntu-20.04
@@ -65,11 +65,11 @@ platforms:
     driver_config:
       customize:
         audio: "none"
-        memory: 2048
     driver:
-      box_url: https://vagrantcloud.com/bento/ubuntu-20.04
+      box: red-gate/ubuntu-2004
     provisioner:
       puppet_apt_collections_repo: https://apt.puppetlabs.com/puppet6-release-focal.deb
+      puppet_version: "6.28.0-1focal"
     transport:
       name: ssh_tgz
   - name: ubuntu-18.04
@@ -77,11 +77,11 @@ platforms:
     driver_config:
       customize:
         audio: "none"
-        memory: 2048
     driver:
-      box_url: https://vagrantcloud.com/bento/ubuntu-18.04
+      box: red-gate/ubuntu-1804
     provisioner:
       puppet_apt_collections_repo: https://apt.puppetlabs.com/puppet6-release-bionic.deb
+      puppet_version: "6.28.0-1bionic"
     transport:
       name: ssh_tgz
 
