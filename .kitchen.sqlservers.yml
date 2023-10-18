@@ -34,6 +34,7 @@ platforms:
     driver_plugin: vagrant
     driver_config:
       box: red-gate/windows-2012r2
+      vm_hostname: sqlserver
       customize:
         cpus: 2
         memory: 2048
@@ -43,6 +44,7 @@ platforms:
     driver_plugin: vagrant
     driver_config:
       box: red-gate/windows-2019
+      vm_hostname: sqlserver
       customize:
         cpus: 2
         memory: 2048
@@ -55,6 +57,7 @@ platforms:
     driver_plugin: vagrant
     driver_config:
       box: red-gate/windows-2022
+      vm_hostname: sqlserver
       customize:
         cpus: 2
         memory: 2048
@@ -63,6 +66,7 @@ platforms:
   - name: ubuntu-20.04
     driver_plugin: vagrant
     driver_config:
+      vm_hostname: sqlserver
       customize:
         audio: "none"
     driver:
@@ -75,6 +79,7 @@ platforms:
   - name: ubuntu-18.04
     driver_plugin: vagrant
     driver_config:
+      vm_hostname: sqlserver
       customize:
         audio: "none"
     driver:
