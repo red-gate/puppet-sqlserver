@@ -14,6 +14,7 @@ provisioner:
   puppet_detailed_exitcodes: true
   require_puppet_collections: true
   puppet_detailed_exitcodes: true
+  puppet_version: "6.28.0"
   max_retries: 5
   wait_for_retry: 40
   retry_on_exit_code:
@@ -23,6 +24,7 @@ provisioner:
 transport:
   name: winrm
   elevated: true
+  winrm_transport: plaintext
 
 verifier:
   name: shell

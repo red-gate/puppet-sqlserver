@@ -9,7 +9,7 @@ define sqlserver::common::tcp_port(
   $instance_name = $title
   ) {
 
-  if has_key($::sqlserver_instances, $instance_name) {
+  if $instance_name in $::sqlserver_instances {
     $registry_instance_path = $::sqlserver_instances[$instance_name]['registry_path']
 
     ensure_resource('service', "SQLAGENT$${instance_name}", { ensure => running, })
