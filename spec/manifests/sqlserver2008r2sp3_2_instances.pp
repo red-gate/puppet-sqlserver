@@ -6,7 +6,7 @@ class { '::sqlserver::v2008r2::iso':
   source => $::sqlserver2008r2_iso_url,
 }
 
-sqlserver::V2008r2::instance { 'SQL2008R2_1':
+sqlserver::v2008r2::instance { 'SQL2008R2_1':
   install_type   => 'Patch',
   install_params => {
     sapwd => 'sdf347RT!',
@@ -14,7 +14,7 @@ sqlserver::V2008r2::instance { 'SQL2008R2_1':
   tcp_port       => 1433,
 }
 
-sqlserver::V2008r2::instance { 'SQL2008R2_2':
+sqlserver::v2008r2::instance { 'SQL2008R2_2':
   install_type   => 'Patch',
   install_params => {
     sapwd        => 'sdf347RT!',
