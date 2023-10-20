@@ -18,6 +18,10 @@ end
     it { should exist }
     it { should have_property_value('PatchLevel', :type_string, '12.2.5203.0') }
   end
+
+  describe windows_registry_key("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\MSSQL12.#{instance_name}\\Mssqlserver\\Supersocketnetlib") do
+    it { should have_property_value('Certificate', :type_string, '3401AEE89B13985BFE3BEFFDE853D574E0243E09') }
+  end
 end
 
 describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL12.SQL2014_1\Setup') do
