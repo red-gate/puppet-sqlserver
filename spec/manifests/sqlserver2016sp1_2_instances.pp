@@ -138,24 +138,24 @@ sslcertificate::from_pem { 'test-cert':
 
 sslcertificate::key_acl { 'sql_service_1_cert_read':
   identity        => 'NT Service\\MSSQL`$SQL2016_1',
-  cert_thumbprint => '94efb4f0c8e9235308516cc9b25b8d054722f8ea',
+  cert_thumbprint => '3401AEE89B13985BFE3BEFFDE853D574E0243E09',
   require         => [Sslcertificate::From_Pem['test-cert'], Sqlserver::V2016::Instance['SQL2016_1']],
 }
 
 sslcertificate::key_acl { 'sql_service_2_cert_read':
   identity        => 'NT Service\\MSSQL`$SQL2016_2',
-  cert_thumbprint => '94efb4f0c8e9235308516cc9b25b8d054722f8ea',
+  cert_thumbprint => '3401AEE89B13985BFE3BEFFDE853D574E0243E09',
   require         => [Sslcertificate::From_Pem['test-cert'], Sqlserver::V2016::Instance['SQL2016_2']],
 }
 
 sqlserver::common::set_tls_cert { 'Set_SQL2016_1_TLS_Cert':
-  certificate_thumbprint => '94efb4f0c8e9235308516cc9b25b8d054722f8ea',
+  certificate_thumbprint => '3401AEE89B13985BFE3BEFFDE853D574E0243E09',
   instance_name => 'SQL2016_1',
   require => [Sqlserver::V2016::Instance['SQL2016_1'], Sslcertificate::Key_acl['sql_service_1_cert_read']],
 }
 
 sqlserver::common::set_tls_cert { 'Set_SQL2016_2_TLS_Cert':
-  certificate_thumbprint => '94efb4f0c8e9235308516cc9b25b8d054722f8ea',
+  certificate_thumbprint => '3401AEE89B13985BFE3BEFFDE853D574E0243E09',
   instance_name => 'SQL2016_2',
   require => [Sqlserver::V2016::Instance['SQL2016_2'], Sslcertificate::Key_acl['sql_service_2_cert_read']],
 }

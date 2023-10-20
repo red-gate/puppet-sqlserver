@@ -39,7 +39,7 @@ namespace :acceptance do
   task kitchen: [:prerequisites, :installpuppetmodules] do
     begin
       Dir.mkdir('.kitchen') unless Dir.exist?('.kitchen')
-      sh "kitchen test --destroy=#{destroy_strategy} --concurrency 2 --log-level=info #{color} 2> .kitchen/kitchen.stderr" do |ok, _|
+      sh "kitchen test --destroy=#{destroy_strategy} --concurrency 3 --log-level=info #{color} 2> .kitchen/kitchen.stderr" do |ok, _|
         raise IO.read('.kitchen/kitchen.stderr') unless ok
       end
     ensure
