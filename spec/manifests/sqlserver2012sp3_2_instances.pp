@@ -64,3 +64,80 @@ sqlserver::users::login_role { 'SQL2012_1: Everyone is sysadmin':
   login_name            => '\Everyone',
   default_database_name => 'tempdb',
 }
+
+$keycontent = "-----BEGIN RSA PRIVATE KEY-----
+MIIEpAIBAAKCAQEAtcxQDHDD3Iq+Ab/JqUZGHVqsd7D8PgotcrU62gczEUApFkpI
+FrWKDGIUxnWRPDKaY+HZC2IGSXYEl/Hz+GCko8kVc1q3OPq2ATu24w++KQWD4K4y
+I1c3b0nWnFLHcKAUmnrupKeBfGN2WR3fzCofZEodJ5cFSi6vye2hY2QRhVF+rpNA
+LllE1B74USZ4vMt9jsr/I39XnOB9m72xW767llBJRcf/bl/KyC56g8opvSxhZjeB
+3M5h488NjSzoU+U+t5cSXtZKVOMWAmPb+nlTEulcOubtGlYFnFrVh6jvONacylLv
+TONzd4lL96DDd16PcBOqHM3++5VEwWEanHMRyQIDAQABAoIBAQCJAEti1KgFT1kZ
+IFrsgdTc0jQejvXIGwtc4k5TeBF38o4ECj6BPpWl91QIqxij8M6AbvaNqXVrbtDP
+YLqmds4bz7GmmLpy6hy2mTWdr4NyjoFvlFacY2GXMGHWtFsv+LMOJ44n70OZZasO
+RYEd7rBxd5i4+Qo3eS9oUPfKWuMJP7duvErEKL2BDFLPwbWlUM+Cbz9Kddh2kUy+
+cALtqI9JoyXxOPNXLQLEsS4HEXc3ZoKBsDjsNn6ng2kyzVRNNcIII3I2g1bFr2/d
++o7PNBsswwAJ/58rwRZc7NH3kwUYu52Boonmb8EaQtz6PxmkVAdwKCdNd5f0byue
+d4bjtDRxAoGBAM6Ry8p0z6FwHFUon/ponOjD9k7qDXyOmGALPaWRAfaVzaVioZ5E
+6Ne9qbRzpT+I8xrW41re2OOUvH26K1ApjXEld/CI6KdfWHH4tzgu4RTXxdHbh3ev
+p0u59nuZdv/+gJ1xRO6YKXrxwEq/1Ij9kAJ3AZcXqADHujMR4nYNj8Z3AoGBAOFN
+DH7dsy4cctQcP45R04jvvk7ESwGTtxYUtzDa9C+f24cwmKlF/hUD0mhYV4OhJmsy
+CIXOK604EWrytz9pYjxsqzKJdDvNo2jbMojVDg+TVD1x7m7I/8jCwai3foWHQStM
+CJ1ITQmzURWijjwogELZRGCTqEwkBQizBhw8zrm/AoGBALAeViYzGaOGtmFU1bDl
+6IH8MdBudTkxSnD4pIK483eNmVvcj/ckwXDPYBVeVBGrbboAZK9hOIIwmdSIGc2q
+39EMJQqLb/DjtcDWUUAxl+3xWdPm28ULmhNSZfhTi8YO8xFJNYBHc3ZDD7OrgkWa
+CmJPnKd5n9+qafKI2Q/V2DNZAoGABiyaXw+sTWMyMmXjx/6uEV6glIAEnjJyHgTL
+UGdvsa5r0bSfOmRUpjbImVtyaoUMDHv+h8wynjifIZMtOmuk6YsA1g22Rb1I8SKw
+q9dK31pmQJjSs+6GM/ZCYGFG8lnWi102DzlgAxgK7NDbnQJvIWXa3dquDggeqzJc
+xIFWGPkCgYAaLQcxh9LyLDjYoYwflSD/pGTvwcGzVi0w7XW6Xpq1wv7zAtXCrsqx
+GWCNgqbVMeBtNBpxpOqzDO67mDF/CJ8dp+idD3UFtXQLZXaUsQdWAQ+ctPNMWI7j
+oia49VlwcneVgeZGSdBv6TEnurraH7ViCSCAixKgigIv2gzi3WzoBw==
+-----END RSA PRIVATE KEY-----"
+
+$certcontent = "-----BEGIN CERTIFICATE-----
+MIIDGDCCAgCgAwIBAgIQT4NQxTtJy41KQFVxeEGG4DANBgkqhkiG9w0BAQsFADAU
+MRIwEAYDVQQDDAlzcWxzZXJ2ZXIwHhcNMjMxMDIwMTUzMjE3WhcNMjYxMDIwMTU0
+MjE3WjAUMRIwEAYDVQQDDAlzcWxzZXJ2ZXIwggEiMA0GCSqGSIb3DQEBAQUAA4IB
+DwAwggEKAoIBAQC1zFAMcMPcir4Bv8mpRkYdWqx3sPw+Ci1ytTraBzMRQCkWSkgW
+tYoMYhTGdZE8Mppj4dkLYgZJdgSX8fP4YKSjyRVzWrc4+rYBO7bjD74pBYPgrjIj
+VzdvSdacUsdwoBSaeu6kp4F8Y3ZZHd/MKh9kSh0nlwVKLq/J7aFjZBGFUX6uk0Au
+WUTUHvhRJni8y32Oyv8jf1ec4H2bvbFbvruWUElFx/9uX8rILnqDyim9LGFmN4Hc
+zmHjzw2NLOhT5T63lxJe1kpU4xYCY9v6eVMS6Vw65u0aVgWcWtWHqO841pzKUu9M
+43N3iUv3oMN3Xo9wE6oczf77lUTBYRqccxHJAgMBAAGjZjBkMA4GA1UdDwEB/wQE
+AwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwEwFAYDVR0RBA0wC4IJ
+c3Fsc2VydmVyMB0GA1UdDgQWBBQokf5wTOV166C+3t+JS7ERze51ZjANBgkqhkiG
+9w0BAQsFAAOCAQEATrnH2d0+uPSuh/5zDL9WY1gC7ij/qChYZZ13kGW55GFK+bZH
+CIdX2jjXKh8p8B9XI+eLXBddwGwxYwKNWVbfXUrtEHk3s216mW/qp1JAH7vnOFkt
+yNkMPGBrpdPGX6dgDKsVuRA00BC8erj41g/+3gMjSJW5kJkju2pP2Eq6v0I3kPwB
+EqO7EltDqbC2HqNrxYCzsyjusPfIzdAVHxl61YGvFtIJWfQr2/CCCuOHfgItx7Qf
+/hKifAq7zLyhBjJyam6F0OvQ7a+cOPcPRZXlsFFqknQxYuBWS4GGbeuO+eWfX08h
+ECLteEa3tTLfpuwy2F6a3IZdxPuo00N40Nrtkg==
+-----END CERTIFICATE-----"
+
+sslcertificate::from_pem { 'test-cert':
+  cert_content => $certcontent,
+  key_content  => $keycontent,
+}
+
+sslcertificate::key_acl { 'sql_service_1_cert_read':
+  identity        => 'NT Service\\MSSQL`$SQL2012_1',
+  cert_thumbprint => '94efb4f0c8e9235308516cc9b25b8d054722f8ea',
+  require         => [Sslcertificate::From_Pem['test-cert'], Sqlserver::V2012::Instance['SQL2012_1']],
+}
+
+sslcertificate::key_acl { 'sql_service_2_cert_read':
+  identity        => 'NT Service\\MSSQL`$SQL2012_2',
+  cert_thumbprint => '94efb4f0c8e9235308516cc9b25b8d054722f8ea',
+  require         => [Sslcertificate::From_Pem['test-cert'], Sqlserver::V2012::Instance['SQL2012_2']],
+}
+
+sqlserver::common::set_tls_cert { 'Set_SQL2012_1_TLS_Cert':
+  certificate_thumbprint => '94efb4f0c8e9235308516cc9b25b8d054722f8ea',
+  instance_name => 'SQL2012_1',
+  require => [Sqlserver::V2012::Instance['SQL2012_1'], Sslcertificate::Key_acl['sql_service_1_cert_read']],
+}
+
+sqlserver::common::set_tls_cert { 'Set_SQL2012_2_TLS_Cert':
+  certificate_thumbprint => '94efb4f0c8e9235308516cc9b25b8d054722f8ea',
+  instance_name => 'SQL2012_2',
+  require => [Sqlserver::V2012::Instance['SQL2012_2'], Sslcertificate::Key_acl['sql_service_2_cert_read']],
+}

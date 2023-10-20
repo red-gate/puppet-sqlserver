@@ -32,9 +32,13 @@ verifier:
 platforms:
   - name: windows-2012r2
     driver_plugin: vagrant
+    driver:
+      vm_hostname: sqlserver
     driver_config:
       box: red-gate/windows-2012r2
-      vm_hostname: sqlserver
+      provision: true
+      vagrantfiles:
+        - spec/vagrantfile.rb
       customize:
         cpus: 2
         memory: 2048
@@ -42,9 +46,10 @@ platforms:
         vram: 64
   - name: windows-2019
     driver_plugin: vagrant
+    driver:
+      vm_hostname: sqlserver
     driver_config:
       box: red-gate/windows-2019
-      vm_hostname: sqlserver
       customize:
         cpus: 2
         memory: 2048
@@ -55,9 +60,13 @@ platforms:
         - spec/vagrantfile.rb
   - name: windows-2022
     driver_plugin: vagrant
+    driver:
+      vm_hostname: sqlserver
     driver_config:
       box: red-gate/windows-2022
-      vm_hostname: sqlserver
+      provision: true
+      vagrantfiles:
+        - spec/vagrantfile.rb
       customize:
         cpus: 2
         memory: 2048
@@ -65,8 +74,9 @@ platforms:
         vram: 64
   - name: ubuntu-20.04
     driver_plugin: vagrant
-    driver_config:
+    driver:
       vm_hostname: sqlserver
+    driver_config:
       customize:
         audio: "none"
     driver:
@@ -78,8 +88,9 @@ platforms:
       name: ssh_tgz
   - name: ubuntu-18.04
     driver_plugin: vagrant
-    driver_config:
+    driver:
       vm_hostname: sqlserver
+    driver_config:
       customize:
         audio: "none"
     driver:
@@ -103,6 +114,18 @@ suites:
         sqlserver2008_iso_url: <%= ENV['SQLSERVER2008_ISO_URL'] %>
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2008sp4_2_instances_spec.rb
+- name: sqlserver2008r2sp3
+    excludes:
+      - windows-2019
+      - windows-2022
+      - ubuntu-20.04
+      - ubuntu-18.04
+    provisioner:
+      manifest: sqlserver2008r2sp3_2_instances.pp
+      custom_facts:
+        sqlserver2008r2_iso_url: <%= ENV['SQLSERVER2008R2_ISO_URL'] %>
+    verifier:
+      command: rspec -c -f d -I spec spec/acceptance/sqlserver2008r2sp3_2_instances_spec.rb
   - name: sqlserver2012sp3
     excludes:
       - windows-2019

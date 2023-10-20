@@ -20,6 +20,7 @@ namespace :acceptance do
       raise 'Environment variable SQLSERVER2005_ISO_URL must be set to be able to run our acceptance tests' unless ENV['SQLSERVER2005_ISO_URL']
     when '.kitchen.sqlservers.yml'
       raise 'Environment variable SQLSERVER2008_ISO_URL must be set to be able to run our acceptance tests' unless ENV['SQLSERVER2008_ISO_URL']
+      raise 'Environment variable SQLSERVER2008R2_ISO_URL must be set to be able to run our acceptance tests' unless ENV['SQLSERVER2008R2_ISO_URL']
       raise 'Environment variable SQLSERVER2012_ISO_URL must be set to be able to run our acceptance tests' unless ENV['SQLSERVER2012_ISO_URL']
       raise 'Environment variable SQLSERVER2014_ISO_URL must be set to be able to run our acceptance tests' unless ENV['SQLSERVER2014_ISO_URL']
       raise 'Environment variable SQLSERVER2016_ISO_URL must be set to be able to run our acceptance tests' unless ENV['SQLSERVER2016_ISO_URL']

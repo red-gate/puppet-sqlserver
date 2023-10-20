@@ -177,11 +177,23 @@ sslcertificate::from_pem { 'test-cert':
 sslcertificate::key_acl { 'sql_service_1_cert_read':
   identity        => 'NT Service\\MSSQL`$SQL2022_1',
   cert_thumbprint => '1822371B4C27B4683BADBADC91AFFE33732CFC55',
-  require         => Sslcertificate::From_Pem['test-cert'],
+  require         => [Sslcertificate::From_Pem['test-cert'], Sqlserver::V2022::Instance['SQL2022_1']],
 }
 
 sslcertificate::key_acl { 'sql_service_2_cert_read':
   identity        => 'NT Service\\MSSQL`$SQL2022_2',
   cert_thumbprint => '1822371B4C27B4683BADBADC91AFFE33732CFC55',
-  require         => Sslcertificate::From_Pem['test-cert'],
+  require         => [Sslcertificate::From_Pem['test-cert'], Sqlserver::V2022::Instance['SQL2022_2']],
+}
+
+sqlserver::common::set_tls_cert { 'Set_SQL2022_1_TLS_Cert':
+  certificate_thumbprint => '1822371B4C27B4683BADBADC91AFFE33732CFC55',
+  instance_name => 'SQL2022_1',
+  require => [Sqlserver::V2022::Instance['SQL2022_1'], Sslcertificate::Key_acl['sql_service_1_cert_read']],
+}
+
+sqlserver::common::set_tls_cert { 'Set_SQL2022_2_TLS_Cert':
+  certificate_thumbprint => '1822371B4C27B4683BADBADC91AFFE33732CFC55',
+  instance_name => 'SQL2022_2',
+  require => [Sqlserver::V2022::Instance['SQL2022_2'], Sslcertificate::Key_acl['sql_service_2_cert_read']],
 }
