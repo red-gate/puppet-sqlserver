@@ -13,24 +13,24 @@ end
     it { should have_start_mode('Automatic') }
   end
 
-  describe windows_registry_key("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\MSSQL10.#{instance_name}\\Setup") do
+  describe windows_registry_key("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\MSSQL10_50.#{instance_name}\\Setup") do
     it { should exist }
     it { should have_property_value('PatchLevel', :type_string, '10.4.6556.0') }
   end
 end
 
-describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL10.SQL2008R2_1\Setup') do
+describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL10_50.SQL2008R2_1\Setup') do
   it { should have_property_value('Collation', :type_string, 'Latin1_General_CI_AS') }
 end
 
-describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL10.SQL2008R2_1\Mssqlserver\Supersocketnetlib\tcp\ipall') do
+describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL10_50.SQL2008R2_1\Mssqlserver\Supersocketnetlib\tcp\ipall') do
   it { should have_property_value('tcpport', :type_string, '1433') }
 end
 
-describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL10.SQL2008R2_2\Setup') do
+describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL10_50.SQL2008R2_2\Setup') do
   it { should have_property_value('Collation', :type_string, 'Latin1_General_CS_AS_KS_WS') }
 end
 
-describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL10.SQL2008R2_2\Mssqlserver\Supersocketnetlib\tcp\ipall') do
+describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL10_50.SQL2008R2_2\Mssqlserver\Supersocketnetlib\tcp\ipall') do
   it { should have_property_value('tcpport', :type_string, '1434') }
 end
