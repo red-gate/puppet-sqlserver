@@ -7,7 +7,7 @@ class { '::sqlserver::v2008r2::iso':
 }
 
 sqlserver::v2008r2::instance { 'SQL2008R2_1':
-  install_type   => 'Patch',
+  install_type   => 'RTM',
   install_params => {
     sapwd => 'sdf347RT!',
   },
@@ -15,7 +15,7 @@ sqlserver::v2008r2::instance { 'SQL2008R2_1':
 }
 
 sqlserver::v2008r2::instance { 'SQL2008R2_2':
-  install_type   => 'Patch',
+  install_type   => 'RTM',
   install_params => {
     sapwd        => 'sdf347RT!',
     sqlcollation => 'Latin1_General_CS_AS_KS_WS',
