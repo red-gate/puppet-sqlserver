@@ -11,5 +11,10 @@ define sqlserver::common::set_tls_cert (
   String $certificate_thumbprint,
   String $instance_name = $title,
 ) {
-  require sqlserver::common::dbatools_ps
+  exec { "Set TLS Cert on ${title}":
+    provider  => 'powershell',
+    command   => template('sqlserver/set_sql_tls_cert.ps1.erb'),
+    onlyif    => template('sqlserver/should_set_sql_tls_cert.ps1.erb'),
+    logoutput => true,
+  }
 }
