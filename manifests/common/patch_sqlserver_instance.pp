@@ -13,9 +13,9 @@ define sqlserver::common::patch_sqlserver_instance(
   $instance_name = $title
   ) {
 
-  # 0 + is needed so that $major_version is an int.
-  # https://docs.puppet.com/puppet/latest/lang_data_number.html#converting-strings-to-numbers
-  $major_version = 0 + $applies_to_version.match(/(\d+)\./)[1]
+  
+  # https://www.puppet.com/docs/puppet/7/lang_data_number.html#lang_data_number_convert_strings
+  $major_version = Integer($applies_to_version.match(/(\d+)\./)[1])
 
   $registry_instance_path = "SOFTWARE\\Microsoft\\Microsoft SQL Server\\MSSQL${major_version}.${instance_name}"
   $get_patchlevel_from_registry = "\"HKLM\\${registry_instance_path}\\Setup\" /v PatchLevel"
