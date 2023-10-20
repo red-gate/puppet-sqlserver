@@ -114,7 +114,7 @@ suites:
         sqlserver2008_iso_url: <%= ENV['SQLSERVER2008_ISO_URL'] %>
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2008sp4_2_instances_spec.rb
-- name: sqlserver2008r2sp3
+  - name: sqlserver2008r2sp3
     excludes:
       - windows-2019
       - windows-2022
