@@ -13,11 +13,14 @@
 # @param tcp_port
 #   Specify the TCP port to listen on 
 #
+# @param certificate_thumbprint
+#   Thumbprint of an SSL cert in the local certificate store to use for SQL Connections
 define sqlserver::v2008r2::instance (
-  String $instance_name  = $title,
-  String $install_type   = 'SP3',
+  String $instance_name = $title,
+  String $install_type = 'SP3',
   Hash $install_params = {},
-  Integer[Optional] $tcp_port       = undef
+  Optional[Integer] $tcp_port = undef,
+  Optional[String] $certificate_thumbprint = undef,
 ) {
   require sqlserver::v2008r2::iso
 
@@ -31,9 +34,11 @@ define sqlserver::v2008r2::instance (
     agtsvcaccount => 'NT AUTHORITY\NetworkService',
   }
 
+  $final_install_params = deep_merge($default_parameters, $install_params)
+
   sqlserver::common::install_sqlserver_instance { $instance_name:
     installer_path => $sqlserver::v2008r2::iso::installer,
-    install_params => deep_merge($default_parameters, $install_params),
+    install_params => $final_install_params,
   }
 
   # 'Patch' is equivalent to 'SP4' for backwards compatibility
@@ -50,6 +55,21 @@ define sqlserver::v2008r2::instance (
   if $tcp_port {
     sqlserver::common::tcp_port { $instance_name:
       tcp_port => $tcp_port,
+    }
+  }
+
+  if ($certificate_thumbprint) {
+    $svc_account = $final_install_params['sqlsvcaccount']
+    sslcertificate::key_acl { "${svc_account}_certificate_read":
+      identity        => $svc_account,
+      cert_thumbprint => $certificate_thumbprint,
+      require         => Sqlserver::Common::Install_sqlserver_instance[$instance_name],
+    }
+
+    sqlserver::common::set_tls_cert { "Set_TLS_certificate_for_${instance_name}":
+      certificate_thumbprint => $certificate_thumbprint,
+      instance_name => $instance_name,
+      require => [Sqlserver::Common::Install_sqlserver_instance[$instance_name], Sslcertificate::Key_acl["${svc_account}_certificate_read"]],
     }
   }
 }
