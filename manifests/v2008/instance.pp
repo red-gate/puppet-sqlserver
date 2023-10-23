@@ -36,7 +36,7 @@ define sqlserver::v2008::instance (
     agtsvcaccount => 'NT AUTHORITY\NetworkService',
   }
 
-  $final_install_params = depp_merge($default_parameters, $install_params)
+  $final_install_params = deep_merge($default_parameters, $install_params)
 
   sqlserver::common::install_sqlserver_instance { $instance_name:
     installer_path => $sqlserver::v2008::iso::installer,
