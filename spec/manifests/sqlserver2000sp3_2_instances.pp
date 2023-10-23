@@ -7,12 +7,12 @@ package { 'procexp':
   provider => 'chocolatey',
 }
 
-class { '::sqlserver::v2000::iso':
-  source => $::sqlserver2000_iso_url,
+class { 'sqlserver::v2000::iso':
+  source => $facts['sqlserver2000_iso_url'],
 }
 
-class { '::sqlserver::v2000::sp3':
-  source => $::sqlserver2000_sp3_url,
+class { 'sqlserver::v2000::sp3':
+  source => $facts['sqlserver2000_sp3_url'],
 }
 
 sqlserver::v2000::instance { 'SQL2000_1':

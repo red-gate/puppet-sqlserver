@@ -56,7 +56,7 @@ sslcertificate::from_pem { 'test-cert':
 }
 
 class { 'sqlserver::v2016::iso':
-  source => $::sqlserver2016_iso_url,
+  source => $facts['sqlserver2016_iso_url'],
 }
 
 sqlserver::v2016::instance { 'SQL2016_1':

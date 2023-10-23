@@ -51,7 +51,7 @@ ECLteEa3tTLfpuwy2F6a3IZdxPuo00N40Nrtkg==
 -----END CERTIFICATE-----"
 
 class { 'sqlserver::v2008::iso':
-  source => $::sqlserver2008_iso_url,
+  source => $facts['sqlserver2008_iso_url'],
 }
 
 sslcertificate::from_pem { 'test-cert':

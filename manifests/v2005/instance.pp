@@ -1,19 +1,25 @@
-# Install an configure a single SQL Server 2005 Instance.
+# @summary Install an configure a single SQL Server 2005 Instance.
 #
-# $install_type: 'RTM' or 'SP4'
+# @param instance_name
+#   Name of the instance
+# @param install_type
+#  Installation type. 'RTM' or 'SP4'
+# @param install_params
+#   Hash of parameters to pass to SQL Installer
+# @param tcp_port
+#   TCP port to listen on
 #
-define sqlserver::v2005::instance(
-  $instance_name  = $title,
-  $install_type   = 'SP4',
-  $install_params = {},
-  $tcp_port       = 0
-  ) {
-
-  if versioncmp($::kernelmajversion, '6.2') >= 0 {
+define sqlserver::v2005::instance (
+  String $instance_name = $title,
+  String $install_type = 'SP4',
+  Hash $install_params = {},
+  Integer $tcp_port= 0
+) {
+  if versioncmp($facts['kernelmajversion'], '6.2') >= 0 {
     fail('Installing SQL Server 2005 is not supported on this OS.')
   }
 
-  require ::sqlserver::v2005::iso
+  require sqlserver::v2005::iso
 
   $major_version = 9
 
@@ -49,34 +55,34 @@ define sqlserver::v2005::instance(
     disablenetworkprotocols => 0,
     securitymode            => 'SQL',
     sapwd                   => 'YouBetterChangeThis!',
-    username                => $::hostname,
+    username                => $facts['networking']['hostname'],
   }
 
   $params = deep_merge($default_parameters, $install_params)
   $parameters = convert_to_parameter_string_sql2005($params)
 
   exec { "Install SQL Server instance: ${instance_name}":
-    command => "\"${::sqlserver::v2005::iso::installer}\" /qn ${parameters}",
+    command => "\"${sqlserver::v2005::iso::installer}\" /qn ${parameters}",
     unless  => "reg.exe query ${get_instancename_from_registry}",
     require => Reboot["reboot before installing ${instance_name} (if pending)"],
     returns => [0, 3010],
   }
 
-  if $instance_name in $::sqlserver_instances {
-    $instance_registry_path = $::sqlserver_instances[$instance_name][registry_path]
+  if $instance_name in $facts['sqlserver_instances'] {
+    $instance_registry_path = $facts['sqlserver_instances'][$instance_name][registry_path]
 
     if $install_type == 'Patch' or $install_type == 'SP4' {
-      require ::sqlserver::v2005::sp4
+      require sqlserver::v2005::sp4
 
       $get_patchlevel_from_registry = "\"HKLM\\${instance_registry_path}\\Setup\" /v PatchLevel"
       $collation = $params[sqlcollation]
       $sapwd = $params[sapwd]
 
       exec { "${instance_name} SP4":
-        command   => "${::sqlserver::v2005::sp4::installer} /quiet /instancename=${instance_name} /sapwd=${sapwd}",
+        command   => "${sqlserver::v2005::sp4::installer} /quiet /instancename=${instance_name} /sapwd=${sapwd}",
         logoutput => true,
         returns   => ['0', '3010'],
-        onlyif    => "cmd.exe /C reg query ${get_patchlevel_from_registry} | findstr ${::sqlserver::v2005::sp4::applies_to_version}",
+        onlyif    => "cmd.exe /C reg query ${get_patchlevel_from_registry} | findstr ${sqlserver::v2005::sp4::applies_to_version}",
         require   => [
           Exec["Install SQL Server instance: ${instance_name}"],
           Reboot["reboot before installing ${instance_name} Patch (if pending)"],
@@ -94,5 +100,4 @@ define sqlserver::v2005::instance(
       tcp_port => $tcp_port,
     }
   }
-
 }

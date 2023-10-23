@@ -56,7 +56,7 @@ sslcertificate::from_pem { 'test-cert':
 }
 
 class { 'sqlserver::v2012::iso':
-  source => $::sqlserver2012_iso_url,
+  source => $facts['sqlserver2012_iso_url'],
 }
 
 sqlserver::v2012::instance { 'SQL2012_1':

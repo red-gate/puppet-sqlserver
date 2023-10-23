@@ -8,7 +8,7 @@ package { 'procexp':
 }
 
 class { 'sqlserver::v2005::iso':
-  source => $::sqlserver2005_iso_url,
+  source => $facts['sqlserver2005_iso_url'],
 }
 
 sqlserver::v2005::instance { 'SQL2005_1':

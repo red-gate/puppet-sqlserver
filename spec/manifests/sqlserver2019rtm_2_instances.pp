@@ -56,7 +56,7 @@ sslcertificate::from_pem { 'test-cert':
 }
 
 class { 'sqlserver::v2019::iso':
-  source => $::sqlserver2019_iso_url,
+  source => $facts['sqlserver2019_iso_url'],
 }
 
 sqlserver::v2019::instance { 'SQL2019_1':

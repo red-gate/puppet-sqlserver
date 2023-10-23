@@ -1,24 +1,33 @@
-# Install an configure a single SQL Server 2000 Instance.
+# @summary Install an configure a single SQL Server 2000 Instance.
 #
-# $install_type:
+# @param sa_encrypted_password
+#   SA Password in encrypted form
+# @param instance_name
+#   Name of the instance
+# @param install_type
 #   'RTM' (don't patch)
 #   or
 #   'Patch' (install the latest Service Pack/Patch/CU we are aware of.)
 #
-define sqlserver::v2000::instance(
-  $sa_encrypted_password,
-  $instance_name  = $title,
-  $install_type   = 'Patch',
-  $sqlcollation   = 'Latin1_General_CI_AS',
-  $datadir        = 'D:\\',
-  $tcp_port       = 0
-  ) {
-
-  if versioncmp($::kernelmajversion, '6.1') >= 0 {
+# @param sqlcollation
+#   SQL Collation to use
+# @param datadir
+#   Location for SQL Data
+# @param tcp_port
+#   TCP port to listen on.
+define sqlserver::v2000::instance (
+  String $sa_encrypted_password,
+  String $instance_name = $title,
+  String $install_type = 'Patch',
+  String $sqlcollation = 'Latin1_General_CI_AS',
+  String $datadir = 'D:\\',
+  Integer $tcp_port = 0
+) {
+  if versioncmp($facts['kernelmajversion'], '6.1') >= 0 {
     fail('Installing SQL Server 2000 is not supported on this OS.')
   }
 
-  require ::sqlserver::v2000::iso
+  require sqlserver::v2000::iso
 
   $get_instancename_from_registry = "HKLM\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\${instance_name}\\MSSQLServer"
 
@@ -35,12 +44,12 @@ define sqlserver::v2000::instance(
   $log_file = "C:\\Windows\\Temp\\sql2000_${instance_name}.rtm.log.txt"
 
   file { $template_file:
-    ensure             => 'present',
+    ensure             => file,
     content            => template('sqlserver/2000dev.iss.erb'),
     source_permissions => ignore,
   }
   -> exec { "Install SQL Server instance: ${instance_name}":
-    command => "\"${::sqlserver::v2000::iso::installer}\" -s -f1 ${template_file} -f2 ${log_file}",
+    command => "\"${sqlserver::v2000::iso::installer}\" -s -f1 ${template_file} -f2 ${log_file}",
     unless  => "reg.exe query \"${get_instancename_from_registry}\"",
     require => Reboot["reboot before installing ${instance_name} (if pending)"],
     returns => [0, 3010],
@@ -50,17 +59,17 @@ define sqlserver::v2000::instance(
     $sp3_template_file = "C:\\Windows\\Temp\\sql2000_${instance_name}_sp3.iss"
     $sp3_log_file = "C:\\Windows\\Temp\\sql2000_${instance_name}.sp3.log.txt"
 
-    require ::sqlserver::v2000::sp3
+    require sqlserver::v2000::sp3
 
     file { $sp3_template_file:
-      ensure             => 'present',
+      ensure             => file,
       content            => template('sqlserver/2000sp3a.iss.erb'),
       source_permissions => ignore,
     }
     -> exec { "${instance_name} SP3":
-      command   => "\"${::sqlserver::v2000::sp3::installer}\" -s -f1 \"${sp3_template_file}\" -f2 \"${sp3_log_file}\"",
+      command   => "\"${sqlserver::v2000::sp3::installer}\" -s -f1 \"${sp3_template_file}\" -f2 \"${sp3_log_file}\"",
       logoutput => true,
-      unless    => "cmd.exe /C reg query \"${get_instancename_from_registry}\\CurrentVersion\" /v CSDVersion | findstr ${::sqlserver::v2000::sp3::version}",
+      unless    => "cmd.exe /C reg query \"${get_instancename_from_registry}\\CurrentVersion\" /v CSDVersion | findstr ${sqlserver::v2000::sp3::version}",
       require   => [
         Service[$service_name],
         Reboot["reboot before installing ${instance_name} Patch (if pending)"]

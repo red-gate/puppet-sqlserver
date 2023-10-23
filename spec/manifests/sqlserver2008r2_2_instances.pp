@@ -56,7 +56,7 @@ sslcertificate::from_pem { 'test-cert':
 }
 
 class { 'sqlserver::v2008r2::iso':
-  source => $::sqlserver2008r2_iso_url,
+  source => $sqlserver2008r2_iso_url,
 }
 
 sqlserver::v2008r2::instance { 'SQL2008R2_1':
