@@ -20,11 +20,15 @@
 #   defaults to '/QUIET /IACCEPTSQLSERVERLICENSETERMS'
 #   could be set to '/QUIET' only for versions of SQL Server that do not support /IACCEPTSQLSERVERLICENSETERMS
 #
+# @param certificate_thumbprint
+#   Thumbprint of a TLS cert in the Certificate store to use for SQL Server connections.
+#
 define sqlserver::common::install_sqlserver_instance (
   String $installer_path,
   String $instance_name  = $title,
   Hash $install_params = {},
-  String $quiet_params = '/QUIET /IACCEPTSQLSERVERLICENSETERMS'
+  String $quiet_params = '/QUIET /IACCEPTSQLSERVERLICENSETERMS',
+  Optional[String] $certificate_thumbprint = undef,
 ) {
   $get_instancename_from_registry = "\"HKLM\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\Instance Names\\SQL\" /v ${instance_name}"
 
@@ -69,5 +73,20 @@ define sqlserver::common::install_sqlserver_instance (
     unless  => "reg.exe query ${get_instancename_from_registry}",
     require => Reboot["reboot before installing ${instance_name} (if pending)"],
     returns => [0,3010],
+  }
+
+  if ($certificate_thumbprint) {
+    $svc_account = $params['sqlsvcaccount']
+    sslcertificate::key_acl { "${svc_account}_certificate_read":
+      identity        => $svc_account,
+      cert_thumbprint => $certificate_thumbprint,
+      require         => Exec["Install SQL Server instance: ${instance_name}"],
+    }
+
+    sqlserver::common::set_tls_cert { "Set_TLS_certificate_for_${instance_name}":
+      certificate_thumbprint => $certificate_thumbprint,
+      instance_name => $instance_name,
+      require => [Exec["Install SQL Server instance: ${instance_name}"], Sslcertificate::Key_acl["${svc_account}_certificate_read"]],
+    }
   }
 }
