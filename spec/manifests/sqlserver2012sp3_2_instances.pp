@@ -2,7 +2,7 @@ Reboot {
   timeout => 10,
 }
 
-class { '::sqlserver::v2012::iso':
+class { 'sqlserver::v2012::iso':
   source => $::sqlserver2012_iso_url,
 }
 
@@ -53,8 +53,7 @@ sqlserver::users::login_windows { 'SQL2012_1: Everyone login':
   login_name => '\Everyone',
   require    => Sqlserver::V2012::Instance['SQL2012_1'],
 }
-->
-sqlserver::users::login_role { 'SQL2012_1: Everyone is sysadmin':
+-> sqlserver::users::login_role { 'SQL2012_1: Everyone is sysadmin':
   server     => 'localhost\SQL2012_1',
   login_name => '\Everyone',
   role_name  => 'sysadmin',
