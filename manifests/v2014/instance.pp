@@ -13,11 +13,14 @@
 # @param tcp_port
 #   Specify the TCP port to listen on 
 #
+# @param certificate_thumbprint
+#   Thumbprint of an SSL cert in the local certificate store to use for SQL Connections
 define sqlserver::v2014::instance (
   String $instance_name = $title,
   String $install_type = 'SP2',
   Hash $install_params = {},
   Integer $tcp_port = 0,
+  Optional[String] $certificate_thumbprint = undef,
 ) {
   require sqlserver::v2014::iso
 
@@ -29,6 +32,7 @@ define sqlserver::v2014::instance (
   sqlserver::common::install_sqlserver_instance { $instance_name:
     installer_path => $sqlserver::v2014::iso::installer,
     install_params => $install_params,
+    certificate_thumbprint => $certificate_thumbprint,
   }
 
   # 'Patch' is equivalent to 'SP2' for backwards compatibility
