@@ -2,7 +2,7 @@ Reboot {
   timeout => 10,
 }
 
-class { '::sqlserver::v2014::iso':
+class { 'sqlserver::v2014::iso':
   source => $::sqlserver2014_iso_url,
 }
 
@@ -53,8 +53,7 @@ sqlserver::users::login_windows { 'SQL2014_1: Everyone login':
   login_name => '\Everyone',
   require    => Sqlserver::V2014::Instance['SQL2014_1'],
 }
-->
-sqlserver::users::login_role { 'SQL2014_1: Everyone is sysadmin':
+-> sqlserver::users::login_role { 'SQL2014_1: Everyone is sysadmin':
   server     => 'localhost\SQL2014_1',
   login_name => '\Everyone',
   role_name  => 'sysadmin',
