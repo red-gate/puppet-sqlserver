@@ -34,11 +34,10 @@ define sqlserver::v2008r2::instance (
     agtsvcaccount => 'NT AUTHORITY\NetworkService',
   }
 
-  $final_install_params = deep_merge($default_parameters, $install_params)
-
   sqlserver::common::install_sqlserver_instance { $instance_name:
     installer_path => $sqlserver::v2008r2::iso::installer,
-    install_params => $final_install_params,
+    install_params => deep_merge($default_parameters, $install_params),
+    certificate_thumbprint => $certificate_thumbprint,
   }
 
   # 'Patch' is equivalent to 'SP4' for backwards compatibility
@@ -55,21 +54,6 @@ define sqlserver::v2008r2::instance (
   if $tcp_port {
     sqlserver::common::tcp_port { $instance_name:
       tcp_port => $tcp_port,
-    }
-  }
-
-  if ($certificate_thumbprint) {
-    $svc_account = $final_install_params['sqlsvcaccount']
-    sslcertificate::key_acl { "${svc_account}_certificate_read":
-      identity        => $svc_account,
-      cert_thumbprint => $certificate_thumbprint,
-      require         => Sqlserver::Common::Install_sqlserver_instance[$instance_name],
-    }
-
-    sqlserver::common::set_tls_cert { "Set_TLS_certificate_for_${instance_name}":
-      certificate_thumbprint => $certificate_thumbprint,
-      instance_name => $instance_name,
-      require => [Sqlserver::Common::Install_sqlserver_instance[$instance_name], Sslcertificate::Key_acl["${svc_account}_certificate_read"]],
     }
   }
 }
