@@ -20,7 +20,7 @@ define sqlserver::v2008::instance (
   String $install_type = 'SP4',
   Hash $install_params = {},
   Integer $tcp_port = 0,
-  String[Optional] $certificate_thumbprint = undef,
+  Optional[String] $certificate_thumbprint = undef,
 ) {
   require sqlserver::v2008::iso
 
