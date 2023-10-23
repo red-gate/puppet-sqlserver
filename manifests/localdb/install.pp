@@ -1,30 +1,32 @@
-# Install a version of SQL LocalDB
+# @sumamry Install a version of SQL LocalDB
 #
-# $source: the url to download SqlLocalDB from
-# $version: the version as displayed in the installer name. (2012, 2014...)
-define sqlserver::localdb::install(
-  $source,
-  $version,
-  $tempFolder = 'C:/Windows/Temp') {
-
+# @param source
+#    the url to download SqlLocalDB from
+# @param version
+#    the version as displayed in the installer name. (2012, 2014...)
+# @param temp_folder
+#   Location of the temp folder
+define sqlserver::localdb::install (
+  String $source,
+  String $version,
+  String $temp_folder = 'C:/Windows/Temp'
+) {
   require chocolatey
   include archive
 
   $filename = inline_template('<%= File.basename(@source) %>')
-  $folder = "${tempFolder}/localdb${version}"
+  $folder = "${temp_folder}/localdb${version}"
 
   ensure_resource('file', $folder, { ensure => directory })
 
-  archive { "${tempFolder}/localdb${version}/${filename}":
+  archive { "${temp_folder}/localdb${version}/${filename}":
     source  => $source,
     require => File[$folder],
   }
-  ->
-  package { "Microsoft SQL Server ${version} Express LocalDB ":
+  -> package { "Microsoft SQL Server ${version} Express LocalDB ":
     ensure          => installed,
     source          => "${folder}/${filename}",
     install_options => ['IACCEPTSQLLOCALDBLICENSETERMS=YES'],
   }
-  ->
-  windows_env { "SQLLOCALDB_VERSION=${version}": }
+  -> windows_env { "SQLLOCALDB_VERSION=${version}": }
 }

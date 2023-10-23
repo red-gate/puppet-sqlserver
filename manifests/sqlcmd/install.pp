@@ -1,10 +1,16 @@
-# Install sqlcmd.exe
-class sqlserver::sqlcmd::install(
-  $version = '11',
-  $temp_folder = 'C:/Windows/Temp')
-{
-  if($::osfamily == 'windows')
-  {
+# @summary Install sqlcmd.exe
+#
+# @param version
+#   The version to install
+# 
+# @param temp_folder
+#   Location of a temp folder
+#
+class sqlserver::sqlcmd::install (
+  String $version = '11',
+  String $temp_folder = 'C:/Windows/Temp'
+) {
+  if($facts['os']['family'] == 'windows') {
     case $version {
       '11': { include sqlserver::sqlcmd::install::v11 }
       '10': { include sqlserver::sqlcmd::install::v10 }
@@ -23,17 +29,15 @@ class sqlserver::sqlcmd::install(
       'C:/Program Files/Microsoft SQL Server/80/Tools/Binn',
     ]
   }
-  else
-  {
+  else {
     exec { '/usr/bin/apt-get --force-yes --assume-yes install mssql-tools msodbcsql17':
-        environment => 'ACCEPT_EULA=y',
-        unless      => '/usr/bin/dpkg -l mssql-tools|tail -1|grep "^ii"',
-        require     => Class['sqlserver::common::add_apt_repo']
+      environment => 'ACCEPT_EULA=y',
+      unless      => '/usr/bin/dpkg -l mssql-tools|tail -1|grep "^ii"',
+      require     => Class['sqlserver::common::add_apt_repo'],
     }
 
     $paths = [
       '/opt/mssql-tools/bin',
     ]
   }
-
 }
