@@ -2,7 +2,7 @@ Reboot {
   timeout => 10,
 }
 
-class { '::sqlserver::v2017::iso':
+class { 'sqlserver::v2017::iso':
   source => $::sqlserver2017_iso_url,
 }
 
@@ -22,7 +22,6 @@ sqlserver::v2017::instance { 'SQL2017_2':
   },
   tcp_port       => 1434,
 }
-
 
 # Test setting options with the first instance
 
@@ -54,8 +53,7 @@ sqlserver::users::login_windows { 'SQL2017_1: Everyone login':
   login_name => '\Everyone',
   require    => Sqlserver::V2017::Instance['SQL2017_1'],
 }
-->
-sqlserver::users::login_role { 'SQL2017_1: Everyone is sysadmin':
+-> sqlserver::users::login_role { 'SQL2017_1: Everyone is sysadmin':
   server     => 'localhost\SQL2017_1',
   login_name => '\Everyone',
   role_name  => 'sysadmin',

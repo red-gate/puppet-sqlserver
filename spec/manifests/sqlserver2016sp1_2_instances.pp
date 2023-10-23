@@ -2,7 +2,7 @@ Reboot {
   timeout => 10,
 }
 
-class { '::sqlserver::v2016::iso':
+class { 'sqlserver::v2016::iso':
   source => $::sqlserver2016_iso_url,
 }
 
@@ -53,8 +53,7 @@ sqlserver::users::login_windows { 'SQL2016_1: Everyone login':
   login_name => '\Everyone',
   require    => Sqlserver::V2016::Instance['SQL2016_1'],
 }
-->
-sqlserver::users::login_role { 'SQL2016_1: Everyone is sysadmin':
+-> sqlserver::users::login_role { 'SQL2016_1: Everyone is sysadmin':
   server     => 'localhost\SQL2016_1',
   login_name => '\Everyone',
   role_name  => 'sysadmin',
@@ -66,17 +65,16 @@ sqlserver::users::login_role { 'SQL2016_1: Everyone is sysadmin':
 }
 
 $create_database_script = @(SCRIPT)
-  use [master]
-  GO
-  CREATE DATABASE [test_database]
-  GO
+use [master]
+GO
+CREATE DATABASE [test_database]
+GO
 SCRIPT
 
 file { 'C:/Windows/Temp/create_db.sql':
   content => $create_database_script,
 }
-->
-sqlserver::sqlcmd::sqlscript { 'create test_database on SQL2016_1':
+-> sqlserver::sqlcmd::sqlscript { 'create test_database on SQL2016_1':
   server  => 'localhost\SQL2016_1',
   require => Sqlserver::V2016::Instance['SQL2016_1'],
   path    => 'C:/Windows/Temp/create_db.sql',

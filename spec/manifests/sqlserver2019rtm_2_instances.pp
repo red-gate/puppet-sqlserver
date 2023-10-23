@@ -2,7 +2,7 @@ Reboot {
   timeout => 10,
 }
 
-class { '::sqlserver::v2019::iso':
+class { 'sqlserver::v2019::iso':
   source => $::sqlserver2019_iso_url,
 }
 
@@ -22,7 +22,6 @@ sqlserver::v2019::instance { 'SQL2019_2':
   },
   tcp_port       => 1434,
 }
-
 
 # Test setting options with the first instance
 
@@ -54,8 +53,7 @@ sqlserver::users::login_windows { 'SQL2019_1: Everyone login':
   login_name => '\Everyone',
   require    => Sqlserver::V2019::Instance['SQL2019_1'],
 }
-->
-sqlserver::users::login_role { 'SQL2019_1: Everyone is sysadmin':
+-> sqlserver::users::login_role { 'SQL2019_1: Everyone is sysadmin':
   server     => 'localhost\SQL2019_1',
   login_name => '\Everyone',
   role_name  => 'sysadmin',

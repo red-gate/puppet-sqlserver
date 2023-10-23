@@ -2,7 +2,7 @@ Reboot {
   timeout => 10,
 }
 
-class { '::sqlserver::v2022::iso':
+class { 'sqlserver::v2022::iso':
   source => $::sqlserver2022_iso_url,
 }
 
@@ -22,7 +22,6 @@ sqlserver::v2022::instance { 'SQL2022_2':
   },
   tcp_port       => 1434,
 }
-
 
 # Test setting options with the first instance
 
