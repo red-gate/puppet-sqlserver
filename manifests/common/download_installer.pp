@@ -11,7 +11,7 @@
 #           C:/Windows/Temp/<$source_filename_without_extension>/setup.exe
 define sqlserver::common::download_installer (
   String $source,
-  Optionalp[String] $creates = undef
+  Optional[String] $creates = undef
 ) {
   require archive
 
