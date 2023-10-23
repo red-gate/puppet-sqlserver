@@ -2,7 +2,7 @@ Reboot {
   timeout => 10,
 }
 
-class { '::sqlserver::v2008r2::iso':
+class { 'sqlserver::v2008r2::iso':
   source => $::sqlserver2008r2_iso_url,
 }
 
@@ -53,8 +53,7 @@ sqlserver::users::login_windows { 'SQL2008R2_1: Everyone login':
   login_name => '\Everyone',
   require    => Sqlserver::V2008r2::Instance['SQL2008R2_1'],
 }
-->
-sqlserver::users::login_role { 'SQL2008R2_1: Everyone is sysadmin':
+-> sqlserver::users::login_role { 'SQL2008R2_1: Everyone is sysadmin':
   server     => 'localhost\SQL2008R2_1',
   login_name => '\Everyone',
   role_name  => 'sysadmin',
@@ -64,8 +63,6 @@ sqlserver::users::login_role { 'SQL2008R2_1: Everyone is sysadmin':
   login_name            => '\Everyone',
   default_database_name => 'tempdb',
 }
-
-
 
 $keycontent = "-----BEGIN RSA PRIVATE KEY-----
 MIIEpAIBAAKCAQEAtcxQDHDD3Iq+Ab/JqUZGHVqsd7D8PgotcrU62gczEUApFkpI
