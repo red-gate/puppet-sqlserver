@@ -52,11 +52,7 @@ namespace :check do
   namespace :manifests do
     desc 'Validate syntax for all manifests'
     task :syntax do
-      Bundler.with_clean_env  do
-        # Use bundler.with_clean_env as the way bundler set ruby environment variables
-        # is killing puppet on windows.
-        sh "puppet parser validate #{rootdir}"
-      end
+      sh "puppet parser validate #{rootdir}"
     end
 
     require 'puppet-lint/tasks/puppet-lint'

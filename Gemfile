@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'puppet-lint'
+gem 'puppet'
 
 gem 'test-kitchen'
 gem 'kitchen-puppet', '>= 3.6.0'
