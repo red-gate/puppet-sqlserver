@@ -2,69 +2,6 @@ Reboot {
   timeout => 10,
 }
 
-class { '::sqlserver::v2008::iso':
-  source => $::sqlserver2008_iso_url,
-}
-
-sqlserver::v2008::instance { 'SQL2008_1':
-  install_type   => 'Patch',
-  install_params => {
-    sapwd => 'sdf347RT!',
-  },
-  tcp_port       => 1433,
-}
-
-sqlserver::v2008::instance { 'SQL2008_2':
-  install_type   => 'Patch',
-  install_params => {
-    sapwd        => 'sdf347RT!',
-    sqlcollation => 'Latin1_General_CS_AS_KS_WS',
-  },
-  tcp_port       => 1434,
-}
-
-# Test setting options with the first instance
-
-sqlserver::options::clr_enabled { 'SQL2008_1: clr enabled':
-  server  => 'localhost\SQL2008_1',
-  require => Sqlserver::V2008::Instance['SQL2008_1'],
-  value   => 1,
-}
-sqlserver::options::max_memory { 'SQL2008_1: Max Memory':
-  server  => 'localhost\SQL2008_1',
-  require => Sqlserver::V2008::Instance['SQL2008_1'],
-  value   => 512,
-}
-sqlserver::options::xp_cmdshell { 'SQL2008_1: xp_cmdshell':
-  server  => 'localhost\SQL2008_1',
-  require => Sqlserver::V2008::Instance['SQL2008_1'],
-  value   => 1,
-}
-
-sqlserver::database::readonly { 'SQL2008_1: Set model readonly':
-  server        => 'localhost\SQL2008_1',
-  database_name => 'model',
-  require       => Sqlserver::V2008::Instance['SQL2008_1'],
-}
-
-# Test logins/roles
-sqlserver::users::login_windows { 'SQL2008_1: Everyone login':
-  server     => 'localhost\SQL2008_1',
-  login_name => '\Everyone',
-  require    => Sqlserver::V2008::Instance['SQL2008_1'],
-}
-->
-sqlserver::users::login_role { 'SQL2008_1: Everyone is sysadmin':
-  server     => 'localhost\SQL2008_1',
-  login_name => '\Everyone',
-  role_name  => 'sysadmin',
-}
--> sqlserver::users::default_database { 'SQL2008_1: Everyone default database is tempdb':
-  server                => 'localhost\SQL2008_1',
-  login_name            => '\Everyone',
-  default_database_name => 'tempdb',
-}
-
 $keycontent = "-----BEGIN RSA PRIVATE KEY-----
 MIIEpAIBAAKCAQEAtcxQDHDD3Iq+Ab/JqUZGHVqsd7D8PgotcrU62gczEUApFkpI
 FrWKDGIUxnWRPDKaY+HZC2IGSXYEl/Hz+GCko8kVc1q3OPq2ATu24w++KQWD4K4y
@@ -113,31 +50,71 @@ EqO7EltDqbC2HqNrxYCzsyjusPfIzdAVHxl61YGvFtIJWfQr2/CCCuOHfgItx7Qf
 ECLteEa3tTLfpuwy2F6a3IZdxPuo00N40Nrtkg==
 -----END CERTIFICATE-----"
 
+class { 'sqlserver::v2008::iso':
+  source => $::sqlserver2008_iso_url,
+}
+
 sslcertificate::from_pem { 'test-cert':
   cert_content => $certcontent,
   key_content  => $keycontent,
 }
 
-sslcertificate::key_acl { 'sql_service_1_cert_read':
-  identity        => 'NT Service\\MSSQL`$SQL2008_1',
-  cert_thumbprint => '3401AEE89B13985BFE3BEFFDE853D574E0243E09',
-  require         => [Sslcertificate::From_Pem['test-cert'], Sqlserver::V2008::Instance['SQL2008_1']],
-}
-
-sslcertificate::key_acl { 'sql_service_2_cert_read':
-  identity        => 'NT Service\\MSSQL`$SQL2008_2',
-  cert_thumbprint => '3401AEE89B13985BFE3BEFFDE853D574E0243E09',
-  require         => [Sslcertificate::From_Pem['test-cert'], Sqlserver::V2008::Instance['SQL2008_2']],
-}
-
-sqlserver::common::set_tls_cert { 'Set_SQL2008_1_TLS_Cert':
+sqlserver::v2008::instance { 'SQL2008_1':
+  install_type   => 'Patch',
+  install_params => {
+    sapwd => 'sdf347RT!',
+  },
+  tcp_port       => 1433,
   certificate_thumbprint => '3401AEE89B13985BFE3BEFFDE853D574E0243E09',
-  instance_name => 'SQL2008_1',
-  require => [Sqlserver::V2008::Instance['SQL2008_1'], Sslcertificate::Key_acl['sql_service_1_cert_read']],
+  require => Sslcertificate::From_pem['test-cert'],
 }
 
-sqlserver::common::set_tls_cert { 'Set_SQL2008_2_TLS_Cert':
-  certificate_thumbprint => '3401AEE89B13985BFE3BEFFDE853D574E0243E09',
-  instance_name => 'SQL2008_2',
-  require => [Sqlserver::V2008::Instance['SQL2008_2'], Sslcertificate::Key_acl['sql_service_2_cert_read']],
+sqlserver::v2008::instance { 'SQL2008_2':
+  install_type   => 'Patch',
+  install_params => {
+    sapwd        => 'sdf347RT!',
+    sqlcollation => 'Latin1_General_CS_AS_KS_WS',
+  },
+  tcp_port       => 1434,
+}
+
+# Test setting options with the first instance
+
+sqlserver::options::clr_enabled { 'SQL2008_1: clr enabled':
+  server  => 'localhost\SQL2008_1',
+  require => Sqlserver::V2008::Instance['SQL2008_1'],
+  value   => 1,
+}
+sqlserver::options::max_memory { 'SQL2008_1: Max Memory':
+  server  => 'localhost\SQL2008_1',
+  require => Sqlserver::V2008::Instance['SQL2008_1'],
+  value   => 512,
+}
+sqlserver::options::xp_cmdshell { 'SQL2008_1: xp_cmdshell':
+  server  => 'localhost\SQL2008_1',
+  require => Sqlserver::V2008::Instance['SQL2008_1'],
+  value   => 1,
+}
+
+sqlserver::database::readonly { 'SQL2008_1: Set model readonly':
+  server        => 'localhost\SQL2008_1',
+  database_name => 'model',
+  require       => Sqlserver::V2008::Instance['SQL2008_1'],
+}
+
+# Test logins/roles
+sqlserver::users::login_windows { 'SQL2008_1: Everyone login':
+  server     => 'localhost\SQL2008_1',
+  login_name => '\Everyone',
+  require    => Sqlserver::V2008::Instance['SQL2008_1'],
+}
+-> sqlserver::users::login_role { 'SQL2008_1: Everyone is sysadmin':
+  server     => 'localhost\SQL2008_1',
+  login_name => '\Everyone',
+  role_name  => 'sysadmin',
+}
+-> sqlserver::users::default_database { 'SQL2008_1: Everyone default database is tempdb':
+  server                => 'localhost\SQL2008_1',
+  login_name            => '\Everyone',
+  default_database_name => 'tempdb',
 }

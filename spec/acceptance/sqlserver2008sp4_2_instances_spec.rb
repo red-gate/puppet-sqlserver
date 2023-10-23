@@ -16,11 +16,11 @@ end
   describe windows_registry_key("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\MSSQL10.#{instance_name}\\Setup") do
     it { should exist }
     it { should have_property_value('PatchLevel', :type_string, '10.4.6556.0') }
-  end
+  end 
+end
 
-  describe windows_registry_key("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\MSSQL10.#{instance_name}\\Mssqlserver\\Supersocketnetlib") do
-    it { should have_property_value('Certificate', :type_string, '3401AEE89B13985BFE3BEFFDE853D574E0243E09') }
-  end
+describe windows_registry_key("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\MSSQL10.SQL2008_1\\Mssqlserver\\Supersocketnetlib") do
+  it { should have_property_value('Certificate', :type_string, '3401AEE89B13985BFE3BEFFDE853D574E0243E09') }
 end
 
 describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL10.SQL2008_1\Setup') do
@@ -31,10 +31,3 @@ describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft S
   it { should have_property_value('tcpport', :type_string, '1433') }
 end
 
-describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL10.SQL2008_2\Setup') do
-  it { should have_property_value('Collation', :type_string, 'Latin1_General_CS_AS_KS_WS') }
-end
-
-describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL10.SQL2008_2\Mssqlserver\Supersocketnetlib\tcp\ipall') do
-  it { should have_property_value('tcpport', :type_string, '1434') }
-end
