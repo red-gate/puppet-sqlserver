@@ -12,11 +12,15 @@
 #
 # @param tcp_port
 #   Specify the TCP port to listen on 
+#
+# @param certificate_thumbprint
+#   Thumbprint of an SSL cert in the local certificate store to use for SQL Connections
 define sqlserver::v2008::instance (
   String $instance_name = $title,
   String $install_type = 'SP4',
   Hash $install_params = {},
   Integer $tcp_port = 0,
+  String[Optional] $certificate_thumbprint = undef,
 ) {
   require sqlserver::v2008::iso
 
