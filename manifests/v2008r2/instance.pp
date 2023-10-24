@@ -30,8 +30,8 @@ define sqlserver::v2008r2::instance (
   }
 
   $default_parameters = {
-    sqlsvcaccount => 'NT AUTHORITY\NetworkService',
-    agtsvcaccount => 'NT AUTHORITY\NetworkService',
+    sqlsvcaccount => 'NT AUTHORITY\NETWORK SERVICE',
+    agtsvcaccount => 'NT AUTHORITY\NETWORK SERVICE',
   }
 
   sqlserver::common::install_sqlserver_instance { $instance_name:
