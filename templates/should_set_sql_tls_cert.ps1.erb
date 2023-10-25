@@ -1,0 +1,27 @@
+$instance_name = "<%= @instance_name %>"
+$certificate_thumbprint = "<%= @certificate_thumbprint %>"
+
+
+
+[void][System.Reflection.Assembly]::LoadWithPartialName('Microsoft.SqlServer.SqlWmiManagement')
+$wmi = New-Object Microsoft.SqlServer.Management.Smo.Wmi.ManagedComputer
+$null = $wmi.Initialize()
+
+
+$sqlwmi = $wmi.Services | Where-Object DisplayName -eq "SQL Server ($instance_name)"
+
+$regRoot = ($sqlwmi.AdvancedProperties | Where-Object Name -eq REGROOT).Value
+
+$regPath = "HKLM:\$regRoot\MSSQLServer\SuperSocketNetLib"
+
+$item = Get-ItemProperty -Path $regPath
+
+if($item.Certificate -eq $certificate_thumbprint) 
+{
+    # Notihng to do here.
+    exit 1;
+}
+
+
+
+exit 0;

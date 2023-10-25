@@ -1,22 +1,30 @@
-# Install SSMS 2016.
-class sqlserver::ssms::v2016(
-  $source = 'http://go.microsoft.com/fwlink/?LinkID=828615',
-  $filename = 'SSMS-Setup-ENU.exe',
-  $programName = 'Microsoft SQL Server Management Studio - 16.4.1',
-  $tempFolder = 'C:/Windows/Temp'
-  ) {
-
+# @summary Install SSMS 2016.
+#
+# @param source
+#   URL for SSMS
+# @param filename
+#   Filename of installer
+# @param program_name
+#   Name of the program as it appears in add/remove programs.
+# @param temp_folder
+#   path to temp folder
+class sqlserver::ssms::v2016 (
+  String $source = 'http://go.microsoft.com/fwlink/?LinkID=828615',
+  String $filename = 'SSMS-Setup-ENU.exe',
+  String $program_name = 'Microsoft SQL Server Management Studio - 16.4.1',
+  String $temp_folder = 'C:/Windows/Temp'
+) {
   include archive
 
-  archive { "${tempFolder}/${filename}":
+  archive { "${temp_folder}/${filename}":
     source  => $source,
   }
   -> reboot { 'reboot before installing SSMS (if pending)':
     when => pending,
   }
-  -> package { $programName:
+  -> package { $program_name:
     ensure          => installed,
-    source          => "${tempFolder}/${filename}",
+    source          => "${temp_folder}/${filename}",
     install_options => ['/install', '/quiet', '/norestart'],
   }
 }

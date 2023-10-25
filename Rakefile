@@ -20,6 +20,7 @@ namespace :acceptance do
       raise 'Environment variable SQLSERVER2005_ISO_URL must be set to be able to run our acceptance tests' unless ENV['SQLSERVER2005_ISO_URL']
     when '.kitchen.sqlservers.yml'
       raise 'Environment variable SQLSERVER2008_ISO_URL must be set to be able to run our acceptance tests' unless ENV['SQLSERVER2008_ISO_URL']
+      raise 'Environment variable SQLSERVER2008R2_ISO_URL must be set to be able to run our acceptance tests' unless ENV['SQLSERVER2008R2_ISO_URL']
       raise 'Environment variable SQLSERVER2012_ISO_URL must be set to be able to run our acceptance tests' unless ENV['SQLSERVER2012_ISO_URL']
       raise 'Environment variable SQLSERVER2014_ISO_URL must be set to be able to run our acceptance tests' unless ENV['SQLSERVER2014_ISO_URL']
       raise 'Environment variable SQLSERVER2016_ISO_URL must be set to be able to run our acceptance tests' unless ENV['SQLSERVER2016_ISO_URL']
@@ -38,7 +39,7 @@ namespace :acceptance do
   task kitchen: [:prerequisites, :installpuppetmodules] do
     begin
       Dir.mkdir('.kitchen') unless Dir.exist?('.kitchen')
-      sh "kitchen test --destroy=#{destroy_strategy} --concurrency 2 --log-level=info #{color} 2> .kitchen/kitchen.stderr" do |ok, _|
+      sh "kitchen test --destroy=#{destroy_strategy} --concurrency 3 --log-level=info #{color} 2> .kitchen/kitchen.stderr" do |ok, _|
         raise IO.read('.kitchen/kitchen.stderr') unless ok
       end
     ensure
@@ -51,11 +52,7 @@ namespace :check do
   namespace :manifests do
     desc 'Validate syntax for all manifests'
     task :syntax do
-      Bundler.with_clean_env  do
-        # Use bundler.with_clean_env as the way bundler set ruby environment variables
-        # is killing puppet on windows.
-        sh "puppet parser validate #{rootdir}"
-      end
+      sh "puppet parser validate #{rootdir}"
     end
 
     require 'puppet-lint/tasks/puppet-lint'

@@ -1,0 +1,3 @@
+--ignore-paths=.kitchen-modules/*
+--no-140chars-check
+--no-arrow_alignment-check

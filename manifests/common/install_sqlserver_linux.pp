@@ -17,46 +17,43 @@
 # @param ensure
 #     Optinal. Specify the `ensure` value for the mssql-server and mssql-server-fts packages.
 #     Default: latest
-define sqlserver::common::install_sqlserver_linux(
+define sqlserver::common::install_sqlserver_linux (
   String $sa_password,
   Enum['evaluation','developer','express','web','enterprise'] $mssql_product_id,
   Boolean $mssql_agent_enabled = true,
   Boolean $install_sql_fulltext = false,
   Boolean $install_sql_tools = true,
-  $ensure = 'latest',
+  String $ensure = 'latest',
 ) {
-
   require  sqlserver::common::add_apt_repo
 
-  package {'mssql-server':
-    ensure  => $ensure
+  package { 'mssql-server':
+    ensure  => $ensure,
   }
 
-  exec {'Configure SQL Server':
-    command     => "/opt/mssql/bin/mssql-conf -n setup accept-eula",
+  exec { 'Configure SQL Server':
+    command     => '/opt/mssql/bin/mssql-conf -n setup accept-eula',
     environment => ["MSSQL_SA_PASSWORD=${sa_password}",
-                    "MSSQL_PID=${mssql_product_id}",
-                    "MSSQL_AGENT_ENABLED=${mssql_agent_enabled}"
-                  ],
+      "MSSQL_PID=${mssql_product_id}",
+      "MSSQL_AGENT_ENABLED=${mssql_agent_enabled}",
+    ],
     creates     => '/etc/systemd/system/multi-user.target.wants/mssql-server.service',
     require     => Package['mssql-server'],
   }
 
-  service {'mssql-server':
+  service { 'mssql-server':
     ensure  => running,
     require => Exec['Configure SQL Server']
   }
 
   if($install_sql_fulltext) {
-    package {'mssql-server-fts':
+    package { 'mssql-server-fts':
       ensure  => $ensure,
-      notify  => Service['mssql-service']
+      notify  => Service['mssql-service'],
     }
   }
 
   if($install_sql_tools) {
     include sqlserver::sqlcmd::install
   }
-
-
 }

@@ -1,9 +1,13 @@
-# Install sqlcmd.exe
-class sqlserver::sqlcmd::install::v11($temp_folder = 'C:/Windows/Temp') {
-
+# @summary Install sqlcmd.exe
+#
+# @param temp_folder
+#   Location of a temp folder.
+class sqlserver::sqlcmd::install::v11 (
+  String $temp_folder = 'C:/Windows/Temp'
+) {
   include archive
 
-  if $::architecture == 'x86' {
+  if $facts['os']['architecture'] == 'x86' {
     $odbcdriver_source = 'https://download.microsoft.com/download/5/7/2/57249A3A-19D6-4901-ACCE-80924ABEB267/ENU/x86/msodbcsql.msi'
     $sqlcmdutils_source = 'https://download.microsoft.com/download/5/5/B/55BEFD44-B899-4B54-ACD7-506E03142B34/1033/x86/MsSqlCmdLnUtils.msi'
   } else {

@@ -11,3 +11,4 @@ mod 'puppetlabs/reboot', '3.0.0'
 mod 'puppetlabs/stdlib', '9.4.0'
 mod 'redgate/registrykey', :git => 'git@github.com:red-gate/puppet-registrykey', :ref => 'master'
 mod 'puppetlabs/apt', '9.0.2' # Later versions drop puppet6 support.
+mod 'redgate/sslcertificate', :git => 'git@github.com:red-gate/puppet-sslcertificate', :ref => 'master'

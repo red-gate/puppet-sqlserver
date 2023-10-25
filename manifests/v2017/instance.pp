@@ -1,19 +1,28 @@
-# Install an configure a single SQL Server 2017 Instance.
+# @summary Install an configure a single SQL Server 2017 Instance.
 #
-# $install_type:
-#   'RTM' (don't patch)
-#   or
-#   'Patch' (install the latest Service Pack/Patch we are aware of.)
-#     The patch installed can be customized by using the ::sqlserver::v2017::patch class.
+# @param instance_name 
+#   Name of the instance being installed
 #
-define sqlserver::v2017::instance(
-  $instance_name  = $title,
-  $install_type   = 'Patch',
-  $install_params = {},
-  $tcp_port       = 0
-  ) {
-
-  require ::sqlserver::v2017::iso
+# @param install_type
+#   Type of install. Specify a Patch level to also install the related patch.
+#   Can be RTM, SP3, SP4 or Jan2018CU
+#
+# @param install_params
+#   Hash of install parameters to pass to the SQL installer
+#
+# @param tcp_port
+#   Specify the TCP port to listen on 
+#
+# @param certificate_thumbprint
+#   Thumbprint of an SSL cert in the local certificate store to use for SQL Connections
+define sqlserver::v2017::instance (
+  String $instance_name = $title,
+  String $install_type = 'Patch',
+  Hash $install_params = {},
+  Integer $tcp_port = 0,
+  Optional[String] $certificate_thumbprint = undef,
+) {
+  require sqlserver::v2017::iso
 
   Exec {
     path    => 'C:/Windows/System32',
@@ -21,8 +30,9 @@ define sqlserver::v2017::instance(
   }
 
   sqlserver::common::install_sqlserver_instance { $instance_name:
-    installer_path => $::sqlserver::v2017::iso::installer,
+    installer_path => $sqlserver::v2017::iso::installer,
     install_params => $install_params,
+    certificate_thumbprint => $certificate_thumbprint,
   }
 
 # Patch is not yet supported for SQL Server 2017, so do just act like base install
@@ -40,5 +50,4 @@ define sqlserver::v2017::instance(
       tcp_port => $tcp_port,
     }
   }
-
 }

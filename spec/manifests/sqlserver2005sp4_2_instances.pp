@@ -7,8 +7,8 @@ package { 'procexp':
   provider => 'chocolatey',
 }
 
-class { '::sqlserver::v2005::iso':
-  source => $::sqlserver2005_iso_url,
+class { 'sqlserver::v2005::iso':
+  source => $facts['sqlserver2005_iso_url'],
 }
 
 sqlserver::v2005::instance { 'SQL2005_1':
@@ -18,8 +18,7 @@ sqlserver::v2005::instance { 'SQL2005_1':
   },
   tcp_port       => 1433,
 }
-->
-sqlserver::v2005::instance { 'SQL2005_2':
+-> sqlserver::v2005::instance { 'SQL2005_2':
   install_type   => 'SP4',
   install_params => {
     sapwd        => 'sdf347RT!',

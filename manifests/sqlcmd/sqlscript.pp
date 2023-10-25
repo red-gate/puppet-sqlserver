@@ -1,14 +1,40 @@
-# Execute a SQL script using sqlcmd.exe
-define sqlserver::sqlcmd::sqlscript($server, $path, $unless = undef, $username = undef, $password = undef, $additional_arguments = '', $unless_additional_arguments = '', $refreshonly = false, $timeout = 300) {
-
+# @summary Execute a SQL script using sqlcmd.exe
+#
+# @param server
+#   The server to connect to
+# @param path
+#   The path to where sqlcmd is installed
+# @param unless
+#   An 'unless' check
+# @param username
+#   Username to authentication with
+# @param password
+#   Password for the user specified
+# @param additional_arguments
+#   Any additional argumens to pass
+# @param unless_additional_arguments
+#   Additional arguments to pass to the unless check
+# @param refreshonly
+#   Only run when notified
+# @param timeout
+#   Command timeout in seconds
+define sqlserver::sqlcmd::sqlscript (
+  String $server,
+  String $path,
+  Optional[String] $unless = undef,
+  Optional[String] $username = undef,
+  Optional[String] $password = undef,
+  String $additional_arguments = '',
+  String $unless_additional_arguments = '',
+  Boolean $refreshonly = false,
+  Integer $timeout = 300
+) {
   require sqlserver::sqlcmd::install
 
-  if($::osfamily == 'windows')
-  {
+  if($facts['os']['family'] == 'windows') {
     $sqlcmd_name = 'sqlcmd.exe'
   }
-  else
-  {
+  else {
     $sqlcmd_name = 'sqlcmd'
   }
 
@@ -31,5 +57,4 @@ define sqlserver::sqlcmd::sqlscript($server, $path, $unless = undef, $username =
     refreshonly => $refreshonly,
     timeout     => $timeout,
   }
-
 }

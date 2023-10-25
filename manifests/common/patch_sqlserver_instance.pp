@@ -1,21 +1,22 @@
-# Install a patch / Service pack for a SQL Server instance.
+# @summary Install a patch / Service pack for a SQL Server instance.
 #
-# $installer_path: Full path to a setup.exe file.
+# @param installer_path
+#    Full path to a setup.exe file.
 #
-# $applies_to_version: The current expected PatchLevel of the SQL Server instance this patch
-#                      is going to be applied to.
-#                      If the PatchLevel is different, than the patch is not applied.
+# @param applies_to_version
+#    The current expected PatchLevel of the SQL Server instance this patch
+#     is going to be applied to.
+#     If the PatchLevel is different, than the patch is not applied.
 #
-# $instance_name: The name of the SQL Server instance to patch
-define sqlserver::common::patch_sqlserver_instance(
-  $installer_path,
-  $applies_to_version,
-  $instance_name = $title
-  ) {
-
-  # 0 + is needed so that $major_version is an int.
-  # https://docs.puppet.com/puppet/latest/lang_data_number.html#converting-strings-to-numbers
-  $major_version = 0 + $applies_to_version.match(/(\d+)\./)[1]
+# @param instance_name
+#    The name of the SQL Server instance to patch
+define sqlserver::common::patch_sqlserver_instance (
+  String $installer_path,
+  String $applies_to_version,
+  String $instance_name = $title
+) {
+  # https://www.puppet.com/docs/puppet/7/lang_data_number.html#lang_data_number_convert_strings
+  $major_version = Integer($applies_to_version.match(/(\d+)\./)[1])
 
   $registry_instance_path = "SOFTWARE\\Microsoft\\Microsoft SQL Server\\MSSQL${major_version}.${instance_name}"
   $get_patchlevel_from_registry = "\"HKLM\\${registry_instance_path}\\Setup\" /v PatchLevel"
