@@ -76,6 +76,8 @@ sqlserver::v2008::instance { 'SQL2008_2':
     sqlcollation => 'Latin1_General_CS_AS_KS_WS',
   },
   tcp_port       => 1434,
+  certificate_thumbprint => '3401AEE89B13985BFE3BEFFDE853D574E0243E09',
+  require => Sslcertificate::From_pem['test-cert'],
 }
 
 # Test setting options with the first instance
