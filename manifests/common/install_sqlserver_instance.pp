@@ -77,7 +77,9 @@ define sqlserver::common::install_sqlserver_instance (
 
   if ($certificate_thumbprint) {
     $svc_account = $params['sqlsvcaccount']
-    sslcertificate::key_acl { "${svc_account}_certificate_read":
+
+    # Include instance name here to avoid duplicate declarations where more than one SQL instance exists on the same server
+    sslcertificate::key_acl { "${instance_name}_${svc_account}_certificate_read":
       identity        => $svc_account,
       cert_thumbprint => $certificate_thumbprint,
       require         => Exec["Install SQL Server instance: ${instance_name}"],
@@ -86,7 +88,7 @@ define sqlserver::common::install_sqlserver_instance (
     sqlserver::common::set_tls_cert { "Set_TLS_certificate_for_${instance_name}":
       certificate_thumbprint => $certificate_thumbprint,
       instance_name => $instance_name,
-      require => [Exec["Install SQL Server instance: ${instance_name}"], Sslcertificate::Key_acl["${svc_account}_certificate_read"]],
+      require => [Exec["Install SQL Server instance: ${instance_name}"], Sslcertificate::Key_acl["${instance_name}_${svc_account}_certificate_read"]],
     }
   }
 }
