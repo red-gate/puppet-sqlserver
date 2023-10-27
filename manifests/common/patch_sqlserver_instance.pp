@@ -29,6 +29,7 @@ define sqlserver::common::patch_sqlserver_instance (
   $get_patchlevel_from_registry = "\"HKLM\\${registry_instance_path}\\Setup\" /v PatchLevel"
 
   case $major_version {
+    10: { if($minor == 50) { $additional_parameters = '/IACCEPTSQLSERVERLICENSETERMS' } }
     11, 12: { $additional_parameters = '/IACCEPTSQLSERVERLICENSETERMS' }
     13: { $additional_parameters = '/IACCEPTSQLSERVERLICENSETERMS /IACCEPTROPENLICENSETERMS' }
     default: { $additional_parameters = '' }
