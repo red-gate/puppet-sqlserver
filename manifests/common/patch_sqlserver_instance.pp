@@ -17,11 +17,19 @@ define sqlserver::common::patch_sqlserver_instance (
 ) {
   # https://www.puppet.com/docs/puppet/7/lang_data_number.html#lang_data_number_convert_strings
   $major_version = Integer($applies_to_version.match(/(\d+)\./)[1])
+  $minor = Integer($applies_to_version.match(/(\d+)\.(\d+)\./)[2])
+  if($minor == 50) {
+    $version_path_component = "${major_version}_${minor}"
+  }
+  else {
+    $version_path_component = $major_version
+  }
 
-  $registry_instance_path = "SOFTWARE\\Microsoft\\Microsoft SQL Server\\MSSQL${major_version}.${instance_name}"
+  $registry_instance_path = "SOFTWARE\\Microsoft\\Microsoft SQL Server\\MSSQL${version_path_component}.${instance_name}"
   $get_patchlevel_from_registry = "\"HKLM\\${registry_instance_path}\\Setup\" /v PatchLevel"
 
   case $major_version {
+    10: { if($minor == 50) { $additional_parameters = '/IACCEPTSQLSERVERLICENSETERMS' } }
     11, 12: { $additional_parameters = '/IACCEPTSQLSERVERLICENSETERMS' }
     13: { $additional_parameters = '/IACCEPTSQLSERVERLICENSETERMS /IACCEPTROPENLICENSETERMS' }
     default: { $additional_parameters = '' }
