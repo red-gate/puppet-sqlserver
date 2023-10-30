@@ -18,8 +18,10 @@ define sqlserver::common::patch_sqlserver_instance (
   # https://www.puppet.com/docs/puppet/7/lang_data_number.html#lang_data_number_convert_strings
   $major_version = Integer($applies_to_version.match(/(\d+)\./)[1])
   $minor = Integer($applies_to_version.match(/(\d+)\.(\d+)\./)[2])
-  if($minor == 50) {
-    $version_path_component = "${major_version}_${minor}"
+
+  # Minor version for SQL2008R2 ranges from 50 to 53, depending on Service Pack
+  if($minor >= 50 and $minor <= 53) {
+    $version_path_component = "${major_version}_50" # Always seems to be '50' in registry path though. 
   }
   else {
     $version_path_component = $major_version
@@ -29,7 +31,7 @@ define sqlserver::common::patch_sqlserver_instance (
   $get_patchlevel_from_registry = "\"HKLM\\${registry_instance_path}\\Setup\" /v PatchLevel"
 
   case $major_version {
-    10: { if($minor == 50) { $additional_parameters = '/IACCEPTSQLSERVERLICENSETERMS' } }
+    10: { if($minor >= 50 and $minor <= 53) { $additional_parameters = '/IACCEPTSQLSERVERLICENSETERMS' } }
     11, 12: { $additional_parameters = '/IACCEPTSQLSERVERLICENSETERMS' }
     13: { $additional_parameters = '/IACCEPTSQLSERVERLICENSETERMS /IACCEPTROPENLICENSETERMS' }
     default: { $additional_parameters = '' }

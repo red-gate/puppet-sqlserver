@@ -17,7 +17,7 @@
 #   Thumbprint of an SSL cert in the local certificate store to use for SQL Connections
 define sqlserver::v2008r2::instance (
   String $instance_name = $title,
-  String $install_type = 'SP3',
+  String $install_type = 'kb4057113',
   Hash $install_params = {},
   Optional[Integer] $tcp_port = undef,
   Optional[String] $certificate_thumbprint = undef,
@@ -41,13 +41,21 @@ define sqlserver::v2008r2::instance (
   }
 
   # 'Patch' is equivalent to 'SP4' for backwards compatibility
-  if $install_type == 'Patch' or $install_type == 'SP3' {
+  if $install_type == 'Patch' or $install_type == 'kb4057113' {
+    require sqlserver::v2008r2::kb4057113
     require sqlserver::v2008r2::sp3
 
-    sqlserver::common::patch_sqlserver_instance { $instance_name:
+    sqlserver::common::patch_sqlserver_instance { "${instance_name}-SP3":
       instance_name      => $instance_name,
       installer_path     => $sqlserver::v2008r2::sp3::installer,
       applies_to_version => $sqlserver::v2008r2::sp3::applies_to_version,
+    }
+
+    sqlserver::common::patch_sqlserver_instance { "${instance_name}-kb4057113":
+      instance_name      => $instance_name,
+      installer_path     => $sqlserver::v2008r2::kb4057113::installer,
+      applies_to_version => $sqlserver::v2008r2::kb4057113::applies_to_version,
+      require => Sqlserver::Common::Patch_sqlserver_instance["${instance_name}-SP3"],
     }
   }
 
