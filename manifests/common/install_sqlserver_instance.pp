@@ -73,7 +73,7 @@ define sqlserver::common::install_sqlserver_instance (
       command => "\"${installer_path}\" ${quiet_params} ${parameters} /SkipRules=ServerCoreBlockUnsupportedSxSCheck",
       unless  => "reg.exe query ${get_instancename_from_registry}",
       require => Reboot["reboot before installing ${instance_name} (if pending)"],
-      before  => Sslcertificate::Key_acl["${instance_name}_${svc_account}_certificate_read"]
+      before  => Sslcertificate::Key_acl["${instance_name}_${svc_account}_certificate_read"],
       returns => [0,3010],
     }
   }
