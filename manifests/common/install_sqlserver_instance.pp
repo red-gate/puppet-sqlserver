@@ -64,19 +64,16 @@ define sqlserver::common::install_sqlserver_instance (
   # Override the default parameters with parameters passed in $install_params
   $params = deep_merge($default_parameters, $install_params)
 
+  $parameters = convert_to_parameter_string($params)
+
   if (!$facts['sqlserver_instances'][$instance_name]) {
     sqlserver::common::reboot_resources { $instance_name: }
-  }
-
-  if (!$facts['sqlserver_instances'][$instance_name]) {
-    $parameters = convert_to_parameter_string($params)
-  }
-
-  if (!$facts['sqlserver_instances'][$instance_name]) {
+  
     exec { "Install SQL Server instance: ${instance_name}":
       command => "\"${installer_path}\" ${quiet_params} ${parameters} /SkipRules=ServerCoreBlockUnsupportedSxSCheck",
       unless  => "reg.exe query ${get_instancename_from_registry}",
       require => Reboot["reboot before installing ${instance_name} (if pending)"],
+      before  => Sslcertificate::Key_acl["${instance_name}_${svc_account}_certificate_read"]
       returns => [0,3010],
     }
   }
@@ -88,13 +85,12 @@ define sqlserver::common::install_sqlserver_instance (
     sslcertificate::key_acl { "${instance_name}_${svc_account}_certificate_read":
       identity        => $svc_account,
       cert_thumbprint => $certificate_thumbprint,
-      require         => Exec["Install SQL Server instance: ${instance_name}"],
     }
 
     sqlserver::common::set_tls_cert { "Set_TLS_certificate_for_${instance_name}":
       certificate_thumbprint => $certificate_thumbprint,
       instance_name => $instance_name,
-      require => [Exec["Install SQL Server instance: ${instance_name}"], Sslcertificate::Key_acl["${instance_name}_${svc_account}_certificate_read"]],
-    }
+      require => Sslcertificate::Key_acl["${instance_name}_${svc_account}_certificate_read"],
+    } 
   }
 }
