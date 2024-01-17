@@ -68,13 +68,17 @@ define sqlserver::common::install_sqlserver_instance (
     sqlserver::common::reboot_resources { $instance_name: }
   }
 
-  $parameters = convert_to_parameter_string($params)
+  if (!$facts['sqlserver_instances'][$instance_name]) {
+    $parameters = convert_to_parameter_string($params)
+  }
 
-  exec { "Install SQL Server instance: ${instance_name}":
-    command => "\"${installer_path}\" ${quiet_params} ${parameters} /SkipRules=ServerCoreBlockUnsupportedSxSCheck",
-    unless  => "reg.exe query ${get_instancename_from_registry}",
-    require => Reboot["reboot before installing ${instance_name} (if pending)"],
-    returns => [0,3010],
+  if (!$facts['sqlserver_instances'][$instance_name]) {
+    exec { "Install SQL Server instance: ${instance_name}":
+      command => "\"${installer_path}\" ${quiet_params} ${parameters} /SkipRules=ServerCoreBlockUnsupportedSxSCheck",
+      unless  => "reg.exe query ${get_instancename_from_registry}",
+      require => Reboot["reboot before installing ${instance_name} (if pending)"],
+      returns => [0,3010],
+    }
   }
 
   if ($certificate_thumbprint) {
