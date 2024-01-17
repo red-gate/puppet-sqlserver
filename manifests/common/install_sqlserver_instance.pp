@@ -64,7 +64,9 @@ define sqlserver::common::install_sqlserver_instance (
   # Override the default parameters with parameters passed in $install_params
   $params = deep_merge($default_parameters, $install_params)
 
-  sqlserver::common::reboot_resources { $instance_name: }
+  if (!$facts['sqlserver_instances'][$instance_name]) {
+    sqlserver::common::reboot_resources { $instance_name: }
+  }
 
   $parameters = convert_to_parameter_string($params)
 
