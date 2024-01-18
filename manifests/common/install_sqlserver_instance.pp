@@ -66,6 +66,8 @@ define sqlserver::common::install_sqlserver_instance (
 
   $parameters = convert_to_parameter_string($params)
 
+  $svc_account = $params['sqlsvcaccount']
+
   if (!$facts['sqlserver_instances'][$instance_name]) {
     sqlserver::common::reboot_resources { $instance_name: }
   
@@ -79,7 +81,6 @@ define sqlserver::common::install_sqlserver_instance (
   }
 
   if ($certificate_thumbprint) {
-    $svc_account = $params['sqlsvcaccount']
 
     # Include instance name here to avoid duplicate declarations where more than one SQL instance exists on the same server
     sslcertificate::key_acl { "${instance_name}_${svc_account}_certificate_read":
