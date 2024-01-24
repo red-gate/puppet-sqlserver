@@ -75,13 +75,13 @@ define sqlserver::common::install_sqlserver_instance (
       command => "\"${installer_path}\" ${quiet_params} ${parameters} /SkipRules=ServerCoreBlockUnsupportedSxSCheck",
       unless  => "reg.exe query ${get_instancename_from_registry}",
       require => Reboot["reboot before installing ${instance_name} (if pending)"],
-      before  => Anchor['sql reboot ordering'],
+      before  => Anchor["${instance_name} reboot ordering"],
       returns => [0,3010],
     }
   }
 
   # Use an achor to order the SQL install and certificate updates even if only one or other is actually needed during this run.
-  anchor { 'sql reboot ordering': }
+  anchor { "${instance_name} reboot ordering": }
 
   if ($certificate_thumbprint) {
 
@@ -89,7 +89,7 @@ define sqlserver::common::install_sqlserver_instance (
     sslcertificate::key_acl { "${instance_name}_${svc_account}_certificate_read":
       identity        => $svc_account,
       cert_thumbprint => $certificate_thumbprint,
-      require => Anchor['sql reboot ordering'],
+      require => Anchor["${instance_name} reboot ordering"],
     }
 
     sqlserver::common::set_tls_cert { "Set_TLS_certificate_for_${instance_name}":
