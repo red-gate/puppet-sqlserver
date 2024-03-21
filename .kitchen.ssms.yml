@@ -69,3 +69,8 @@ suites:
       manifest: ssms19.pp
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/ssms19_spec.rb
+  - name: ssms20
+    provisioner:
+      manifest: ssms20.pp
+    verifier:
+      command: rspec -c -f d -I spec spec/acceptance/ssms20_spec.rb
