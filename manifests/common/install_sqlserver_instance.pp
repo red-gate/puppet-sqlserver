@@ -68,34 +68,34 @@ define sqlserver::common::install_sqlserver_instance (
 
   $svc_account = $params['sqlsvcaccount']
 
+  # If the instance isn't already in the list of installed instances, we probably need to install it, so let's do a reboot 
+  # if there's one pending before doing the installation.
   if (!$facts['sqlserver_instances'][$instance_name]) {
-    sqlserver::common::reboot_resources { $instance_name: }
-  
-    exec { "Install SQL Server instance: ${instance_name}":
-      command => "\"${installer_path}\" ${quiet_params} ${parameters} /SkipRules=ServerCoreBlockUnsupportedSxSCheck",
-      unless  => "reg.exe query ${get_instancename_from_registry}",
-      require => Reboot["reboot before installing ${instance_name} (if pending)"],
-      before  => Anchor["${instance_name} reboot ordering"],
-      returns => [0,3010],
+    sqlserver::common::reboot_resources { $instance_name:
+      before => Exec["Install SQL Server instance: ${instance_name}"],
     }
   }
 
-  # Use an achor to order the SQL install and certificate updates even if only one or other is actually needed during this run.
-  anchor { "${instance_name} reboot ordering": }
+  # Install the SQL instance
+  exec { "Install SQL Server instance: ${instance_name}":
+    command => "\"${installer_path}\" ${quiet_params} ${parameters} /SkipRules=ServerCoreBlockUnsupportedSxSCheck",
+    unless  => "reg.exe query ${get_instancename_from_registry}",
+    returns => [0,3010],
+  }
 
+  # If a cert is specified, configure it here _after_ SQL Server has been installed.
   if ($certificate_thumbprint) {
-
     # Include instance name here to avoid duplicate declarations where more than one SQL instance exists on the same server
     sslcertificate::key_acl { "${instance_name}_${svc_account}_certificate_read":
       identity        => $svc_account,
       cert_thumbprint => $certificate_thumbprint,
-      require => Anchor["${instance_name} reboot ordering"],
+      require => Exec["Install SQL Server instance: ${instance_name}"],
     }
 
     sqlserver::common::set_tls_cert { "Set_TLS_certificate_for_${instance_name}":
       certificate_thumbprint => $certificate_thumbprint,
       instance_name => $instance_name,
       require => Sslcertificate::Key_acl["${instance_name}_${svc_account}_certificate_read"],
-    } 
+    }
   }
 }
