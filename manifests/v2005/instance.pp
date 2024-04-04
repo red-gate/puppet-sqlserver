@@ -89,7 +89,6 @@ define sqlserver::v2005::instance (
         ],
       }
     }
-
   } else {
     warning('Cannot retrieve SQL instance data from the $sqlserver_instances fact. Skip patching this SQL Server instance in this run.')
   }
