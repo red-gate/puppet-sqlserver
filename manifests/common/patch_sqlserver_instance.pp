@@ -37,6 +37,17 @@ define sqlserver::common::patch_sqlserver_instance (
     default: { $additional_parameters = '' }
   }
 
+  if(($facts['sqlserver_instances'][$instance_name]) and ($facts['sqlserver_instances'][$instance_name]['patch_level'] == $applies_to_version)) {
+    # If we're going to do the patch, then trigger a reboot if one is pending before doing the actual install
+    # If we're not going to do the patch, then don't trigger a reboot. This helps avoid doing reboots
+    # when we don't need to (e.g. if a Windows Update requires a reboot).
+    reboot { "reboot before installing ${instance_name} Patch (if pending)":
+      when  => pending,
+      apply => 'immediately',
+      before => Exec["${installer_path} : ${instance_name}"],
+    }
+  }
+
   exec { "${installer_path} : ${instance_name}":
     command => "\"${installer_path}\" \
 /QUIET \
@@ -46,9 +57,14 @@ ${additional_parameters} \
     onlyif  => "cmd.exe /C reg query ${get_patchlevel_from_registry} | findstr ${applies_to_version}",
     require => [
       Exec["Install SQL Server instance: ${instance_name}"],
-      Reboot["reboot before installing ${instance_name} Patch (if pending)"]
     ],
+    notify => Reboot["Reboot after patching ${instance_name}"],
     returns => [0,3010],
   }
-  -> Reboot["Reboot after patching ${instance_name}"]
+
+  reboot { "Reboot after patching ${instance_name}":
+    when    => 'refreshed',
+    apply   => 'immediately',
+    message => "Reboot after patching ${instance_name}",
+  }
 }

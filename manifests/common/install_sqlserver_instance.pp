@@ -71,7 +71,9 @@ define sqlserver::common::install_sqlserver_instance (
   # If the instance isn't already in the list of installed instances, we probably need to install it, so let's do a reboot 
   # if there's one pending before doing the installation.
   if (!$facts['sqlserver_instances'][$instance_name]) {
-    sqlserver::common::reboot_resources { $instance_name:
+    reboot { "reboot before installing ${instance_name} (if pending)":
+      when  => pending,
+      apply => 'immediately',
       before => Exec["Install SQL Server instance: ${instance_name}"],
     }
   }
