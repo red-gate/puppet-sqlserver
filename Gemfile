@@ -1,10 +1,11 @@
 source 'https://rubygems.org'
 
 gem 'puppet-lint'
+gem 'puppet'
 
-gem 'test-kitchen', '~> 2'
-gem 'kitchen-puppet', '~> 3'
-gem 'kitchen-vagrant', '~> 1'
+gem 'test-kitchen'
+gem 'kitchen-puppet', '>= 3.6.0'
+gem 'kitchen-vagrant'
 gem 'kitchen-zip', :git => 'https://github.com/red-gate/kitchen-zip', :branch => 'master'
 
 # We use serverspec to test the state of our servers

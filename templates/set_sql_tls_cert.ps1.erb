@@ -1,0 +1,21 @@
+$instance_name = "<%= @instance_name %>"
+$certificate_thumbprint = "<%= @certificate_thumbprint %>"
+
+
+
+[void][System.Reflection.Assembly]::LoadWithPartialName('Microsoft.SqlServer.SqlWmiManagement')
+$wmi = New-Object Microsoft.SqlServer.Management.Smo.Wmi.ManagedComputer
+$null = $wmi.Initialize()
+
+
+$sqlwmi = $wmi.Services | Where-Object DisplayName -eq "SQL Server ($instance_name)"
+
+$regRoot = ($sqlwmi.AdvancedProperties | Where-Object Name -eq REGROOT).Value
+
+$regPath = "Registry::HKEY_LOCAL_MACHINE\$regRoot\MSSQLServer\SuperSocketNetLib"
+
+Write-Host "Setting certificate to $certificate_thumbprint for $instance_name"
+Set-ItemProperty -Path $regPath -Name Certificate -Value $certificate_thumbprint.ToString().ToLowerInvariant() # to make it compat with SQL config
+
+Write-Host "Restarting service: MSSQL`$$instance_name"
+Restart-Service -Name "MSSQL`$$instance_name" -Force

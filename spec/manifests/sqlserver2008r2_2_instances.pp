@@ -55,12 +55,12 @@ sslcertificate::from_pem { 'test-cert':
   key_content  => $keycontent,
 }
 
-class { 'sqlserver::v2012::iso':
-  source => $facts['sqlserver2012_iso_url'],
+class { 'sqlserver::v2008r2::iso':
+  source => $sqlserver2008r2_iso_url,
 }
 
-sqlserver::v2012::instance { 'SQL2012_1':
-  install_type   => 'Patch',
+sqlserver::v2008r2::instance { 'SQL2008R2_1':
+  install_type   => 'kb4057113',
   install_params => {
     sapwd => 'sdf347RT!',
   },
@@ -69,8 +69,8 @@ sqlserver::v2012::instance { 'SQL2012_1':
   require => Sslcertificate::From_pem['test-cert'],
 }
 
-sqlserver::v2012::instance { 'SQL2012_2':
-  install_type   => 'Patch',
+sqlserver::v2008r2::instance { 'SQL2008R2_2':
+  install_type   => 'kb4057113',
   install_params => {
     sapwd        => 'sdf347RT!',
     sqlcollation => 'Latin1_General_CS_AS_KS_WS',
@@ -80,41 +80,41 @@ sqlserver::v2012::instance { 'SQL2012_2':
 
 # Test setting options with the first instance
 
-sqlserver::options::clr_enabled { 'SQL2012_1: clr enabled':
-  server  => 'localhost\SQL2012_1',
-  require => Sqlserver::V2012::Instance['SQL2012_1'],
+sqlserver::options::clr_enabled { 'SQL2008R2_1: clr enabled':
+  server  => 'localhost\SQL2008R2_1',
+  require => Sqlserver::V2008r2::Instance['SQL2008R2_1'],
   value   => 1,
 }
-sqlserver::options::max_memory { 'SQL2012_1: Max Memory':
-  server  => 'localhost\SQL2012_1',
-  require => Sqlserver::V2012::Instance['SQL2012_1'],
+sqlserver::options::max_memory { 'SQL2008R2_1: Max Memory':
+  server  => 'localhost\SQL2008R2_1',
+  require => Sqlserver::V2008r2::Instance['SQL2008R2_1'],
   value   => 512,
 }
-sqlserver::options::xp_cmdshell { 'SQL2012_1: xp_cmdshell':
-  server  => 'localhost\SQL2012_1',
-  require => Sqlserver::V2012::Instance['SQL2012_1'],
+sqlserver::options::xp_cmdshell { 'SQL2008R2_1: xp_cmdshell':
+  server  => 'localhost\SQL2008R2_1',
+  require => Sqlserver::V2008r2::Instance['SQL2008R2_1'],
   value   => 1,
 }
 
-sqlserver::database::readonly { 'SQL2012_1: Set model readonly':
-  server        => 'localhost\SQL2012_1',
+sqlserver::database::readonly { 'SQL2008R2_1: Set model readonly':
+  server        => 'localhost\SQL2008R2_1',
   database_name => 'model',
-  require       => Sqlserver::V2012::Instance['SQL2012_1'],
+  require       => Sqlserver::V2008r2::Instance['SQL2008R2_1'],
 }
 
 # Test logins/roles
-sqlserver::users::login_windows { 'SQL2012_1: Everyone login':
-  server     => 'localhost\SQL2012_1',
+sqlserver::users::login_windows { 'SQL2008R2_1: Everyone login':
+  server     => 'localhost\SQL2008R2_1',
   login_name => '\Everyone',
-  require    => Sqlserver::V2012::Instance['SQL2012_1'],
+  require    => Sqlserver::V2008r2::Instance['SQL2008R2_1'],
 }
--> sqlserver::users::login_role { 'SQL2012_1: Everyone is sysadmin':
-  server     => 'localhost\SQL2012_1',
+-> sqlserver::users::login_role { 'SQL2008R2_1: Everyone is sysadmin':
+  server     => 'localhost\SQL2008R2_1',
   login_name => '\Everyone',
   role_name  => 'sysadmin',
 }
--> sqlserver::users::default_database { 'SQL2012_1: Everyone default database is tempdb':
-  server                => 'localhost\SQL2012_1',
+-> sqlserver::users::default_database { 'SQL2008R2_1: Everyone default database is tempdb':
+  server                => 'localhost\SQL2008R2_1',
   login_name            => '\Everyone',
   default_database_name => 'tempdb',
 }

@@ -14,6 +14,7 @@ provisioner:
   puppet_detailed_exitcodes: true
   require_puppet_collections: true
   puppet_detailed_exitcodes: true
+  puppet_version: "6.28.0"
   max_retries: 3
   wait_for_retry: 40
   retry_on_exit_code:
@@ -23,6 +24,7 @@ provisioner:
 transport:
   name: winrm
   elevated: true
+  winrm_transport: plaintext
 
 verifier:
   name: shell
@@ -32,7 +34,11 @@ platforms:
     driver_plugin: vagrant
     driver_config:
       box: red-gate/windows-2019
-      box_url: https://vagrant.red-gate.com/red-gate/windows-2019
+      customize:
+        cpus: 2
+        memory: 4096
+        vrde: "off"
+        vram: 64
       provision: true
       vagrantfiles:
         - spec/vagrantfile.rb
@@ -63,3 +69,8 @@ suites:
       manifest: ssms19.pp
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/ssms19_spec.rb
+  - name: ssms20
+    provisioner:
+      manifest: ssms20.pp
+    verifier:
+      command: rspec -c -f d -I spec spec/acceptance/ssms20_spec.rb

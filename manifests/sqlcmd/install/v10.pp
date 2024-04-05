@@ -1,9 +1,13 @@
-# Install sqlcmd.exe
-class sqlserver::sqlcmd::install::v10($temp_folder = 'C:/Windows/Temp') {
-
+# @summary Install sqlcmd.exe
+#
+# @param temp_folder
+#   Location of a temp folder
+class sqlserver::sqlcmd::install::v10 (
+  String $temp_folder = 'C:/Windows/Temp'
+) {
   include archive
 
-  if $::architecture == 'x86' {
+  if $facts['os']['architecture'] == 'x86' {
     $nativeclient_source = 'https://download.microsoft.com/download/2/4/F/24FE862D-7D32-47F2-B91D-22DAFA270BBC/2008%20R2%20ENU-1033/x86/sqlncli.msi'
     $sqlcmdutils_source = 'https://download.microsoft.com/download/9/2/7/927B0C39-C3E2-4CFC-B84E-92BC63344C62/ENU/x86/SqlCmdLnUtils.msi'
   } else {

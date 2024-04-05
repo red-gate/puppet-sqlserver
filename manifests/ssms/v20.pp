@@ -1,5 +1,5 @@
-# @summary Install SSMS 19
-# 
+# @summary Install SSMS 20.0
+#
 # @param source
 #   URL for SSMS
 # @param filename
@@ -8,10 +8,10 @@
 #   Name of the program as it appears in add/remove programs.
 # @param temp_folder
 #   path to temp folder
-class sqlserver::ssms::v19 (
-  String $source = 'https://go.microsoft.com/fwlink/?linkid=2226343&clcid=0x409',
+class sqlserver::ssms::v20 (
+  String $source = 'https://download.microsoft.com/download/1/b/c/1bc1f462-ac3a-402d-b872-c4cae745c539/SSMS-Setup-ENU.exe',
   String $filename = 'SSMS-Setup-ENU.exe',
-  String $program_name = 'Microsoft SQL Server Management Studio - 19.0.2',
+  String $program_name = 'Microsoft SQL Server Management Studio - 20.0',
   String $temp_folder = 'C:/Windows/Temp',
 ) {
   include archive

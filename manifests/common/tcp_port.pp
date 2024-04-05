@@ -1,16 +1,17 @@
-# Configure a SQL Server instance TCP ports.
-# This will restart the SQL Server service if need be.
+# @summary Configure a SQL Server instance TCP ports.
+#   This will restart the SQL Server service if need be.
 #
-# $instance_name: The name of the SQL Server instance to configure
+# @param instance_name
+#    The name of the SQL Server instance to configure
 #
-# $tcp_port: The TCP port number to use for this SQL Server instance.
-define sqlserver::common::tcp_port(
-  $tcp_port,
-  $instance_name = $title
-  ) {
-
-  if has_key($::sqlserver_instances, $instance_name) {
-    $registry_instance_path = $::sqlserver_instances[$instance_name]['registry_path']
+# @param tcp_port
+#    The TCP port number to use for this SQL Server instance.
+define sqlserver::common::tcp_port (
+  Integer $tcp_port,
+  String $instance_name = $title
+) {
+  if $instance_name in $facts['sqlserver_instances'] {
+    $registry_instance_path = $facts['sqlserver_instances'][$instance_name]['registry_path']
 
     ensure_resource('service', "SQLAGENT$${instance_name}", { ensure => running, })
 
@@ -29,16 +30,13 @@ define sqlserver::common::tcp_port(
       data    => '',
       require => Exec["Install SQL Server instance: ${instance_name}"],
     }
-    ->
-    registrykey { "${instance_name}: Set port to ${tcp_port}":
+    -> registrykey { "${instance_name}: Set port to ${tcp_port}":
       key     => "HKLM:\\${registry_instance_path}\\MSSQLServer\\SuperSocketNetLib\\Tcp\\IPAll",
       subName => 'TcpPort',
       data    => $tcp_port,
       notify  => Exec["Restart MSSQL$${instance_name} after changing TCP port"],
     }
-
   } else {
     warning('Cannot retrieve SQL instance data from the $sqlserver_instances fact. Skip configuring TCP port in this run...')
   }
-
 }
