@@ -11,7 +11,7 @@
 class sqlserver::ssms::v21 (
   String $source = 'https://aka.ms/ssms/21/preview/vs_SSMS.exe',
   String $filename = 'vs_SSMS.exe',
-  String $program_name = 'Microsoft SQL Server Management Studio - 20.0',
+  String $program_name = 'SQL Server Management Studio 21 Preview',
   String $temp_folder = 'C:/Windows/Temp',
 ) {
   include archive
