@@ -74,3 +74,8 @@ suites:
       manifest: ssms20.pp
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/ssms20_spec.rb
+  - name: ssms21
+    provisioner:
+      manifest: ssms21.pp
+    verifier:
+      command: rspec -c -f d -I spec spec/acceptance/ssms21_spec.rb

@@ -9,9 +9,9 @@
 # @param temp_folder
 #   path to temp folder
 class sqlserver::ssms::v21 (
-  String $source = 'https://aka.ms/ssms/21/preview/vs_SSMS.exe',
+  String $source = 'https://aka.ms/ssms/21/release/vs_SSMS.exe',
   String $filename = 'vs_SSMS.exe',
-  String $program_name = 'SQL Server Management Studio 21 Preview',
+  String $program_name = 'SQL Server Management Studio 21',
   String $temp_folder = 'C:/Windows/Temp',
 ) {
   include archive
