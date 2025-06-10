@@ -2,6 +2,9 @@
 ---
 driver:
   name: vagrant
+  box_check_update: true
+  box_auto_update: true
+  box_auto_prune: true
 
 provisioner:
   name: puppet_apply
@@ -12,14 +15,15 @@ provisioner:
   require_chef_for_busser: false
   resolve_with_librarian_puppet: false
   puppet_detailed_exitcodes: true
+  require_puppet_repo: false
   require_puppet_collections: true
-  puppet_detailed_exitcodes: true
-  puppet_version: "6.28.0"
-  max_retries: 5
+  verify_host_key: false
+  max_retries: 3
   wait_for_retry: 40
   retry_on_exit_code:
     - 2 # The run succeeded, and some resources were changed.
     - 6 # The run succeeded, and included both changes and failures.
+
 
 transport:
   name: winrm
@@ -36,14 +40,13 @@ platforms:
       vm_hostname: sqlserver
     driver_config:
       box: red-gate/windows-2012r2
-      provision: true
-      vagrantfiles:
-        - spec/vagrantfile.rb
       customize:
         cpus: 2
         memory: 2048
         vrde: "off"
         vram: 64
+    provisioner:
+      puppet_version: "7.34.0"
   - name: windows-2019
     driver_plugin: vagrant
     driver:
@@ -55,46 +58,42 @@ platforms:
         memory: 2048
         vrde: "off"
         vram: 64
-      provision: true
-      vagrantfiles:
-        - spec/vagrantfile.rb
+    provisioner:
+      puppet_version: "7.34.0"
   - name: windows-2022
     driver_plugin: vagrant
     driver:
       vm_hostname: sqlserver
     driver_config:
       box: red-gate/windows-2022
-      provision: true
-      vagrantfiles:
-        - spec/vagrantfile.rb
       customize:
         cpus: 2
         memory: 2048
         vrde: "off"
         vram: 64
+    provisioner:
+      puppet_version: "7.34.0"
   - name: ubuntu-20.04
     driver_plugin: vagrant
-    driver:
-      vm_hostname: sqlserver
     driver_config:
       customize:
         audio: "none"
     driver:
       box: red-gate/ubuntu-2004
+      vm_hostname: sqlserver
     provisioner:
-      puppet_apt_collections_repo: https://apt.puppetlabs.com/puppet6-release-focal.deb
-      puppet_version: "6.28.0-1focal"
+      puppet_apt_collections_repo: https://apt.puppetlabs.com/puppet7-release-focal.deb
+      puppet_version: "7.34.0-1focal"
     transport:
       name: ssh_tgz
   - name: ubuntu-18.04
     driver_plugin: vagrant
-    driver:
-      vm_hostname: sqlserver
     driver_config:
       customize:
         audio: "none"
     driver:
       box: red-gate/ubuntu-1804
+      vm_hostname: sqlserver
     provisioner:
       puppet_apt_collections_repo: https://apt.puppetlabs.com/puppet6-release-bionic.deb
       puppet_version: "6.28.0-1bionic"

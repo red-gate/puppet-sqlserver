@@ -2,6 +2,9 @@
 ---
 driver:
   name: vagrant
+  box_check_update: true
+  box_auto_update: true
+  box_auto_prune: true
 
 provisioner:
   name: puppet_apply
@@ -12,9 +15,9 @@ provisioner:
   require_chef_for_busser: false
   resolve_with_librarian_puppet: false
   puppet_detailed_exitcodes: true
+  require_puppet_repo: false
   require_puppet_collections: true
-  puppet_detailed_exitcodes: true
-  puppet_version: "6.28.0"
+  verify_host_key: false
   max_retries: 3
   wait_for_retry: 40
   retry_on_exit_code:
@@ -34,14 +37,16 @@ platforms:
     driver_plugin: vagrant
     driver_config:
       box: red-gate/windows-2019
-      customize:
-        cpus: 2
-        memory: 4096
-        vrde: "off"
-        vram: 64
-      provision: true
-      vagrantfiles:
-        - spec/vagrantfile.rb
+    provisioner:
+      puppet_version: "7.34.0"
+  - name: windows-2022
+    driver_plugin: vagrant
+    driver:
+      vm_hostname: sqlserver
+    driver_config:
+      box: red-gate/windows-2022
+    provisioner:
+      puppet_version: "7.34.0"
 
 suites:
   - name: localdbs
