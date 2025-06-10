@@ -22,9 +22,12 @@ class sqlserver::ssms::v21 (
   -> reboot { 'reboot before installing SSMS (if pending)':
     when => pending,
   }
-  -> package { $program_name:
-    ensure          => installed,
-    source          => "${temp_folder}/${filename}",
-    install_options => ['--quiet', '--norestart'],
+  # Use an exec here instead of a Package resource because the new bootstrap installer is very eager to exit
+  # which causes puppet to move on and reboot before the install has actually finished. 
+  # By using `start-process` we can instruct it to wait for all child processes to complete.
+  -> exec { "install ${program_name}":
+    command => "Start-Process '${temp_folder}/${filename}' -wait -argumentlist '--quiet --norestart' -passThru ",
+    provider => powershell,
+    creates => 'C:/Program Files/Microsoft SQL Server Management Studio 21/Release/Common7/IDE/SSMS.exe',
   }
 }
