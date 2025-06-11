@@ -49,6 +49,14 @@ platforms:
       box: red-gate/windows-2022
     provisioner:
       puppet_version: "7.34.0"
+  - name: windows-2025
+    driver_plugin: vagrant
+    driver:
+      vm_hostname: sqlserver
+    driver_config:
+      box: red-gate/windows-2025
+    provisioner:
+      puppet_version: "7.34.0"
 
 suites:
   - name: localdbs
@@ -56,33 +64,52 @@ suites:
       manifest: localdbs.pp
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/localdbs_spec.rb
+    excludes:
+      - windows-2022
+      - windows-2025
   - name: ssms2016
     provisioner:
       manifest: ssms2016.pp
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/ssms2016_spec.rb
+    excludes:
+      - windows-2022
+      - windows-2025
   - name: ssms2017
     provisioner:
       manifest: ssms2017.pp
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/ssms2017_spec.rb
+    excludes:
+      - windows-2022
+      - windows-2025
   - name: ssms2018
     provisioner:
       manifest: ssms2018.pp
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/ssms2018_spec.rb
+    excludes:
+      - windows-2022
+      - windows-2025
   - name: ssms19
     provisioner:
       manifest: ssms19.pp
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/ssms19_spec.rb
+    excludes:
+      - windows-2022
+      - windows-2025
   - name: ssms20
     provisioner:
       manifest: ssms20.pp
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/ssms20_spec.rb
+    excludes:
+      - windows-2019
   - name: ssms21
     provisioner:
       manifest: ssms21.pp
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/ssms21_spec.rb
+    excludes:
+      - windows-2019
