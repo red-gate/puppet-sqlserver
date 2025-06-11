@@ -29,5 +29,6 @@ class sqlserver::ssms::v21 (
     command => "Start-Process '${temp_folder}/${filename}' -wait -argumentlist '--quiet --norestart' -passThru ",
     provider => powershell,
     creates => 'C:/Program Files/Microsoft SQL Server Management Studio 21/Release/Common7/IDE/SSMS.exe',
+    timeout => 600, # This can take a while to install, this bumps the default timeout from 5m to 10m.
   }
 }
