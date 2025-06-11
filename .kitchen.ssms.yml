@@ -28,6 +28,8 @@ transport:
   name: winrm
   elevated: true
   winrm_transport: plaintext
+  operation_timeout: 180
+  receive_timeout: 210
 
 verifier:
   name: shell
