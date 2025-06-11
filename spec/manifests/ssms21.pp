@@ -1,5 +1,5 @@
 Reboot {
-  timeout => 120,
+  timeout => 10,
 }
 
 include sqlserver::ssms::v21
