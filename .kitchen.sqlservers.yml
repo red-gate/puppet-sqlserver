@@ -18,7 +18,7 @@ provisioner:
   require_puppet_repo: false
   require_puppet_collections: true
   verify_host_key: false
-  max_retries: 3
+  max_retries: 6
   wait_for_retry: 40
   retry_on_exit_code:
     - 2 # The run succeeded, and some resources were changed.
