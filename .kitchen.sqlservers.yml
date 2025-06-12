@@ -2,6 +2,9 @@
 ---
 driver:
   name: vagrant
+  box_check_update: true
+  box_auto_update: true
+  box_auto_prune: true
 
 provisioner:
   name: puppet_apply
@@ -12,14 +15,15 @@ provisioner:
   require_chef_for_busser: false
   resolve_with_librarian_puppet: false
   puppet_detailed_exitcodes: true
+  require_puppet_repo: false
   require_puppet_collections: true
-  puppet_detailed_exitcodes: true
-  puppet_version: "6.28.0"
-  max_retries: 5
+  verify_host_key: false
+  max_retries: 3
   wait_for_retry: 40
   retry_on_exit_code:
     - 2 # The run succeeded, and some resources were changed.
     - 6 # The run succeeded, and included both changes and failures.
+
 
 transport:
   name: winrm
@@ -36,14 +40,13 @@ platforms:
       vm_hostname: sqlserver
     driver_config:
       box: red-gate/windows-2012r2
-      provision: true
-      vagrantfiles:
-        - spec/vagrantfile.rb
       customize:
         cpus: 2
         memory: 2048
         vrde: "off"
         vram: 64
+    provisioner:
+      puppet_version: "7.34.0"
   - name: windows-2019
     driver_plugin: vagrant
     driver:
@@ -55,49 +58,32 @@ platforms:
         memory: 2048
         vrde: "off"
         vram: 64
-      provision: true
-      vagrantfiles:
-        - spec/vagrantfile.rb
+    provisioner:
+      puppet_version: "7.34.0"
   - name: windows-2022
     driver_plugin: vagrant
     driver:
       vm_hostname: sqlserver
     driver_config:
       box: red-gate/windows-2022
-      provision: true
-      vagrantfiles:
-        - spec/vagrantfile.rb
       customize:
         cpus: 2
         memory: 2048
         vrde: "off"
         vram: 64
+    provisioner:
+      puppet_version: "7.34.0"
   - name: ubuntu-20.04
     driver_plugin: vagrant
-    driver:
-      vm_hostname: sqlserver
     driver_config:
       customize:
         audio: "none"
     driver:
       box: red-gate/ubuntu-2004
-    provisioner:
-      puppet_apt_collections_repo: https://apt.puppetlabs.com/puppet6-release-focal.deb
-      puppet_version: "6.28.0-1focal"
-    transport:
-      name: ssh_tgz
-  - name: ubuntu-18.04
-    driver_plugin: vagrant
-    driver:
       vm_hostname: sqlserver
-    driver_config:
-      customize:
-        audio: "none"
-    driver:
-      box: red-gate/ubuntu-1804
     provisioner:
-      puppet_apt_collections_repo: https://apt.puppetlabs.com/puppet6-release-bionic.deb
-      puppet_version: "6.28.0-1bionic"
+      puppet_apt_collections_repo: https://apt.puppetlabs.com/puppet7-release-focal.deb
+      puppet_version: "7.34.0-1focal"
     transport:
       name: ssh_tgz
 
@@ -107,7 +93,6 @@ suites:
       - windows-2019
       - windows-2022
       - ubuntu-20.04
-      - ubuntu-18.04
     provisioner:
       manifest: sqlserver2008sp4_2_instances.pp
       custom_facts:
@@ -119,7 +104,6 @@ suites:
       - windows-2019
       - windows-2022
       - ubuntu-20.04
-      - ubuntu-18.04
     provisioner:
       manifest: sqlserver2008r2_2_instances.pp
       custom_facts:
@@ -131,7 +115,6 @@ suites:
       - windows-2019
       - windows-2022
       - ubuntu-20.04
-      - ubuntu-18.04
     provisioner:
       manifest: sqlserver2012sp3_2_instances.pp
       custom_facts:
@@ -143,7 +126,6 @@ suites:
       - windows-2019
       - windows-2022
       - ubuntu-20.04
-      - ubuntu-18.04
     provisioner:
       manifest: sqlserver2014sp2_2_instances.pp
       custom_facts:
@@ -155,7 +137,6 @@ suites:
       - windows-2012r2
       - windows-2022
       - ubuntu-20.04
-      - ubuntu-18.04
     provisioner:
       manifest: sqlserver2016sp1_2_instances.pp
       custom_facts:
@@ -167,7 +148,6 @@ suites:
       - windows-2012r2
       - windows-2022
       - ubuntu-20.04
-      - ubuntu-18.04
     provisioner:
       manifest: sqlserver2017rtm_2_instances.pp
       custom_facts:
@@ -179,7 +159,6 @@ suites:
       - windows-2012r2
       - windows-2022
       - ubuntu-20.04
-      - ubuntu-18.04
     provisioner:
       manifest: sqlserver2019rtm_2_instances.pp
       custom_facts:
@@ -190,7 +169,6 @@ suites:
     excludes:
       - windows-2012r2
       - ubuntu-20.04
-      - ubuntu-18.04
     provisioner:
       manifest: sqlserver2022ctp_2_instances.pp
       custom_facts:
@@ -206,13 +184,3 @@ suites:
       manifest: sqlserver2019linux.pp
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2019linux_spec.rb
-  - name: sqlserver2017linux
-    excludes:
-      - windows-2012r2
-      - windows-2019
-      - windows-2022
-      - ubuntu-20.04
-    provisioner:
-      manifest: sqlserver2017linux.pp
-    verifier:
-      command: rspec -c -f d -I spec spec/acceptance/sqlserver2017linux_spec.rb

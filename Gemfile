@@ -17,3 +17,5 @@ gem 'rake', '~> 13'
 gem 'rake-performance'
 
 gem 'r10k', '~> 3'
+
+gem 'ffi', '~> 1.15.0'
