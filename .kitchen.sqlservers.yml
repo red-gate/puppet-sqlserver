@@ -34,19 +34,6 @@ verifier:
   name: shell
 
 platforms:
-  - name: windows-2012r2
-    driver_plugin: vagrant
-    driver:
-      vm_hostname: sqlserver
-    driver_config:
-      box: red-gate/windows-2012r2
-      customize:
-        cpus: 2
-        memory: 2048
-        vrde: "off"
-        vram: 64
-    provisioner:
-      puppet_version: "7.34.0"
   - name: windows-2019
     driver_plugin: vagrant
     driver:
@@ -88,53 +75,8 @@ platforms:
       name: ssh_tgz
 
 suites:
-  - name: sqlserver2008sp4
-    excludes:
-      - windows-2019
-      - windows-2022
-      - ubuntu-20.04
-    provisioner:
-      manifest: sqlserver2008sp4_2_instances.pp
-      custom_facts:
-        sqlserver2008_iso_url: <%= ENV['SQLSERVER2008_ISO_URL'] %>
-    verifier:
-      command: rspec -c -f d -I spec spec/acceptance/sqlserver2008sp4_2_instances_spec.rb
-  - name: sqlserver2008r2sp3
-    excludes:
-      - windows-2019
-      - windows-2022
-      - ubuntu-20.04
-    provisioner:
-      manifest: sqlserver2008r2_2_instances.pp
-      custom_facts:
-        sqlserver2008r2_iso_url: <%= ENV['SQLSERVER2008R2_ISO_URL'] %>
-    verifier:
-      command: rspec -c -f d -I spec spec/acceptance/sqlserver2008r2_2_instances_spec.rb
-  - name: sqlserver2012sp3
-    excludes:
-      - windows-2019
-      - windows-2022
-      - ubuntu-20.04
-    provisioner:
-      manifest: sqlserver2012sp3_2_instances.pp
-      custom_facts:
-        sqlserver2012_iso_url: <%= ENV['SQLSERVER2012_ISO_URL'] %>
-    verifier:
-      command: rspec -c -f d -I spec spec/acceptance/sqlserver2012sp3_2_instances_spec.rb
-  - name: sqlserver2014sp2
-    excludes:
-      - windows-2019
-      - windows-2022
-      - ubuntu-20.04
-    provisioner:
-      manifest: sqlserver2014sp2_2_instances.pp
-      custom_facts:
-        sqlserver2014_iso_url: <%= ENV['SQLSERVER2014_ISO_URL'] %>
-    verifier:
-      command: rspec -c -f d -I spec spec/acceptance/sqlserver2014sp2_2_instances_spec.rb
   - name: sqlserver2016sp1
     excludes:
-      - windows-2012r2
       - windows-2022
       - ubuntu-20.04
     provisioner:
@@ -145,7 +87,6 @@ suites:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2016sp1_2_instances_spec.rb
   - name: sqlserver2017multiple
     excludes:
-      - windows-2012r2
       - windows-2022
       - ubuntu-20.04
     provisioner:
@@ -156,7 +97,6 @@ suites:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2017rtm_2_instances_spec.rb
   - name: sqlserver2019multiple
     excludes:
-      - windows-2012r2
       - windows-2022
       - ubuntu-20.04
     provisioner:
@@ -167,7 +107,6 @@ suites:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2019rtm_2_instances_spec.rb
   - name: sqlserver2022multiple
     excludes:
-      - windows-2012r2
       - ubuntu-20.04
     provisioner:
       manifest: sqlserver2022ctp_2_instances.pp
@@ -177,10 +116,18 @@ suites:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2022rtm_2_instances_spec.rb
   - name: sqlserver2019linux
     excludes:
-      - windows-2012r2
       - windows-2019
       - windows-2022
     provisioner:
       manifest: sqlserver2019linux.pp
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2019linux_spec.rb
+  - name: sqlserver2025multiple
+    excludes:
+      - ubuntu-20.04
+    provisioner:
+      manifest: sqlserver2025rc_1_instances.pp
+      custom_facts:
+        sqlserver2025_iso_url: <%= ENV['SQLSERVER2025_ISO_URL'] %>
+    verifier:
+      command: rspec -c -f d -I spec spec/acceptance/sqlserver2025rc_1_instances_spec.rb

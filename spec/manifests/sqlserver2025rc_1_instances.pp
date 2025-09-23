@@ -55,11 +55,11 @@ sslcertificate::from_pem { 'test-cert':
   key_content  => $keycontent,
 }
 
-class { 'sqlserver::v2012::iso':
-  source => $facts['sqlserver2012_iso_url'],
+class { 'sqlserver::v2025::iso':
+  source => $facts['sqlserver2025_iso_url'],
 }
 
-sqlserver::v2012::instance { 'SQL2012_1':
+sqlserver::v2025::instance { 'SQL2025_1':
   install_type   => 'Patch',
   install_params => {
     sapwd => 'sdf347RT!',
@@ -69,7 +69,7 @@ sqlserver::v2012::instance { 'SQL2012_1':
   require => Sslcertificate::From_pem['test-cert'],
 }
 
-sqlserver::v2012::instance { 'SQL2012_2':
+sqlserver::v2025::instance { 'SQL2025_2':
   install_type   => 'Patch',
   install_params => {
     sapwd        => 'sdf347RT!',
@@ -80,41 +80,59 @@ sqlserver::v2012::instance { 'SQL2012_2':
 
 # Test setting options with the first instance
 
-sqlserver::options::clr_enabled { 'SQL2012_1: clr enabled':
-  server  => 'localhost\SQL2012_1',
-  require => Sqlserver::V2012::Instance['SQL2012_1'],
+sqlserver::options::clr_enabled { 'SQL2025_1: clr enabled':
+  server  => 'localhost\SQL2025_1',
+  require => Sqlserver::V2025::Instance['SQL2025_1'],
   value   => 1,
 }
-sqlserver::options::max_memory { 'SQL2012_1: Max Memory':
-  server  => 'localhost\SQL2012_1',
-  require => Sqlserver::V2012::Instance['SQL2012_1'],
+sqlserver::options::max_memory { 'SQL2025_1: Max Memory':
+  server  => 'localhost\SQL2025_1',
+  require => Sqlserver::V2025::Instance['SQL2025_1'],
   value   => 512,
 }
-sqlserver::options::xp_cmdshell { 'SQL2012_1: xp_cmdshell':
-  server  => 'localhost\SQL2012_1',
-  require => Sqlserver::V2012::Instance['SQL2012_1'],
+sqlserver::options::xp_cmdshell { 'SQL2025_1: xp_cmdshell':
+  server  => 'localhost\SQL2025_1',
+  require => Sqlserver::V2025::Instance['SQL2025_1'],
   value   => 1,
 }
 
-sqlserver::database::readonly { 'SQL2012_1: Set model readonly':
-  server        => 'localhost\SQL2012_1',
+sqlserver::database::readonly { 'SQL2025_1: Set model readonly':
+  server        => 'localhost\SQL2025_1',
   database_name => 'model',
-  require       => Sqlserver::V2012::Instance['SQL2012_1'],
+  require       => Sqlserver::V2025::Instance['SQL2025_1'],
 }
 
 # Test logins/roles
-sqlserver::users::login_windows { 'SQL2012_1: Everyone login':
-  server     => 'localhost\SQL2012_1',
+sqlserver::users::login_windows { 'SQL2025_1: Everyone login':
+  server     => 'localhost\SQL2025_1',
   login_name => '\Everyone',
-  require    => Sqlserver::V2012::Instance['SQL2012_1'],
+  require    => Sqlserver::V2025::Instance['SQL2025_1'],
 }
--> sqlserver::users::login_role { 'SQL2012_1: Everyone is sysadmin':
-  server     => 'localhost\SQL2012_1',
+-> sqlserver::users::login_role { 'SQL2025_1: Everyone is sysadmin':
+  server     => 'localhost\SQL2025_1',
   login_name => '\Everyone',
   role_name  => 'sysadmin',
 }
--> sqlserver::users::default_database { 'SQL2012_1: Everyone default database is tempdb':
-  server                => 'localhost\SQL2012_1',
+-> sqlserver::users::default_database { 'SQL2025_1: Everyone default database is tempdb':
+  server                => 'localhost\SQL2025_1',
   login_name            => '\Everyone',
+  default_database_name => 'tempdb',
+}
+
+# SQL Server login
+sqlserver::users::login_sql { 'SQL2025_1: sql_user login':
+  server     => 'localhost\SQL2025_1',
+  login_name => 'sql_user',
+  password   => 'SomePassw0rdForT3stPurposes!',
+  require    => Sqlserver::V2025::Instance['SQL2025_1'],
+}
+-> sqlserver::users::login_role { 'SQL2025_1: sql_user is sysadmin':
+  server     => 'localhost\SQL2025_1',
+  login_name => 'sql_user',
+  role_name  => 'sysadmin',
+}
+-> sqlserver::users::default_database { 'SQL2025_1: sql_user default database is tempdb':
+  server                => 'localhost\SQL2025_1',
+  login_name            => 'sql_user',
   default_database_name => 'tempdb',
 }
