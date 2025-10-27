@@ -113,3 +113,10 @@ suites:
       command: rspec -c -f d -I spec spec/acceptance/ssms21_spec.rb
     excludes:
       - windows-2019
+  - name: ssms22
+    provisioner:
+      manifest: ssms22.pp
+    verifier:
+      command: rspec -c -f d -I spec spec/acceptance/ssms22_spec.rb
+    excludes:
+      - windows-2019
