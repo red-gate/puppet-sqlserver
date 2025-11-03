@@ -75,6 +75,26 @@ platforms:
       name: ssh_tgz
 
 suites:
+  - name: sqlserver2012sp4
+    excludes:
+      - windows-2022
+      - ubuntu-20.04
+    provisioner:
+      manifest: sqlserver2012sp4_instances.pp
+      custom_facts:
+        sqlserver2012_iso_url: <%= ENV['SQLSERVER2012_ISO_URL'] %>
+    verifier:
+      command: rspec -c -f d -I spec spec/acceptance/sqlserver2012sp4_instances_spec.rb
+  - name: sqlserver2014sp3
+    excludes:
+      - windows-2022
+      - ubuntu-20.04
+    provisioner:
+      manifest: sqlserver2014sp3_instances.pp
+      custom_facts:
+        sqlserver2014_iso_url: <%= ENV['SQLSERVER2014_ISO_URL'] %>
+    verifier:
+      command: rspec -c -f d -I spec spec/acceptance/sqlserver2014sp3_instances_spec.rb
   - name: sqlserver2016sp1
     excludes:
       - windows-2022
