@@ -16,7 +16,7 @@ end
 
   describe windows_registry_key("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Microsoft SQL Server\\MSSQL11.#{instance_name}\\Setup") do
     it { should exist }
-    it { should have_property_value('PatchLevel', :type_string, '11.3.7001.0') }
+    it { should have_property_value('PatchLevel', :type_string, '11.4.7001.0') }
   end
 end
 
