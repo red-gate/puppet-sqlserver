@@ -17,7 +17,7 @@
 #   Thumbprint of an SSL cert in the local certificate store to use for SQL Connections
 define sqlserver::v2012::instance (
   String $instance_name = $title,
-  String $install_type = 'SP3',
+  String $install_type = 'SP4',
   Hash $install_params = {},
   Integer $tcp_port = 0,
   Optional[String] $certificate_thumbprint = undef,
@@ -36,7 +36,16 @@ define sqlserver::v2012::instance (
   }
 
   # 'Patch' is equivalent to 'SP3' for backwards compatibility
-  if $install_type == 'Patch' or $install_type == 'SP3' {
+  if $install_type == 'Patch' or $install_type == 'SP4' {
+    require sqlserver::v2012::sp4
+
+    sqlserver::common::patch_sqlserver_instance { $instance_name:
+      instance_name      => $instance_name,
+      installer_path     => $sqlserver::v2012::sp4::installer,
+      applies_to_version => $sqlserver::v2012::sp4::applies_to_version,
+    }
+  }
+  elsif $install_type == 'SP3' {
     require sqlserver::v2012::sp3
 
     sqlserver::common::patch_sqlserver_instance { $instance_name:
