@@ -21,6 +21,7 @@ define sqlserver::localdb::install (
 
   archive { "${temp_folder}/localdb${version}/${filename}":
     source  => $source,
+    allow_insecure => true
     require => File[$folder],
   }
   -> package { "Microsoft SQL Server ${version} Express LocalDB ":

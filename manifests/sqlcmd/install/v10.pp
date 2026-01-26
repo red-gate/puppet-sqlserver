@@ -17,6 +17,7 @@ class sqlserver::sqlcmd::install::v10 (
 
   archive { "${temp_folder}/sqlncli_v10.msi":
     source  => $nativeclient_source,
+    allow_insecure => true
   }
   -> package { 'Microsoft SQL Server 2008 R2 Native Client':
     ensure          => installed,
@@ -25,6 +26,7 @@ class sqlserver::sqlcmd::install::v10 (
   }
   -> archive { "${temp_folder}/MsSqlCmdLnUtils_v10.msi":
     source  => $sqlcmdutils_source,
+    allow_insecure => true
   }
   -> package { 'Microsoft SQL Server 2008 R2 Command Line Utilities':
     ensure          => installed,
