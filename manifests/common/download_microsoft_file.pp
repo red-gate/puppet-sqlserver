@@ -14,8 +14,9 @@ define sqlserver::common::download_microsoft_file (
 
   exec { "download file from Microsoft from ${source} to ${destination}":
     provider  => 'powershell',
-    command   => "Invoke-WebRequest -URI ${source} -Outfile ${destination}",
+    command   => "\$ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -URI ${source} -Outfile ${destination}",
     unless    => "if (Test-Path ${destination}) { exit 0 } else { exit 1 }",
     logoutput => true,
   }
 }
+
