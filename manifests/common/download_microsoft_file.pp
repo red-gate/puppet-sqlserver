@@ -1,4 +1,5 @@
 # @summary Downloads a file using Powershell
+# This exists due to the certificate chain issues with 'download.microsoft.com' which prevent the archive module from working
 #
 # @param source
 #     URL where file is to be downloaded from
@@ -14,7 +15,7 @@ define sqlserver::common::download_microsoft_file (
   exec { "download file from Microsoft to ${destination}":
     provider  => 'powershell',
     command   => "Invoke-WebRequest -URI ${source} -Outfile ${destination}",
-    onlyif    => "if (Test-Path ${destination}) { exit 1 } else { exit 0 }",
+    unless    => "if (Test-Path ${destination}) { exit 0 } else { exit 1 }",
     logoutput => true,
   }
 }
