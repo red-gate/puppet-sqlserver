@@ -15,9 +15,15 @@ class sqlserver::sqlcmd::install::v11 (
     $sqlcmdutils_source = 'https://download.microsoft.com/download/5/5/B/55BEFD44-B899-4B54-ACD7-506E03142B34/1033/x64/MsSqlCmdLnUtils.msi'
   }
 
-  archive { "${temp_folder}/msodbcsql_v11.msi":
-    source  => $odbcdriver_source,
+  #archive { "${temp_folder}/msodbcsql_v11.msi":
+  #  source  => $odbcdriver_source,
+  #}
+
+  ::common::download_microsoft_file { "${temp_folder}/msodbcsql_v11.msi":
+    source => $odbcdriver_source,
+    destination => $title
   }
+
   -> package { 'Microsoft ODBC Driver 11 for SQL Server':
     ensure          => installed,
     source          => "${temp_folder}/msodbcsql_v11.msi",
