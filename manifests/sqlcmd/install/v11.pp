@@ -19,9 +19,9 @@ class sqlserver::sqlcmd::install::v11 (
   #  source  => $odbcdriver_source,
   #}
 
-  ::sqlserver::common::download_microsoft_file { "${temp_folder}/msodbcsql_v11.msi":
+  ::sqlserver::common::download_microsoft_file { 'msodbcsql_v11.msi':
     source => $odbcdriver_source,
-    destination => $title
+    destination => "${temp_folder}/msodbcsql_v11.msi"
   }
 
   -> package { 'Microsoft ODBC Driver 11 for SQL Server':
@@ -34,9 +34,9 @@ class sqlserver::sqlcmd::install::v11 (
   #  source  => $sqlcmdutils_source,
   #}
 
-  ::sqlserver::common::download_microsoft_file { "${temp_folder}/MsSqlCmdLnUtils_v11.msi":
+  ::sqlserver::common::download_microsoft_file { 'MsSqlCmdLnUtils_v11.msi":
     source => $sqlcmdutils_source,
-    destination => $title
+    destination => "${temp_folder}/MsSqlCmdLnUtils_v11.msi"
   }
 
   -> package { 'Microsoft Command Line Utilities 11 for SQL Server':
