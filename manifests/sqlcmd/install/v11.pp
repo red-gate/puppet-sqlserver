@@ -34,7 +34,7 @@ class sqlserver::sqlcmd::install::v11 (
   #  source  => $sqlcmdutils_source,
   #}
 
-  ::sqlserver::common::download_microsoft_file { 'MsSqlCmdLnUtils_v11.msi":
+  ::sqlserver::common::download_microsoft_file { 'MsSqlCmdLnUtils_v11.msi':
     source => $sqlcmdutils_source,
     destination => "${temp_folder}/MsSqlCmdLnUtils_v11.msi"
   }
