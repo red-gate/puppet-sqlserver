@@ -14,7 +14,6 @@ class sqlserver::libraries::adalsql (
   if $facts['os']['architecture'] == 'x64' {
     archive { 'C:/Windows/Temp/adalsql_x64.msi':
       source => $source_url_x64,
-      allow_insecure => true
     }
     -> package { 'Active Directory Authentication Library for SQL Server':
       source => 'C:/Windows/Temp/adalsql_x64.msi',

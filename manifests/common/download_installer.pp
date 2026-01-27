@@ -34,6 +34,5 @@ define sqlserver::common::download_installer (
     extract_path => $folder,
     creates      => $setup_file,
     cleanup      => true,
-    allow_insecure => true
   }
 }

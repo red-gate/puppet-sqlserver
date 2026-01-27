@@ -18,7 +18,6 @@ class sqlserver::ssms::v20 (
 
   archive { "${temp_folder}/${filename}":
     source  => $source,
-    allow_insecure => true
   }
   -> reboot { 'reboot before installing SSMS (if pending)':
     when => pending,

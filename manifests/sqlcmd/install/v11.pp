@@ -17,7 +17,6 @@ class sqlserver::sqlcmd::install::v11 (
 
   archive { "${temp_folder}/msodbcsql_v11.msi":
     source  => $odbcdriver_source,
-    allow_insecure => true
   }
   -> package { 'Microsoft ODBC Driver 11 for SQL Server':
     ensure          => installed,
@@ -26,7 +25,6 @@ class sqlserver::sqlcmd::install::v11 (
   }
   -> archive { "${temp_folder}/MsSqlCmdLnUtils_v11.msi":
     source  => $sqlcmdutils_source,
-    allow_insecure => true
   }
   -> package { 'Microsoft Command Line Utilities 11 for SQL Server':
     ensure          => installed,
