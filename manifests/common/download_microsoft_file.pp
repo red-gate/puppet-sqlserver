@@ -12,7 +12,7 @@ define sqlserver::common::download_microsoft_file (
   String $destination
 ) {
 
-  exec { "download file from Microsoft to ${destination}":
+  exec { "download file from Microsoft from ${source} to ${destination}":
     provider  => 'powershell',
     command   => "Invoke-WebRequest -URI ${source} -Outfile ${destination}",
     unless    => "if (Test-Path ${destination}) { exit 0 } else { exit 1 }",
