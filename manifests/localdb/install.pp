@@ -19,10 +19,17 @@ define sqlserver::localdb::install (
 
   ensure_resource('file', $folder, { ensure => directory })
 
-  archive { "${temp_folder}/localdb${version}/${filename}":
-    source  => $source,
+  #archive { "${temp_folder}/localdb${version}/${filename}":
+  #  source  => $source,
+  #  require => File[$folder],
+  #}
+
+  ::sqlserver::common::download_microsoft_file { $filename :
+    source => $source,
+    destination => "${temp_folder}/localdb${version}/${filename}",
     require => File[$folder],
   }
+
   -> package { "Microsoft SQL Server ${version} Express LocalDB ":
     ensure          => installed,
     source          => "${folder}/${filename}",

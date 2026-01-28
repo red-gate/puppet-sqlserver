@@ -15,17 +15,29 @@ class sqlserver::sqlcmd::install::v10 (
     $sqlcmdutils_source = 'https://download.microsoft.com/download/9/2/7/927B0C39-C3E2-4CFC-B84E-92BC63344C62/ENU/x64/SqlCmdLnUtils.msi'
   }
 
-  archive { "${temp_folder}/sqlncli_v10.msi":
-    source  => $nativeclient_source,
+  # archive { "${temp_folder}/sqlncli_v10.msi":
+  #   source  => $nativeclient_source,
+  # }
+
+  ::sqlserver::common::download_microsoft_file { 'sqlncli_v10.msi':
+    source => $nativeclient_source,
+    destination => "${temp_folder}/sqlncli_v10.msi"
   }
+
   -> package { 'Microsoft SQL Server 2008 R2 Native Client':
     ensure          => installed,
     source          => "${temp_folder}/sqlncli_v10.msi",
     install_options => ['ADDLOCAL=ALL', 'IACCEPTSQLNCLILICENSETERMS=YES'],
   }
-  -> archive { "${temp_folder}/MsSqlCmdLnUtils_v10.msi":
-    source  => $sqlcmdutils_source,
+  # -> archive { "${temp_folder}/MsSqlCmdLnUtils_v10.msi":
+  #   source  => $sqlcmdutils_source,
+  # }
+
+  -> ::sqlserver::common::download_microsoft_file { 'MsSqlCmdLnUtils_v10.msi':
+    source => $sqlcmdutils_source,
+    destination => "${temp_folder}/MsSqlCmdLnUtils_v10.msi"
   }
+
   -> package { 'Microsoft SQL Server 2008 R2 Command Line Utilities':
     ensure          => installed,
     source          => "${temp_folder}/MsSqlCmdLnUtils_v10.msi",
