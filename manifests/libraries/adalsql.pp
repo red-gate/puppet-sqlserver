@@ -12,17 +12,30 @@ class sqlserver::libraries::adalsql (
   String $source_url_x86 = 'https://download.microsoft.com/download/6/4/6/64677D6E-06EA-4DBB-AF05-B92403BB6CB9/ENU/x86/adalsql.msi'
 ) {
   if $facts['os']['architecture'] == 'x64' {
-    archive { 'C:/Windows/Temp/adalsql_x64.msi':
+
+    #archive { 'C:/Windows/Temp/adalsql_x64.msi':
+    #  source => $source_url_x64,
+    #}
+
+    ::sqlserver::common::download_microsoft_file { 'adalsql_x64.msi':
       source => $source_url_x64,
+      destination => 'C:/Windows/Temp/adalsql_x64.msi'
     }
+
     -> package { 'Active Directory Authentication Library for SQL Server':
       source => 'C:/Windows/Temp/adalsql_x64.msi',
     }
   }
 
-  archive { 'C:/Windows/Temp/adalsql_x86.msi':
+  #archive { 'C:/Windows/Temp/adalsql_x86.msi':
+  #  source => $source_url_x86,
+  #}
+
+  ::sqlserver::common::download_microsoft_file { 'adalsql_x86.msi':
     source => $source_url_x86,
+    destination => 'C:/Windows/Temp/adalsql_x86.msi'
   }
+
   -> package { 'Active Directory Authentication Library for SQL Server (x86)':
     source => 'C:/Windows/Temp/adalsql_x86.msi',
   }

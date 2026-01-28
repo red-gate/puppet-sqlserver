@@ -16,9 +16,15 @@ class sqlserver::ssms::v19 (
 ) {
   include archive
 
-  archive { "${temp_folder}/${filename}":
-    source  => $source,
+  # archive { "${temp_folder}/${filename}":
+  #   source  => $source,
+  # }
+
+  -> ::sqlserver::common::download_microsoft_file { "${temp_folder}/${filename}":
+    source => $source,
+    destination => "${temp_folder}/${filename}"
   }
+
   -> reboot { 'reboot before installing SSMS (if pending)':
     when => pending,
   }
