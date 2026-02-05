@@ -9,7 +9,7 @@
 # @param temp_folder
 #   path to temp folder
 class sqlserver::ssms::v22 (
-  String $source = 'https://aka.ms/ssms/22/preview/vs_SSMS.exe',
+  String $source = 'https://aka.ms/ssms/22/release/vs_SSMS.exe',
   String $filename = 'vs_SSMS.exe',
   String $program_name = 'SQL Server Management Studio 22',
   String $temp_folder = 'C:/Windows/Temp',
