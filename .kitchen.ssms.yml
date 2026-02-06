@@ -39,6 +39,12 @@ platforms:
     driver_plugin: vagrant
     driver_config:
       box: red-gate/windows-2019
+      customize:
+        cpus: 2
+        memory: 4096
+        vrde: "off"
+        vram: 64
+        graphicscontroller: "vboxsvga"
     provisioner:
       puppet_version: "7.34.0"
   - name: windows-2022

@@ -9,7 +9,7 @@
 # @param temp_folder
 #   path to temp folder
 class sqlserver::ssms::v22 (
-  String $source = 'https://aka.ms/ssms/22/preview/vs_SSMS.exe',
+  String $source = 'https://aka.ms/ssms/22/release/vs_SSMS.exe',
   String $filename = 'vs_SSMS.exe',
   String $program_name = 'SQL Server Management Studio 22',
   String $temp_folder = 'C:/Windows/Temp',
@@ -20,9 +20,9 @@ class sqlserver::ssms::v22 (
   #   source  => $source,
   # }
 
-  ::sqlserver::common::download_microsoft_file { "${temp_folder}/${filename}":
+  sqlserver::common::download_microsoft_file { "${temp_folder}/${filename}":
     source => $source,
-    destination => "${temp_folder}/${filename}"
+    destination => "${temp_folder}/${filename}",
   }
 
   -> reboot { 'reboot before installing SSMS (if pending)':
@@ -34,7 +34,7 @@ class sqlserver::ssms::v22 (
   -> exec { "install ${program_name}":
     command => "Start-Process '${temp_folder}/${filename}' -wait -argumentlist '--quiet --norestart' -passThru ",
     provider => powershell,
-    creates => 'C:/Program Files/Microsoft SQL Server Management Studio 22/Preview/Common7/IDE/SSMS.exe',
+    creates => 'C:/Program Files/Microsoft SQL Server Management Studio 22/Release/Common7/IDE/SSMS.exe',
     timeout => 600, # This can take a while to install, this bumps the default timeout from 5m to 10m.
   }
 }

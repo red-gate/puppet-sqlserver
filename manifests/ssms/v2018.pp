@@ -19,10 +19,10 @@ class sqlserver::ssms::v2018 (
   # archive { "${temp_folder}/${filename}":
   #   source  => $source,
   # }
-  
-  ::sqlserver::common::download_microsoft_file { "${temp_folder}/${filename}":
+
+  sqlserver::common::download_microsoft_file { "${temp_folder}/${filename}":
     source => $source,
-    destination => "${temp_folder}/${filename}"
+    destination => "${temp_folder}/${filename}",
   }
 
   -> reboot { 'reboot before installing SSMS (if pending)':

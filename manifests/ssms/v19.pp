@@ -9,7 +9,7 @@
 # @param temp_folder
 #   path to temp folder
 class sqlserver::ssms::v19 (
-  String $source = 'https://go.microsoft.com/fwlink/?linkid=2226343&clcid=0x409',
+  String $source = 'https://download.microsoft.com/download/9/f/8/9f8197f4-0f71-42a3-8717-b2817c77b820/SSMS-Setup-ENU.exe',
   String $filename = 'SSMS-Setup-ENU.exe',
   String $program_name = 'Microsoft SQL Server Management Studio - 19.0.2',
   String $temp_folder = 'C:/Windows/Temp',
@@ -20,9 +20,9 @@ class sqlserver::ssms::v19 (
   #   source  => $source,
   # }
 
-  -> ::sqlserver::common::download_microsoft_file { "${temp_folder}/${filename}":
+  sqlserver::common::download_microsoft_file { "${temp_folder}/${filename}":
     source => $source,
-    destination => "${temp_folder}/${filename}"
+    destination => "${temp_folder}/${filename}",
   }
 
   -> reboot { 'reboot before installing SSMS (if pending)':
