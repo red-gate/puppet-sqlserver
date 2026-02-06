@@ -9,7 +9,7 @@
 # @param temp_folder
 #   path to temp folder
 class sqlserver::ssms::v2016 (
-  String $source = 'http://go.microsoft.com/fwlink/?LinkID=828615',
+  String $source = 'https://download.microsoft.com/download/7/8/0/7808D223-499D-4577-812B-9A2A60048841/SSMS-Setup-ENU.exe',
   String $filename = 'SSMS-Setup-ENU.exe',
   String $program_name = 'Microsoft SQL Server Management Studio - 16.4.1',
   String $temp_folder = 'C:/Windows/Temp'
