@@ -19,8 +19,8 @@ define sqlserver::users::db_role (
   String $login_name,
   String $role_name,
   String $database_name,
-  String[Optional]  $query_username = undef,
-  String[Optional] $query_password = undef
+  Optional[String]  $query_username = undef,
+  Optional[String] $query_password = undef
 ) {
 
   sqlserver::sqlcmd::sqlquery { "${server} - Create user ${login_name} for login ${login_name} on database ${database_name}":
