@@ -27,8 +27,8 @@ define sqlserver::users::db_role (
     server   => $server,
     username => $query_username,
     password => $query_password,
-    query    => "USE [${database_name}] CREATE USER ${login_name} FOR LOGIN ${login_name}",
-    unless   => "USE [${database_name}] IF(SELECT count(name) FROM sysusers where name = '${login_name}') != 1 raiserror('User is not created yet',1,1)",
+    query    => "USE [${database_name}] CREATE USER [${login_name}] FOR LOGIN [${login_name}]",
+    unless   => "USE [${database_name}] IF(SELECT count(name) FROM sys.database_principals where name = '${login_name}') != 1 raiserror('User is not created yet',1,1)",
   }
 
   sqlserver::sqlcmd::sqlquery { "${server} - Add role ${role_name} to ${login_name} login for database ${database_name}":
@@ -36,7 +36,7 @@ define sqlserver::users::db_role (
     username => $query_username,
     password => $query_password,
     query    => "USE [${database_name}] ALTER ROLE [${role_name}] ADD MEMBER [${login_name}]",
-    unless   => "IF(SELECT IS_ROLEMEMBER('${role_name}', '${login_name}')) != 1 raiserror ('Role is not assigned yet',1,1)",
+    unless   => "USE [${database_name}] IF(SELECT IS_ROLEMEMBER('${role_name}', '${login_name}')) != 1 raiserror ('Role is not assigned yet',1,1)",
     require  => Sqlserver::Sqlcmd::Sqlquery["${server} - Create user ${login_name} for login ${login_name} on database ${database_name}"],
   }
 }

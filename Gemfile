@@ -7,7 +7,7 @@ gem 'kitchen-zip', :git => 'https://github.com/red-gate/kitchen-zip', :branch =>
 gem 'test-kitchen', '< 4.1.0' # pin to pre 4.1.0 until https://github.com/test-kitchen/test-kitchen/pull/2083 / https://github.com/test-kitchen/test-kitchen/issues/2082 is resolved
 
 gem 'kitchen-puppet'
-gem 'kitchen-vagrant', :git => 'https://github.com/njhowell/kitchen-vagrant', :branch => 'main'
+gem 'kitchen-vagrant', :git => 'https://github.com/njhowell/kitchen-vagrant', :branch => 'main' # temporary fork with an unmerged fix; switch back to the upstream gem once released
 
 # We use serverspec to test the state of our servers
 gem 'serverspec', '~> 2'

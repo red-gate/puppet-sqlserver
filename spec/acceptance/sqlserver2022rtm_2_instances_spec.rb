@@ -40,3 +40,7 @@ end
 describe windows_registry_key('HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL16.SQL2022_2\Mssqlserver\Supersocketnetlib\tcp\ipall') do
   it { should have_property_value('tcpport', :type_string, '1434') }
 end
+
+describe command('sqlcmd -S localhost\SQL2022_1 -Q "SET NOCOUNT ON; USE [tempdb]; SELECT CASE WHEN IS_ROLEMEMBER(\'db_datareader\', \'sql_user\') = 1 THEN \'ROLE_MEMBER_OK\' ELSE \'ROLE_MEMBER_MISSING\' END"') do
+  its(:stdout) { should include 'ROLE_MEMBER_OK' }
+end
