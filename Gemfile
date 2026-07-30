@@ -1,24 +1,30 @@
 source 'https://rubygems.org'
 
-gem 'puppet-lint'
-gem 'puppet'
-
-gem 'test-kitchen', '< 3.8.0' # pin to pre 3.8.0 which introduced a change to how it uploads files which breaks ssh_tgz upload in the kitchen-zip module above
-gem 'kitchen-puppet', '>= 3.6.0'
-gem 'kitchen-vagrant'
+gem 'hiera-eyaml' # used to encrypt hiera data
 
 gem 'kitchen-zip', :git => 'https://github.com/red-gate/kitchen-zip', :branch => 'master'
+
+gem 'test-kitchen', '< 4.1.0' # pin to pre 4.1.0 until https://github.com/test-kitchen/test-kitchen/pull/2083 / https://github.com/test-kitchen/test-kitchen/issues/2082 is resolved
+
+gem 'kitchen-puppet'
+gem 'kitchen-vagrant', :git => 'https://github.com/njhowell/kitchen-vagrant', :branch => 'main' # temporary fork with an unmerged fix; switch back to the upstream gem once released
 
 # We use serverspec to test the state of our servers
 gem 'serverspec', '~> 2'
 
-# We use rake as our build engine
+gem 'locale', '< 2.1.5' # pin to pre 2.1.5 which introduced a change that depends on fiddle, which fails to install
+
+gem 'winrm'
+
+gem 'puppet-lint'
+gem 'rubocop'
+gem 'yamllint'
+
+
 gem 'rake', '~> 13'
 # This gem tells us how long each rake task takes.
 gem 'rake-performance'
 
+gem 'ra10ke' # Add rake tasks to manage puppetfile
+
 gem 'r10k', '~> 3'
-
-gem 'ffi', '~> 1.15.0'
-gem 'rexml', '< 3.4.2'
-

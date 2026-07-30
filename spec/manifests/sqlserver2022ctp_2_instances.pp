@@ -136,3 +136,9 @@ sqlserver::users::login_sql { 'SQL2022_1: sql_user login':
   login_name            => 'sql_user',
   default_database_name => 'tempdb',
 }
+-> sqlserver::users::db_role { 'SQL2022_1: sql_user is db_datareader on tempdb':
+  server        => 'localhost\SQL2022_1',
+  login_name    => 'sql_user',
+  role_name     => 'db_datareader',
+  database_name => 'tempdb',
+}
