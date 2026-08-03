@@ -9,9 +9,9 @@
 #
 define sqlserver::common::set_tls_cert (
   String $certificate_thumbprint,
-  String $instance_name = $title,
+  String $instance_name,
 ) {
-  exec { "Set TLS Cert on ${title}":
+  exec { "Set TLS Cert on ${instance_name}":
     provider  => 'powershell',
     command   => template('sqlserver/set_sql_tls_cert.ps1.erb'),
     onlyif    => template('sqlserver/should_set_sql_tls_cert.ps1.erb'),
