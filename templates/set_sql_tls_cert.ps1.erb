@@ -12,7 +12,7 @@ $sqlwmi = $wmi.Services | Where-Object DisplayName -eq "SQL Server (${instance_n
 
 $regRoot = ($sqlwmi.AdvancedProperties | Where-Object Name -eq REGROOT).Value
 
-$regPath = "Registry::HKEY_LOCAL_MACHINE\$regRoot\MSSQLServer\SuperSocketNetLib"
+$regPath = "Registry::HKEY_LOCAL_MACHINE\${regRoot}\MSSQLServer\SuperSocketNetLib"
 
 Write-Host "Setting certificate to $certificate_thumbprint for $instance_name"
 Set-ItemProperty -Path $regPath -Name Certificate -Value $certificate_thumbprint.ToString().ToLowerInvariant() # to make it compat with SQL config
