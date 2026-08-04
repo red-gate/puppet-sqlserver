@@ -8,7 +8,7 @@ $wmi = New-Object Microsoft.SqlServer.Management.Smo.Wmi.ManagedComputer
 $null = $wmi.Initialize()
 
 
-$sqlwmi = $wmi.Services | Where-Object DisplayName -eq "SQL Server ($instance_name)"
+$sqlwmi = $wmi.Services | Where-Object DisplayName -eq "SQL Server (${instance_name})"
 
 $regRoot = ($sqlwmi.AdvancedProperties | Where-Object Name -eq REGROOT).Value
 
