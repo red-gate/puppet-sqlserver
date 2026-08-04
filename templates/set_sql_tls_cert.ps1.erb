@@ -1,7 +1,7 @@
 $instance_name = "<%= @instance_name %>"
 $certificate_thumbprint = "<%= @certificate_thumbprint %>"
 
-Write-Output $instance_name
+Write-Output "This is the ${instance_name} which should be passed in"
 
 [void][System.Reflection.Assembly]::LoadWithPartialName('Microsoft.SqlServer.SqlWmiManagement')
 $wmi = New-Object Microsoft.SqlServer.Management.Smo.Wmi.ManagedComputer
