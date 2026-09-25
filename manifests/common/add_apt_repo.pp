@@ -7,11 +7,6 @@ class sqlserver::common::add_apt_repo (
 ) {
   include apt
 
-  apt::key { 'microsoft_apt_key':
-    id     => 'BC528686B50D79E339D3721CEB3E94ADBE1229CF',
-    server => 'keyserver.ubuntu.com',
-  }
-
   $os_version_number = $facts['os']['release']['full']
 
   case $sql_version {
@@ -34,13 +29,19 @@ class sqlserver::common::add_apt_repo (
     location => "https://packages.microsoft.com/ubuntu/${os_version_number}/mssql-server-${sql_version}",
     repos => 'main',
     release => $facts['os']['distro']['codename'],
-    require => Apt::Key['microsoft_apt_key'],
+    key      => {
+      'name' => 'microsoft.asc',
+      'source' => 'https://packages.microsoft.com/keys/microsoft.asc',
+    },
   }
 
   apt::source { 'microsoft_prod_apt_repo':
     location => "https://packages.microsoft.com/ubuntu/${os_version_number}/prod",
     repos => 'main',
     release => $facts['os']['distro']['codename'],
-    require => Apt::Key['microsoft_apt_key'],
+    key      => {
+      'name' => 'microsoft.asc',
+      'source' => 'https://packages.microsoft.com/keys/microsoft.asc',
+    },
   }
 }
