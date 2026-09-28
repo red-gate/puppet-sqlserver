@@ -25,23 +25,24 @@ class sqlserver::common::add_apt_repo (
     }
   }
 
+  apt::keyring { 'microsoft.asc':
+    ensure => present,
+    source => 'https://packages.microsoft.com/keys/microsoft.asc',
+  }
+
   apt::source { 'microsoft_sql_server_apt_repo':
     location => "https://packages.microsoft.com/ubuntu/${os_version_number}/mssql-server-${sql_version}",
     repos => 'main',
     release => $facts['os']['distro']['codename'],
-    key      => {
-      'name' => 'microsoft.asc',
-      'source' => 'https://packages.microsoft.com/keys/microsoft.asc',
-    },
+    keyring => '/etc/apt/keyrings/microsoft.asc',
+    require => Apt::Keyring['microsoft.asc'],
   }
 
   apt::source { 'microsoft_prod_apt_repo':
     location => "https://packages.microsoft.com/ubuntu/${os_version_number}/prod",
     repos => 'main',
     release => $facts['os']['distro']['codename'],
-    key      => {
-      'name' => 'microsoft.asc',
-      'source' => 'https://packages.microsoft.com/keys/microsoft.asc',
-    },
+    keyring => '/etc/apt/keyrings/microsoft.asc',
+    require => Apt::Keyring['microsoft.asc'],
   }
 }
