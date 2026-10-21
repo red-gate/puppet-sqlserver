@@ -73,12 +73,40 @@ platforms:
       puppet_version: "7.34.0-1focal"
     transport:
       name: ssh_tgz
+  - name: ubuntu-22.04
+    driver_plugin: vagrant
+    driver_config:
+      customize:
+        audio: "none"
+    driver:
+      box: red-gate/ubuntu-2204
+      vm_hostname: sqlserver
+    provisioner:
+      puppet_apt_collections_repo: https://apt.puppetlabs.com/puppet7-release-jammy.deb
+      puppet_version: "7.34.0-1jammy"
+    transport:
+      name: ssh_tgz
+  - name: ubuntu-24.04
+    driver_plugin: vagrant
+    driver_config:
+      customize:
+        audio: "none"
+    driver:
+      box: red-gate/ubuntu-2404
+      vm_hostname: sqlserver
+    provisioner:
+      puppet_apt_collections_repo: https://apt.puppetlabs.com/puppet7-release-noble.deb
+      puppet_version: "7.34.0-1noble"
+    transport:
+      name: ssh_tgz
 
 suites:
   - name: sqlserver2012sp4
     excludes:
       - windows-2022
       - ubuntu-20.04
+      - ubuntu-22.04
+      - ubuntu-24.04
     provisioner:
       manifest: sqlserver2012sp4_instances.pp
       custom_facts:
@@ -89,6 +117,8 @@ suites:
     excludes:
       - windows-2022
       - ubuntu-20.04
+      - ubuntu-22.04
+      - ubuntu-24.04
     provisioner:
       manifest: sqlserver2014sp3_instances.pp
       custom_facts:
@@ -99,6 +129,8 @@ suites:
     excludes:
       - windows-2022
       - ubuntu-20.04
+      - ubuntu-22.04
+      - ubuntu-24.04
     provisioner:
       manifest: sqlserver2016sp1_2_instances.pp
       custom_facts:
@@ -109,6 +141,8 @@ suites:
     excludes:
       - windows-2022
       - ubuntu-20.04
+      - ubuntu-22.04
+      - ubuntu-24.04
     provisioner:
       manifest: sqlserver2017rtm_2_instances.pp
       custom_facts:
@@ -119,6 +153,8 @@ suites:
     excludes:
       - windows-2022
       - ubuntu-20.04
+      - ubuntu-22.04
+      - ubuntu-24.04
     provisioner:
       manifest: sqlserver2019rtm_2_instances.pp
       custom_facts:
@@ -128,6 +164,8 @@ suites:
   - name: sqlserver2022multiple
     excludes:
       - ubuntu-20.04
+      - ubuntu-22.04
+      - ubuntu-24.04
     provisioner:
       manifest: sqlserver2022ctp_2_instances.pp
       custom_facts:
@@ -138,6 +176,8 @@ suites:
     excludes:
       - windows-2019
       - windows-2022
+      - ubuntu-22.04
+      - ubuntu-24.04
     provisioner:
       manifest: sqlserver2019linux.pp
     verifier:
@@ -145,9 +185,29 @@ suites:
   - name: sqlserver2025multiple
     excludes:
       - ubuntu-20.04
+      - ubuntu-22.04
+      - ubuntu-24.04
     provisioner:
       manifest: sqlserver2025rc_1_instances.pp
       custom_facts:
         sqlserver2025_iso_url: <%= ENV['SQLSERVER2025_ISO_URL'] %>
     verifier:
       command: rspec -c -f d -I spec spec/acceptance/sqlserver2025rc_1_instances_spec.rb
+  - name: sqlserver2022linux
+    excludes:
+      - windows-2019
+      - windows-2022
+      - ubuntu-24.04
+    provisioner:
+      manifest: sqlserver2022linux.pp
+    verifier:
+      command: rspec -c -f d -I spec spec/acceptance/sqlserver2022linux_spec.rb
+  - name: sqlserver2025linux
+    excludes:
+      - windows-2019
+      - windows-2022
+      - ubuntu-20.04
+    provisioner:
+      manifest: sqlserver2025linux.pp
+    verifier:
+      command: rspec -c -f d -I spec spec/acceptance/sqlserver2025linux_spec.rb

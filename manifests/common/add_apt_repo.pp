@@ -3,7 +3,7 @@
 # @param sql_version
 #   Version of SQL Server to install
 class sqlserver::common::add_apt_repo (
-  Enum['2017','2019'] $sql_version
+  Enum['2017','2019','2022','2025'] $sql_version
 ) {
   include apt
 
@@ -18,6 +18,16 @@ class sqlserver::common::add_apt_repo (
     '2019': {
       if(!($os_version_number in ['16.04', '18.04', '20.04'])) {
         fail('SQL Server 2019 is only support on Ubuntu 16.04, 18.04 and 20.04')
+      }
+    }
+    '2022': {
+      if(!($os_version_number in ['20.04', '22.04'])) {
+        fail('SQL Server 2022 is only supported on Ubuntu 20.04 and 22.04')
+      }
+    }
+    '2025': {
+      if(!($os_version_number in ['22.04', '24.04'])) {
+        fail('SQL Server 2025 is only supported on Ubuntu 22.04 and 24.04')
       }
     }
     default: {

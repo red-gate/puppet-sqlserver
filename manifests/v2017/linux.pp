@@ -1,4 +1,4 @@
-# @summary Install an configure a single SQL Server 2019 Instance on Linux
+# @summary Install an configure a single SQL Server 2017 Instance on Linux
 #
 # @param sa_password
 #     Required. Specify the password for the SA account
